@@ -1,0 +1,85 @@
+plugins {
+    id 'fml-loom' version '0.1.local'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        name = "Spongepowered"
+        url = "https://repo.spongepowered.org/repository/maven-public/"
+    }
+}
+
+loom {
+    mergedMinecraftJar()
+    setFML(new File("libs\\fml-3.4.2.jar"))
+
+    mods {
+        "MiTE-Renewed" {
+            sourceSet sourceSets.main
+        }
+    }
+
+}
+
+runClient{
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.fmlMCPMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    implementation files("libs\\EMI.jar")
+    implementation files("libs\\RustedIronCore-1.3.9.jar")
+    implementation files("libs\\RustedIronCore-1.3.9-sources.jar")
+    implementation("it.unimi.dsi:fastutil:8.5.12")
+    implementation files(loom.getFML().toPath())
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fml.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 17
+}
+
+java {
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
+}

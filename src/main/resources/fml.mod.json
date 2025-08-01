@@ -1,0 +1,18 @@
+{
+	"schemaVersion": 1,
+	"id": "miterenewed",
+	"version": "${version}",
+	"depends": {
+		"fishmodloader": ">=3.4.2"
+	},
+	"environment": "*",
+	"name": "MiTE: Renewed",
+	"description": "",
+	"authors": ["jeffyjamzhd"],
+	"entrypoints": {
+		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"]
+	},
+	"mixins": [
+		"miterenewed.mixins.json"
+	]
+}
