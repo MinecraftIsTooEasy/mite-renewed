@@ -16,14 +16,22 @@ import static net.xiaoyu233.fml.util.ReflectHelper.createInstance;
 public class RenewedItems {
     // Item definitions
     public static final ItemKnife sharp_bone =
-            (ItemKnife) createInstance(ItemKnife.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
-
-    private static void registerItem(ItemRegistryEvent registry, String name, String resource, Item item, CreativeTabs tab) {
-        registry.register(MiTERenewed.NAMESPACE, MiTERenewed.RESOURCE_ID + resource, name, item, tab);
-    }
+            createInstance(ItemKnife.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
-        registerItem(registry, "sharp_bone", "tool/sharp_bone", sharp_bone, CreativeTabs.tabTools);
+        registerItem(registry, "sharp_bone", "tool/sharp_bone", sharp_bone).setCreativeTab(CreativeTabs.tabTools);
+    }
+
+    /**
+     * Registers an item.
+     * @param registry The register
+     * @param name Name of the item
+     * @param resource Texture path
+     * @param item Item object
+     * @return The registered item
+     */
+    private static Item registerItem(ItemRegistryEvent registry, String name, String resource, Item item) {
+        return registry.register(MiTERenewed.NAMESPACE, MiTERenewed.RESOURCE_ID + resource, name, item);
     }
 }

@@ -36,9 +36,17 @@ public class ShapelessToolRecipe implements IRecipe {
      * @param value Amount to damage tool
      * @return This instance
      */
-    public ShapelessToolRecipe damage(int value) {
+    public ShapelessToolRecipe setDamage(int value) {
         this.damage = value;
         return this;
+    }
+
+    /**
+     * Gives the amount of damage dealt to tool
+     * @return Damage amount
+     */
+    public int getDamage() {
+        return this.damage;
     }
 
     @Override
@@ -115,7 +123,7 @@ public class ShapelessToolRecipe implements IRecipe {
     @Override
     public IRecipe setDifficulty(float difficulty) {
         this.difficulty = difficulty;
-        return null;
+        return this;
     }
 
     @Override

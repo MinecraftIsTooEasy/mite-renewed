@@ -32,7 +32,7 @@ public abstract class CraftingManagerMixin {
             if (stack != null && stack.isTool() && recipe instanceof ShapelessToolRecipe) {
                 itemWasTool = true;
                 int currentDamage = stack.getItemDamage();
-                stack.setItemDamage(currentDamage + 66);
+                stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) recipe).getDamage());
                 if (stack.getItemDamage() >= stack.getMaxDamage()) {
                     this.craftMatrix.setInventorySlotContents(slot, null);
                 }
