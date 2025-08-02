@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.registry.RenewedEntity;
+import com.github.jeffyjamzhd.renewed.registry.RenewedEntityRenderer;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import com.github.jeffyjamzhd.renewed.registry.RenewedRecipes;
 import com.google.common.eventbus.Subscribe;
@@ -17,6 +19,16 @@ public class EventListen {
     @Subscribe
     public void onRecipeRegister(RecipeRegistryEvent event) {
         RenewedRecipes.registerRecipes(event);
+    }
+
+    @Subscribe
+    public void onEntityRegister(EntityRegisterEvent event) {
+        RenewedEntity.register(event);
+    }
+
+    @Subscribe
+    public void onEntityRendererRegister(EntityRendererRegistryEvent event) {
+        RenewedEntityRenderer.register(event);
     }
 
     //玩家登录事件

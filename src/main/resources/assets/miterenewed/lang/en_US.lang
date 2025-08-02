@@ -1,6 +1,6 @@
 item.sharp_bone.name=Sharp Bone
-item.boneSpear.name=Bone Spear
-item.flintSpear.name=Flint Spear
+item.bone_spear.name=Bone Spear
+item.flint_spear.name=Flint Spear
 item.stringMesh.name=String Mesh
 item.sinewMesh.name=Sinew Mesh
 item.handpan.name=Handpan (Empty)
