@@ -12,5 +12,6 @@ public class MiTERenewed implements ModInitializer {
     public void onInitialize() {
         ModResourceManager.addResourcePackDomain(RESOURCE_ID.substring(0, RESOURCE_ID.length()-1));
         MITEEvents.MITE_EVENT_BUS.register(new EventListen());
+        EventListen.register();
     }
 }

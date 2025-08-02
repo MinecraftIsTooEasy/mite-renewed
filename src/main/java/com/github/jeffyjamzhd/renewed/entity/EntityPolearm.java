@@ -8,7 +8,7 @@ import net.xiaoyu233.fml.util.Log;
 import java.util.Objects;
 import java.util.Random;
 
-public class EntityPolearm extends Entity implements IProjectile {
+public class EntityPolearm extends EntityThrowable implements IProjectile {
     private EntityLivingBase owner;
     private Entity lastHarmed;
     public int tX = -1, tY = -1, tZ = -1;
@@ -64,6 +64,10 @@ public class EntityPolearm extends Entity implements IProjectile {
         if (entity.isSuspendedInLiquid())
             wander *= 2.0F;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, vel * 1.5F, wander);
+    }
+
+    public EntityPolearm(WorldClient worldClient, double x, double y, double z) {
+        super(worldClient, x, y, z);
     }
 
     @Override
@@ -303,6 +307,11 @@ public class EntityPolearm extends Entity implements IProjectile {
         }
     }
 
+    @Override
+    protected void onImpact(RaycastCollision raycastCollision) {
+
+    }
+
     private void handleCollisionWithBlock(RaycastCollision col) {
         this.tX = col.block_hit_x;
         this.tY = col.block_hit_y;
@@ -321,7 +330,7 @@ public class EntityPolearm extends Entity implements IProjectile {
         this.polearmShake = 7;
 
         // Check item durability
-        if (this.item.getItemStackForStatsIcon().getMaxDamage() - durability <= 0) {
+        if (this.item != null && this.item.getItemStackForStatsIcon().getMaxDamage() - durability <= 0) {
             this.setDead();
             this.playSound("random.break", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
             this.entityFX(EnumEntityFX.item_breaking);
