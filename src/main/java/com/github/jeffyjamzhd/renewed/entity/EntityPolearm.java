@@ -27,7 +27,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     public EntityPolearm(World world) {
         super(world);
-        this.setSize(3.5F, 3.5F);
+        this.setSize(1.5F, 1.5F);
         this.renderDistanceWeight = 10.0F;
         this.item = RenewedItems.flint_spear;
         this.damage = this.item.getScaledDamage(2.0F);
@@ -35,7 +35,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     public EntityPolearm(World world, EntityLivingBase entity, float vel, ItemPolearm item, int durability) {
         super(world);
-        this.setSize(3.5F, 3.5F);
+        this.setSize(1.5F, 1.5F);
         this.renderDistanceWeight = 10.0F;
         this.owner = entity;
         this.item = item;
@@ -72,9 +72,6 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     @Override
     public void onUpdate() {
-        super.onUpdate();
-        Log.info("Updating. " + this.posX + this.posY + this.posZ);
-
         // Update rotation/yaw
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -258,6 +255,8 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
                                 if (this.owner != null && hit instanceof EntityPlayer)
                                     this.owner.refreshDespawnCounter(-9600);
 
+                                this.onImpact(collision);
+
                             } else {
                                 this.bounceBack();
                             }
@@ -308,8 +307,16 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     }
 
     @Override
-    protected void onImpact(RaycastCollision raycastCollision) {
+    protected void onImpact(RaycastCollision col) {
+        // Check item durability
+        if (this.item != null && this.item.getItemStackForStatsIcon().getMaxDamage() - durability <= 0) {
+            this.setDead();
+            this.playSound("random.break", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
+            if (!this.worldObj.isRemote && col.getEntityHit() instanceof EntityLivingBase hit) {
+                hit.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(this.item.itemID));
+            }
+        }
     }
 
     private void handleCollisionWithBlock(RaycastCollision col) {
@@ -329,13 +336,6 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         this.inGround = true;
         this.polearmShake = 7;
 
-        // Check item durability
-        if (this.item != null && this.item.getItemStackForStatsIcon().getMaxDamage() - durability <= 0) {
-            this.setDead();
-            this.playSound("random.break", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-            this.entityFX(EnumEntityFX.item_breaking);
-        }
-
         this.setIsCritical(false);
         if (this.inTile != 0) {
             Block.blocksList[this.inTile].onEntityCollidedWithBlock(this.worldObj, this.tX, this.tY, this.tZ, this);
@@ -345,6 +345,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
             this.sendPacketToAllPlayersTrackingEntity((new Packet85SimpleSignal(EnumSignal.arrow_hit_block)).setEntityID(this).setExactPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
         }
 
+        this.onImpact(col);
     }
 
     @Override
@@ -462,6 +463,11 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     @Override
     public Item getModelItem() {
         return this.item;
+    }
+
+    @Override
+    public EntityLivingBase getThrower() {
+        return this.owner;
     }
 
     @Override

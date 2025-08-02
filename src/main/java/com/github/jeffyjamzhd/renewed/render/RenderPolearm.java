@@ -39,7 +39,7 @@ public class RenderPolearm extends Render {
         float var17 = 0.15625F;
         float var18 = (float)5 / 32.0F;
         float var19 = (float)10 / 32.0F;
-        float var20 = 0.05625F;
+        float var20 = 0.10625F;
         GL11.glEnable(32826);
         float var21 = (float)entity.polearmShake - par9;
         if (var21 > 0.0F) {
@@ -48,7 +48,7 @@ public class RenderPolearm extends Render {
         }
 
         GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(var20, var20, var20);
+        GL11.glScalef(var20 * 1.2f, var20, var20);
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
         GL11.glNormal3f(var20, 0.0F, 0.0F);
         var10.startDrawingQuads();

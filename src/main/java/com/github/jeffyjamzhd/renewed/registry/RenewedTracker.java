@@ -12,7 +12,6 @@ public class RenewedTracker implements Consumer<EntityTrackerRegisterEvent> {
     @Override
     public void accept(EntityTrackerRegisterEvent event) {
         event.registerEntityTracker(entity -> entity instanceof EntityPolearm, 64, 10, true);
-
         event.registerEntityPacket(entity -> entity instanceof EntityPolearm, transform(EntityPolearm::new));
     }
 
