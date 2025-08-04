@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.item;
 
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
+import com.github.jeffyjamzhd.renewed.registry.RenewedMaterial;
 import net.minecraft.*;
 
 public class ItemPolearm extends ItemSword {
@@ -18,12 +19,12 @@ public class ItemPolearm extends ItemSword {
 
     @Override
     public float getBaseHarvestEfficiency(Block block) {
-        return 1F;
+        return 0.25F;
     }
 
     @Override
     public float getBaseDamageVsEntity() {
-        return 1F;
+        return this.isPrimitive() ? 0.25F : 1.0F;
     }
 
     @Override
@@ -70,7 +71,6 @@ public class ItemPolearm extends ItemSword {
                     entityPolearm.setKnockback(punch);
                 }
 
-                player.tryDamageHeldItem(DamageSource.generic, 30);
                 world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + fraction_pulled * 0.5F);
                 world.spawnEntityInWorld(entityPolearm);
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
@@ -80,7 +80,7 @@ public class ItemPolearm extends ItemSword {
 
     @Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-        return 64000;
+        return 24000;
     }
 
     @Override
@@ -88,8 +88,12 @@ public class ItemPolearm extends ItemSword {
         return EnumItemInUseAction.BOW;
     }
 
+    public boolean isPrimitive() {
+        return this.hasMaterial(Material.flint, RenewedMaterial.bone);
+    }
+
     public static int getTicksForMaxPull(ItemStack item_stack) {
-        return 20 - EnchantmentHelper.getEnchantmentLevelFractionOfInteger(Enchantment.quickness, item_stack, 10);
+        return 10 - EnchantmentHelper.getEnchantmentLevelFractionOfInteger(Enchantment.quickness, item_stack, 10);
     }
 
     public static int getTicksPulled(ItemStack item_stack, int item_in_use_count) {
@@ -99,4 +103,6 @@ public class ItemPolearm extends ItemSword {
     public static float getFractionPulled(ItemStack item_stack, int item_in_use_count) {
         return Math.min((float)getTicksPulled(item_stack, item_in_use_count) / (float)getTicksForMaxPull(item_stack), 1.0F);
     }
+
+
 }

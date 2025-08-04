@@ -4,6 +4,7 @@ import huix.glacier.api.extension.material.IEquipmentMaterial;
 import net.minecraft.EnumQuality;
 
 public enum EnumMaterials implements IEquipmentMaterial {
+    // Intended to be faster than flint, but not as durable
     bone(0.65F, 2, 1.25F, EnumQuality.average, "bone");
 
     public final float durability;

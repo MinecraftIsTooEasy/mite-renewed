@@ -18,6 +18,11 @@ public class EventListen extends Handlers {
     }
 
     @Subscribe
+    public void onRecipesModify(RecipeModifyEvent event) {
+        //RenewedRecipes.modifyRecipes(event);
+    }
+
+    @Subscribe
     public void onEntityRegister(EntityRegisterEvent event) {
         RenewedEntity.register(event);
     }

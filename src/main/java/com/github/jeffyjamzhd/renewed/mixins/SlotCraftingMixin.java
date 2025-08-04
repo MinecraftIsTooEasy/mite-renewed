@@ -12,22 +12,25 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = SlotCrafting.class, priority = 1300)
-public abstract class CraftingManagerMixin {
+@Mixin(value = SlotCrafting.class, priority = 1200)
+public abstract class SlotCraftingMixin {
     @Mutable @Final @Shadow private final IInventory craftMatrix;
 
     @Shadow public CraftingResult crafting_result;
     @Unique private boolean itemWasTool = false;
 
-    protected CraftingManagerMixin(IInventory craftMatrix) {
+    protected SlotCraftingMixin(IInventory craftMatrix) {
         this.craftMatrix = craftMatrix;
     }
 
     @Inject(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemStack;getItem()Lnet/minecraft/Item;", ordinal = 0))
     private void damageDagger(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, CallbackInfo ci) {
         // Iterate through crafting grid
+        itemWasTool = false;
         for (int slot = this.craftMatrix.getSizeInventory() - 1; slot >= 0; --slot) {
             ItemStack stack = this.craftMatrix.getStackInSlot(slot);
+            if (this.crafting_result == null)
+                return;
             IRecipe recipe = this.crafting_result.recipe;
             if (stack != null && stack.isTool() && recipe instanceof ShapelessToolRecipe) {
                 itemWasTool = true;
@@ -49,7 +52,7 @@ public abstract class CraftingManagerMixin {
     }
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
-    private ItemStack decrDagger(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
+    private ItemStack decrTool(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
         if (itemWasTool && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
         else return original.call(instance, i, j);
     }

@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class EntityPolearm extends EntityThrowable implements IProjectile {
-    private EntityLivingBase owner;
+    public EntityLivingBase owner;
     private Entity lastHarmed;
     public int tX = -1, tY = -1, tZ = -1;
 
@@ -27,7 +27,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     public EntityPolearm(World world) {
         super(world);
-        this.setSize(1.5F, 1.5F);
+        this.setSize(1.0F, 1.0F);
         this.renderDistanceWeight = 10.0F;
         this.item = RenewedItems.flint_spear;
         this.damage = this.item.getScaledDamage(2.0F);
@@ -35,7 +35,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     public EntityPolearm(World world, EntityLivingBase entity, float vel, ItemPolearm item, int durability) {
         super(world);
-        this.setSize(1.5F, 1.5F);
+        this.setSize(1.0F, 1.0F);
         this.renderDistanceWeight = 10.0F;
         this.owner = entity;
         this.item = item;
@@ -66,8 +66,13 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, vel * 1.5F, wander);
     }
 
-    public EntityPolearm(WorldClient worldClient, double x, double y, double z) {
+    // Client constructor
+    public EntityPolearm(WorldClient worldClient, double x, double y, double z, int itemID, int thrower) {
         super(worldClient, x, y, z);
+        this.setSize(1.5F, 1.5F);
+        this.renderDistanceWeight = 15.0F;
+        this.item = (ItemPolearm) Item.getItem(itemID);
+        this.owner = (EntityLivingBase) worldClient.getEntityByID(thrower);
     }
 
     @Override
@@ -153,7 +158,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
                 collision = raycast.getNearestCollision();
             }
             if (collision != null && collision.getEntityHit() instanceof EntityPlayer player) {
-                if (player.capabilities.disableDamage || this.owner instanceof EntityPlayer attacker && attacker.canAttackPlayer(player)) {
+                if (player.capabilities.disableDamage || this.owner instanceof EntityPlayer attacker && !attacker.canAttackPlayer(player)) {
                     collision = null;
                 }
             }
@@ -397,6 +402,10 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         return MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
     }
 
+    public ItemPolearm getItem() {
+        return this.item;
+    }
+
     private void bounceBack() {
         this.motionX *= -0.1F;
         this.motionY *= -0.1F;
@@ -462,12 +471,16 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     @Override
     public Item getModelItem() {
-        return this.item;
+        return this.getItem();
     }
 
     @Override
     public EntityLivingBase getThrower() {
         return this.owner;
+    }
+
+    public int getOwnerRID() {
+        return this.owner != null ? this.owner.entityId : 0;
     }
 
     @Override
