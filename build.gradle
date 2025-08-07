@@ -18,6 +18,10 @@ repositories {
     }
 }
 
+configurations {
+    implementation.extendsFrom shadow
+}
+
 loom {
     mergedMinecraftJar()
     setFML(new File("libs\\fml-3.4.2.jar"))

@@ -33,6 +33,11 @@ public class EventListen extends Handlers {
     }
 
     @Subscribe
+    public void onSoundsRegister(SoundsRegisterEvent event) {
+        RenewedSounds.register(event);
+    }
+
+    @Subscribe
     public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
     }
 

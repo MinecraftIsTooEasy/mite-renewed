@@ -1,0 +1,12 @@
+# R198 Changelog
+* Added a new form of sediment collection through a wooden handpan.
+* Added silk and sinew meshes, for use in the handpan.
+* Added an extraction recipe for wool block and knife -> 2 string
+
+# R197 Changelog
+* Added a new weapon class called polearms. They have reach similar to scythes but have lesser damage than a sword.
+* Added flint and bone spears, which function as primitive polearms
+* Added a new type of recipe that damages a provided tool rather than consuming it
+* Added sharp bone, a flint knife companion made by sharpening a bone with a flint knife or dagger in the crafting grid
+* Reworked sinew crafting, better output when using a knife
+* Reworked cobweb harvesting, now mining it with your fist drops tangled web which can be craft into string with a knife

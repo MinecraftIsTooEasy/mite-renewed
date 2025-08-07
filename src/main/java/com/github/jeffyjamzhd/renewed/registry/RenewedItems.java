@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import huix.glacier.api.entrypoint.IGameRegistry;
 import huix.glacier.api.registry.MinecraftRegistry;
@@ -24,13 +25,22 @@ public class RenewedItems {
             createInstance(ItemPolearm.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), Material.flint);
     public static final ItemPolearm bone_spear =
             createInstance(ItemPolearm.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
+    public static final Item sinew_mesh =
+            createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, IdUtil.getNextItemID(), Material.leather, "sinew_mesh");
+    public static final Item silk_mesh =
+            createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, IdUtil.getNextItemID(), Material.silk, "silk_mesh");
+    public static final Item handpan =
+            createInstance(ItemHandpan.class, new Class[]{int.class}, IdUtil.getNextItemID());
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
         registerItem(registry, "sharp_bone", "tool/sharp_bone", sharp_bone).setCreativeTab(CreativeTabs.tabTools);
-        registerItem(registry, "tangled_web", "tangled_web", tangled_web).setCreativeTab(CreativeTabs.tabMisc);
+        registerItem(registry, "tangled_web", "tangled_web", tangled_web).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "flint_spear", "tool/polearm/flint_spear", flint_spear);
         registerItem(registry, "bone_spear", "tool/polearm/bone_spear", bone_spear);
+        registerItem(registry, "sinew_mesh", "sinew_mesh", sinew_mesh).setCreativeTab(CreativeTabs.tabMaterials);
+        registerItem(registry, "silk_mesh", "silk_mesh", silk_mesh).setCreativeTab(CreativeTabs.tabMaterials);
+        registerItem(registry, "handpan", "tool/handpan", handpan);
     }
 
     /**
@@ -48,5 +58,7 @@ public class RenewedItems {
     static {
         sharp_bone.setLowestCraftingDifficultyToProduce(200.0F);
         tangled_web.setLowestCraftingDifficultyToProduce(50.0F);
+        sinew_mesh.setLowestCraftingDifficultyToProduce(400F);
+        silk_mesh.setLowestCraftingDifficultyToProduce(300F);
     }
 }

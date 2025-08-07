@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.packet;
 
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
 import com.github.jeffyjamzhd.renewed.registry.RenewedTracker;

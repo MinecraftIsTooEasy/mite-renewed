@@ -3,13 +3,15 @@
 	"id": "miterenewed",
 	"version": "${version}",
 	"depends": {
-		"fishmodloader": ">=3.4.2"
+		"fishmodloader": ">=3.4.2",
+		"rusted_iron_core": ">=1.3.9"
 	},
 	"environment": "*",
 	"name": "MiTE: Renewed",
 	"description": "",
 	"authors": ["jeffyjamzhd"],
 	"entrypoints": {
+		"preLaunch": ["com.github.jeffyjamzhd.renewed.EarlyRiser"],
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"]
 	},
 	"mixins": [

@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

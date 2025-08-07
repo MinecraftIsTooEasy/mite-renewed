@@ -2,14 +2,17 @@ item.sharp_bone.name=Sharp Bone
 item.bone_spear.name=Bone Spear
 item.flint_spear.name=Flint Spear
 item.tangled_web.name=Tangled Web
-item.string_mesh.name=String Mesh
+item.silk_mesh.name=String Mesh
 item.sinew_mesh.name=Sinew Mesh
-item.handpan.name=Handpan (Empty)
-item.handpan_sinew.name=Handpan (Sinew)
-item.handpan_string.name=Handpan (String)
+item.handpan.empty.name=Handpan (Empty)
+item.handpan.sinew.name=Handpan (Sinew)
+item.handpan.silk.name=Handpan (String)
 item.sieve.name=Sieve
 item.water_trap.name=Water Trap
 
 item.raw_nopales.name=Raw Nopales
 item.nopales.name=Nopales
+
+tooltip.handpan.contains=Contains
+tooltip.handpan.nothing=Nothing
 

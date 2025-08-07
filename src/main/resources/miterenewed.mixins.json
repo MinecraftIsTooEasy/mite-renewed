@@ -5,16 +5,18 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
-    "GuiContainerMixin",
+    "EntityPlayerMixin",
     "MinecraftMixin",
-    "Packet23VehicleSpawnMixin",
     "RecipesMITEMixin",
     "SlotCraftingMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockWebMixin",
-    "gui.GuiMainMenuMixin"
+    "gui.GuiContainerMixin",
+    "gui.GuiMainMenuMixin",
+    "packet.Packet23VehicleSpawnMixin",
+    "render.ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }
