@@ -55,12 +55,16 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
                     tool = current;
                 }
                 // Item is not tool, match against ingredients
+                boolean valid = false;
                 for (ItemStack ingredient : ingredients) {
                     if (ingredient.itemID == current.itemID) {
                         incomingIngCount++;
+                        valid = true;
                         break;
                     }
                 }
+                if (!valid)
+                    return false;
             }
         }
 

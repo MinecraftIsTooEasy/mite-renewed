@@ -11,11 +11,14 @@ import net.xiaoyu233.fml.reload.utils.IdUtil;
 
 import java.util.function.Consumer;
 
+import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
+
 public class RenewedTracker implements Consumer<EntityTrackerRegisterEvent> {
     public static int POLEARM_TYPE;
 
     @Override
     public void accept(EntityTrackerRegisterEvent event) {
+        LOGGER.info("Registering entity trackers!");
         POLEARM_TYPE = IdUtilExtra.getNextPacket23Type();
 
         event.registerEntityTracker(entity -> entity instanceof EntityPolearm, 64, 10, true);

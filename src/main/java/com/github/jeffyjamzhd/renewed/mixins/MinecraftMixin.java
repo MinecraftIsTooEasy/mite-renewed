@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins;
 
+import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class MinecraftMixin {
     @ModifyReturnValue(method = "getVersionDescriptor", at = @At("RETURN"))
     private static String modifyVersion(String original) {
-        return "MITE Renewed R197";
+        return MiTERenewed.getVersionString();
     }
 
     @ModifyArg(method = "startGame", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"), index = 0)

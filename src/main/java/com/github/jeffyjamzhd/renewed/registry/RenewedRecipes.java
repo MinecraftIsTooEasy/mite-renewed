@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
+
 public class RenewedRecipes {
     public static void registerRecipes(RecipeRegistryEvent registry) {
+        LOGGER.info("Registering recipes!");
         registerIterativeRecipes(registry);
         registerShapelessRecipes(registry);
         registerMeshRecipes(registry);
@@ -124,21 +127,25 @@ public class RenewedRecipes {
      * @param manager Crafting manager to register with
      */
     public static void registerSpecialRecipes(CraftingManager manager) {
+        LOGGER.info("Registering special recipes!");
+
         // Iterate and add knife -> sharp bone recipes
         for (Item item : Item.itemsList)
             if (item instanceof ItemDagger) {
                 // Get item material and factor
                 Material mat = ((ItemDagger) item).getToolMaterial();
-                float fac = 10F * (float)(1D / Math.sqrt(item.getCraftingDifficultyAsComponent(new ItemStack(item))));
+                float fac = 20F * (float)(1D / Math.sqrt(item.getCraftingDifficultyAsComponent(new ItemStack(item))));
 
                 // Register knife -> sharp bone
                 if (item.itemID != RenewedItems.sharp_bone.itemID)
                     registerToolRecipe(new ItemStack(RenewedItems.sharp_bone), manager, item, Item.bone)
-                            .setDamage(80).setDifficulty(1200F).scaleDifficulty(fac);
+                            .setDamage(60).setDifficulty(1200F).scaleDifficulty(fac);
 
                 // Register generic extraction recipes
                 registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.leather)
                         .setDamage(20).setDifficulty(450F).scaleDifficulty(fac);
+                registerToolRecipe(new ItemStack(Item.sinew, 3), manager, item, Item.rottenFlesh)
+                        .setDamage(30).setDifficulty(600F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
                         .setDamage(10).setDifficulty(180F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth))

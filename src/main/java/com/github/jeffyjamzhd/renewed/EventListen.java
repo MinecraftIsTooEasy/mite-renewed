@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.command.CommandTransform;
 import com.github.jeffyjamzhd.renewed.registry.*;
 import com.google.common.eventbus.Subscribe;
 import moddedmite.rustedironcore.api.event.Handlers;
@@ -44,6 +45,13 @@ public class EventListen extends Handlers {
     @Subscribe
     public void handleChatCommand(HandleChatCommandEvent event) {
     }
+
+    @Subscribe
+    public void onCommandRegister(CommandRegisterEvent event) {
+        event.register(new CommandTransform());
+    }
+
+
 
     public static void register() {
         EntityTracker.register(new RenewedTracker());

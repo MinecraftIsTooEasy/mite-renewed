@@ -3,8 +3,6 @@ package com.github.jeffyjamzhd.renewed.registry;
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
-import huix.glacier.api.entrypoint.IGameRegistry;
-import huix.glacier.api.registry.MinecraftRegistry;
 import net.minecraft.CreativeTabs;
 import net.minecraft.Item;
 import net.minecraft.ItemKnife;
@@ -13,7 +11,7 @@ import net.xiaoyu233.fml.reload.event.ItemRegistryEvent;
 import net.xiaoyu233.fml.reload.utils.IdUtil;
 
 import static net.xiaoyu233.fml.util.ReflectHelper.createInstance;
-
+import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
 public class RenewedItems {
     // Item definitions
@@ -34,6 +32,7 @@ public class RenewedItems {
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
+        LOGGER.info("Registering items!");
         registerItem(registry, "sharp_bone", "tool/sharp_bone", sharp_bone).setCreativeTab(CreativeTabs.tabTools);
         registerItem(registry, "tangled_web", "tangled_web", tangled_web).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "flint_spear", "tool/polearm/flint_spear", flint_spear);
@@ -56,8 +55,9 @@ public class RenewedItems {
     }
 
     static {
-        sharp_bone.setLowestCraftingDifficultyToProduce(200.0F);
-        tangled_web.setLowestCraftingDifficultyToProduce(50.0F);
+        Item.silk.setLowestCraftingDifficultyToProduce(100F);
+        sharp_bone.setLowestCraftingDifficultyToProduce(200F);
+        tangled_web.setLowestCraftingDifficultyToProduce(250F);
         sinew_mesh.setLowestCraftingDifficultyToProduce(400F);
         silk_mesh.setLowestCraftingDifficultyToProduce(300F);
     }

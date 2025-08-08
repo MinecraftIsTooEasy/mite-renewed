@@ -11,12 +11,16 @@
     "SlotCraftingMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockWebMixin",
+    "compat.modmenu.GuiMainMenuMMMixin",
     "gui.GuiContainerMixin",
     "gui.GuiMainMenuMixin",
+    "item.ItemBlockMixin",
+    "item.ItemMixin",
     "packet.Packet23VehicleSpawnMixin",
     "render.ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.MixinConfig"
 }

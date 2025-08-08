@@ -5,7 +5,7 @@ import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 
-public class RenderHandpan {
+public class ItemRenderHandpan {
     private static ResourceLocation TEX = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/items/handpan/render.png");
     private static RenderBlocks blockRender = new RenderBlocks();
     private static float prevAnimX = 0F, prevAnimZ = 0F;
@@ -20,7 +20,7 @@ public class RenderHandpan {
         float var20 = player.getSwingProgress(par1);
         float var22 = MathHelper.sin(var20 * (float)Math.PI);
         float var13 = MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI);
-        GL11.glTranslatef(-var13 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI * 2.0F) * 0.2F, -var22 * 0.2F);
+        GL11.glTranslatef(0F, MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI * 2.0F) * 0.2F, -var22 * 0.6F);
         var20 = .4F - var4 / 120.0F + 0.1F;
         if (var20 < 0.0F) {
             var20 = 0.0F;

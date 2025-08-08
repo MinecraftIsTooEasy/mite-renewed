@@ -20,7 +20,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
         this.setCreativeTab(CreativeTabs.tabTools);
         this.setCraftingDifficultyAsComponent(200F);
         this.setMaxStackSize(1);
-        this.setMaxDamage(500);
+        this.setMaxDamage(160);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
                 ItemStack block = getBlockFromHotbar(player);
                 if (block != null) {
                     stack.setTagInfo("handpanContent", new NBTTagShort("handpanContent", (short) block.itemID));
+                    player.worldObj.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "item.handpan.insert", 1F, 1F);
                     return true;
                 }
                 return false;
@@ -96,8 +97,6 @@ public class ItemHandpan extends Item implements IDamageableItem {
         }
         stack.setTagInfo("handpanContent", new NBTTagShort("handpanContent", (short) 0));
         stack.setTagInfo("handpanProgress", new NBTTagShort("handpanProgress", (short) 200));
-
-        super.onItemUseFinish(stack, world, player);
     }
 
     public boolean hasMesh(ItemStack stack) {

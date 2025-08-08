@@ -1,6 +1,7 @@
 plugins {
     id 'fml-loom' version '0.1.local'
     id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "8.1.0"
 }
 
 version = project.mod_version
@@ -13,8 +14,16 @@ base {
 repositories {
     mavenLocal()
     maven {
+        name = "Shadow"
+        url = "https://maven.bawnorton.com"
+    }
+    maven {
         name = "Spongepowered"
         url = "https://repo.spongepowered.org/repository/maven-public/"
+    }
+    maven {
+        name = "MixinSquared"
+        url = "https://maven.bawnorton.com/releases"
     }
 }
 
@@ -42,12 +51,21 @@ dependencies {
     mappings loom.fmlMCPMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    shadow(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
     implementation files("libs\\EMI.jar")
     implementation files("libs\\RustedIronCore-1.3.9.jar")
     implementation files("libs\\RustedIronCore-1.3.9-sources.jar")
     implementation files("libs\\OhMyCommands-2.1.jar")
+    implementation files("libs\\ModMenu-10.1.0.jar")
     implementation("it.unimi.dsi:fastutil:8.5.12")
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation files(loom.getFML().toPath())
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    relocate("com.bawnorton.mixinsquared", "com.github.jeffyjamzhd.renewed.mixinsquared")
+    mergeServiceFiles()
 }
 
 processResources {
@@ -65,6 +83,7 @@ tasks.withType(JavaCompile).configureEach {
 java {
     withSourcesJar()
 
+    version = "[" + version + "]"
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }

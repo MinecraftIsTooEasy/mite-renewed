@@ -1,7 +1,9 @@
 package com.github.jeffyjamzhd.renewed.mixins.render;
 
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
-import com.github.jeffyjamzhd.renewed.render.RenderHandpan;
+import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
+import com.github.jeffyjamzhd.renewed.render.ItemRenderHandpan;
+import com.github.jeffyjamzhd.renewed.render.ItemRenderPolearm;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
@@ -25,12 +27,28 @@ public class ItemRendererMixin {
             @Local(name = "var3") EntityClientPlayerMP player,
             @Local(name = "var4") float var4
     ) {
+        // Check for polearm
+        if (itemToRender.getItem() instanceof ItemPolearm) {
+            // Begin render
+            GL11.glPushMatrix();
+
+            ItemRenderPolearm.renderPolearm(mc.entityRenderer.itemRenderer, player, itemToRender, par1, equipTime);
+
+            // End render
+            GL11.glPopMatrix();
+
+
+            GL11.glDisable(32826);
+            RenderHelper.disableStandardItemLighting();
+            ci.cancel();
+        }
+
         // Check for handpan
         if (itemToRender.getItem() instanceof ItemHandpan) {
             // Begin render
             GL11.glPushMatrix();
 
-            RenderHandpan.renderHandpan(par1, itemToRender, player, equipTime, var4);
+            ItemRenderHandpan.renderHandpan(par1, itemToRender, player, equipTime, var4);
 
             // End render
             GL11.glPopMatrix();

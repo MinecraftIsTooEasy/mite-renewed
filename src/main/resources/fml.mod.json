@@ -8,8 +8,9 @@
 	},
 	"environment": "*",
 	"name": "MiTE: Renewed",
-	"description": "",
+	"description": "A subjective continuation of MiTE's development",
 	"authors": ["jeffyjamzhd"],
+	"contributors": ["Xy_Lose", "vb1dra#6847"],
 	"entrypoints": {
 		"preLaunch": ["com.github.jeffyjamzhd.renewed.EarlyRiser"],
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"]

@@ -24,7 +24,7 @@ public abstract class SlotCraftingMixin {
     }
 
     @Inject(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemStack;getItem()Lnet/minecraft/Item;", ordinal = 0))
-    private void damageDagger(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, CallbackInfo ci) {
+    private void damageDagger(EntityPlayer player, ItemStack par2ItemStack, CallbackInfo ci) {
         // Iterate through crafting grid
         itemWasTool = false;
         for (int slot = this.craftMatrix.getSizeInventory() - 1; slot >= 0; --slot) {
@@ -37,6 +37,7 @@ public abstract class SlotCraftingMixin {
                 int currentDamage = stack.getItemDamage();
                 stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) recipe).getDamage());
                 if (stack.getItemDamage() >= stack.getMaxDamage()) {
+                    player.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(stack.itemID));
                     this.craftMatrix.setInventorySlotContents(slot, null);
                 }
             }
