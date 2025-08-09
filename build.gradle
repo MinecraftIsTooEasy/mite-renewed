@@ -64,6 +64,7 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shadow]
+    exclude("fabric.*")
     relocate("com.bawnorton.mixinsquared", "com.github.jeffyjamzhd.renewed.mixinsquared")
     mergeServiceFiles()
 }

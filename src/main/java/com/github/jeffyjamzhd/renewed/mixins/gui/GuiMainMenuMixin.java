@@ -53,7 +53,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
             int d, int e, int f,
             Operation<Void> original) {
         // Draw rectangle
-        this.drawGradientRect(0, 20, this.width, 95, 0xC0000000, 0xC0000000);
+        this.drawGradientRect(0, 20, this.width, 95, 0x70000000, 0xB0000000);
 
         // Draw logo
         int width = this.width / 2;

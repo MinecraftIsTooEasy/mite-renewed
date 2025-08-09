@@ -12,3 +12,9 @@ item.water_trap.name=水陷阱
 
 item.raw_nopales.name=生仙人掌叶
 item.nopales.name=仙人掌叶
+
+tooltip.handpan.contains=Contains
+tooltip.handpan.nothing=Nothing
+
+tag.wildcard.Handpan (Empty).4262=Handpans
+emi.category.miterenewed.handpan=Panning

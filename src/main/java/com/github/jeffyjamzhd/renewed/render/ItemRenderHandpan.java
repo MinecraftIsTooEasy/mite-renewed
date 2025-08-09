@@ -14,6 +14,7 @@ public class ItemRenderHandpan {
         // Get information
         int subtype = item.getItemSubtype();
         int duration = player.getItemInUseDuration();
+        int maxUse = ItemHandpan.getIntendedSpeed(item);
         float progress = ItemHandpan.getFractionUsing(item, duration);
 
         float var21 = 0.8F;
@@ -22,6 +23,7 @@ public class ItemRenderHandpan {
         float var13 = MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI);
         GL11.glTranslatef(0F, MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI * 2.0F) * 0.2F, -var22 * 0.6F);
         var20 = .4F - var4 / 120.0F + 0.1F;
+        float var25 = .4F - var4 / 55.0F;
         if (var20 < 0.0F) {
             var20 = 0.0F;
         }
@@ -31,7 +33,7 @@ public class ItemRenderHandpan {
         }
 
         // Calculate animation
-        float value = duration > 0 ? progress * 200F : 0;
+        float value = duration > 0 ? progress * maxUse : 0;
         float animX = (float) ((Math.cos(value / 10F)) * .12F);
         float animZ = (float) ((Math.sin(value / 6F)) * .3F);
         animZ = prevAnimZ + (animZ - prevAnimZ) * par1 * 0.1f;
@@ -39,7 +41,7 @@ public class ItemRenderHandpan {
 
         // Prepare for render
         var20 = -MathHelper.cos(var20 * (float)Math.PI) * 0.2F + 0.5F;
-        GL11.glTranslatef(0.0F, 0.0F * var21 - (1.0F - equipTime) * 1.2F - var20 * 0.5F + 0.04F, -0.9F * var21);
+        GL11.glTranslatef(0.0F, 0.0F * var21 - (1.0F - equipTime) * 1.2F - var20 * 0.8F + 0.04F, -0.9F * var21);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(var20 * -85.0F, 0.0F, 0.0F, 1.0F);
         GL11.glEnable(32826);
@@ -68,6 +70,8 @@ public class ItemRenderHandpan {
             GL11.glPopMatrix();
         }
 
+        GL11.glRotatef(var25 * -25.0F + 15F, 0.0F, 0.0F, 1.0F);
+        GL11.glTranslatef(var25 * .25F, 0F, 0F);
         var22 = player.getSwingProgress(par1);
         var13 = MathHelper.sin(var22 * var22 * (float)Math.PI);
         float var14 = MathHelper.sin(MathHelper.sqrt_float(var22) * (float)Math.PI);

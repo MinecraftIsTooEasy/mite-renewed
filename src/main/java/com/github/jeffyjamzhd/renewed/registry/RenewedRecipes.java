@@ -2,16 +2,14 @@ package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
+import com.github.jeffyjamzhd.renewed.item.recipe.HandpanOutput;
+import com.github.jeffyjamzhd.renewed.item.recipe.HandpanRecipeProcessor;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
-import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import net.minecraft.*;
-import net.xiaoyu233.fml.reload.event.RecipeModifyEvent;
 import net.xiaoyu233.fml.reload.event.RecipeRegistryEvent;
-import net.xiaoyu233.fml.reload.event.recipe.ShapelessRecipeModifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
@@ -21,17 +19,13 @@ public class RenewedRecipes {
         registerIterativeRecipes(registry);
         registerShapelessRecipes(registry);
         registerMeshRecipes(registry);
+        registerHandpanRecipes();
     }
 
-//    public static void modifyRecipes(RecipeModifyEvent registry) {
-//        registry.addModifier(ShapelessRecipeModifier.Builder
-//                .of(new ItemStack(Item.sinew, 4))
-//                .ingredient(Item.leather)
-//                .difficulty(400F)
-//                .build()
-//        );
-//    }
-
+    /**
+     * Iterative recipes (e.g. tool classes)
+     * @param registry event
+     */
     private static void registerIterativeRecipes(RecipeRegistryEvent registry) {
         for (Item item : Item.itemsList) {
             if (item instanceof ItemPolearm) {
@@ -52,6 +46,10 @@ public class RenewedRecipes {
         }
     }
 
+    /**
+     * General shapeless recipes
+     * @param registry event
+     */
     private static void registerShapelessRecipes(RecipeRegistryEvent registry) {
         // Simple pan -> mesh recipes
         registry.registerShapelessRecipe(
@@ -66,6 +64,10 @@ public class RenewedRecipes {
         );
     }
 
+    /**
+     * Recipes for meshes
+     * @param registry event
+     */
     private static void registerMeshRecipes(RecipeRegistryEvent registry) {
         // Create mesh recipes
         registry.registerShapedRecipe(new ItemStack(RenewedItems.silk_mesh), true,
@@ -80,12 +82,82 @@ public class RenewedRecipes {
         ).difficulty(775F);
     }
 
+    /**
+     * Handpan specific recipes
+     */
+    private static void registerHandpanRecipes() {
+        // Sinew mesh
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.gravel, 10, 120, 1,
+                new HandpanOutput(Block.gravel, .5F),
+                new HandpanOutput(Item.chipFlint, .33F),
+                new HandpanOutput(Item.shardObsidian, .25F),
+                new HandpanOutput(Item.copperNugget, .08F),
+                new HandpanOutput(Item.flint, .05F)
+        );
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.dirt, 5, 160, 1,
+                new HandpanOutput(Block.dirt, .5F),
+                new HandpanOutput(Item.wormRaw, .3F),
+                new HandpanOutput(Item.bone, .05F),
+                new HandpanOutput(Item.copperNugget, .05F)
+        );
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.sand, 5, 80, 1,
+                HandpanOutput.of(Block.sand, .5F),
+                HandpanOutput.of(Item.clay, .33F),
+                HandpanOutput.of(Item.reed, .1F)
+        );
+
+        // Silk/string mesh
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.gravel, 15, 160, 2,
+                HandpanOutput.of(Block.gravel, .33F),
+                HandpanOutput.of(Item.copperNugget, .5F),
+                HandpanOutput.of(Item.silverNugget, .25F),
+                HandpanOutput.of(Item.goldNugget, .075F),
+                HandpanOutput.of(Item.shardDiamond, .02F)
+        );
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.dirt, 10, 220, 2,
+                HandpanOutput.of(Block.dirt, .33F),
+                HandpanOutput.of(Item.wormRaw, .5F),
+                HandpanOutput.of(Item.seeds, .75F),
+                HandpanOutput.of(Item.pumpkinSeeds, .1F),
+                HandpanOutput.of(Item.bone, .075F),
+                HandpanOutput.of(Item.copperNugget, .1F)
+        );
+        HandpanRecipeProcessor.registerHandpanRecipe(
+                Block.sand, 10, 120, 2,
+                HandpanOutput.of(Block.sand, .33F),
+                HandpanOutput.of(Item.reed, .2F),
+                HandpanOutput.of(Item.shardGlass, .33F),
+                HandpanOutput.of(Item.shardEmerald, .04F),
+                HandpanOutput.of(Item.copperNugget, .1F)
+        );
+    }
+
+    /**
+     * Registers a shapeless tool recipe
+     * @param output Item to output
+     * @param man Crafting manager
+     * @param input Inputs
+     * @return ShapelessToolRecipe
+     */
     public static ShapelessToolRecipe registerToolRecipe(ItemStack output, CraftingManager man, Item... input) {
         ShapelessToolRecipe recipe = new ShapelessToolRecipe(output, Arrays.stream(input).map(ItemStack::new).toList());
         man.getRecipeList().add(recipe);
         return recipe;
     }
 
+    /**
+     * Registers a shapeless tool recipe, with a tool specified
+     * @param output Item to output
+     * @param man Crafting manager
+     * @param tool Tool as part of the ingredients
+     * @param input Other ingredients
+     * @return ShapelessToolRecipe
+     */
     public static ShapelessToolRecipe registerToolRecipe(ItemStack output, CraftingManager man, Item tool, ItemStack... input) {
         ArrayList<ItemStack> items = new ArrayList<>();
         items.add(new ItemStack(tool));

@@ -16,6 +16,7 @@
     "gui.GuiMainMenuMixin",
     "item.ItemBlockMixin",
     "item.ItemMixin",
+    "item.MaterialMixin",
     "packet.Packet23VehicleSpawnMixin",
     "render.ItemRendererMixin"
   ],

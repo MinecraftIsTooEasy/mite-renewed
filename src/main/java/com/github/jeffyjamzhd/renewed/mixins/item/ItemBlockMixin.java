@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemBlock.class)
 public class ItemBlockMixin {
-    @Inject(method = "getBurnTime", at = @At(value = "HEAD"), cancellable = true)
-    private void addBurnTimeCheck(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        if (stack.getItemAsBlock().getBlock().blockMaterial == Material.plants)
+    @Inject(method = "getBurnTime", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/ItemBlock;getBlock()Lnet/minecraft/Block;"), cancellable = true)
+    private void addBurnTimeCheck(ItemStack stack, CallbackInfoReturnable<Integer> cir, @Local(name = "block") Block block) {
+        if (block != null && block.blockMaterial == Material.plants)
             cir.setReturnValue(13);
     }
 }

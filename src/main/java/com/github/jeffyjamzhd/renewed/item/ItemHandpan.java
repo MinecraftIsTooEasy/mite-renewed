@@ -1,16 +1,22 @@
 package com.github.jeffyjamzhd.renewed.item;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.item.recipe.HandpanRecipe;
+import com.github.jeffyjamzhd.renewed.item.recipe.HandpanRecipeProcessor;
 import net.minecraft.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemHandpan extends Item implements IDamageableItem {
     public static final int EMPTY = 0;
     public static final int SINEW = 1;
     public static final int SILK = 2;
+
+    public static final String
+            NBT_CONTENT = "handpanContent",
+            NBT_DAMAGE = "handpanIncomingDamage",
+            NBT_PROGRESS = "handpanProgress",
+            NBT_SPEED = "handpanSpeed";
 
     private Icon[] icons;
     private String[] suffix = new String[]{"empty", "sinew", "silk"};
@@ -57,7 +63,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
     public boolean onItemRightClick(EntityPlayer player, float partial_tick, boolean ctrl_is_down) {
         ItemStack stack = player.getHeldItemStack();
         NBTTagCompound nbt = stack.getTagCompound();
-        short store = nbt == null ? 0 : nbt.getShort("handpanContent");
+        short store = nbt == null ? 0 : nbt.getShort(NBT_CONTENT);
 
         // Add block to sieve
         if (hasMesh(stack) && store == 0) {
@@ -69,7 +75,14 @@ public class ItemHandpan extends Item implements IDamageableItem {
                 // Server process
                 ItemStack block = getBlockFromHotbar(player);
                 if (block != null) {
-                    stack.setTagInfo("handpanContent", new NBTTagShort("handpanContent", (short) block.itemID));
+                    HandpanRecipe recipe = HandpanRecipeProcessor.getRecipe(block.itemID, stack.getItemSubtype());
+                    int use = recipe.getSpeed();
+                    int damage = recipe.getDamage();
+
+                    stack.setTagInfo(NBT_CONTENT, new NBTTagShort(NBT_CONTENT, (short) block.itemID));
+                    stack.setTagInfo(NBT_PROGRESS, new NBTTagShort(NBT_PROGRESS, (short) use));
+                    stack.setTagInfo(NBT_SPEED, new NBTTagShort(NBT_SPEED, (short) use));
+                    stack.setTagInfo(NBT_DAMAGE, new NBTTagByte(NBT_DAMAGE, (byte) damage));
                     player.worldObj.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "item.handpan.insert", 1F, 1F);
                     return true;
                 }
@@ -86,17 +99,29 @@ public class ItemHandpan extends Item implements IDamageableItem {
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int use) {
         if (stack.hasTagCompound()) {
             // Get NBT and accumulate handpan progress
-            stack.setTagInfo("handpanProgress", new NBTTagShort("handpanProgress", (short) use));
+            stack.setTagInfo(NBT_PROGRESS, new NBTTagShort(NBT_PROGRESS, (short) use));
         }
     }
 
     @Override
     public void onItemUseFinish(ItemStack stack, World world, EntityPlayer player) {
         if (player.onServer()) {
-            player.tryDamageHeldItem(DamageSource.generic, 1);
+            // Process recipe
+            short content = stack.getTagCompound().getShort(NBT_CONTENT);
+            byte damage = stack.getTagCompound().getByte(NBT_DAMAGE);
+            List<ItemStack> stacks = HandpanRecipeProcessor.processRecipe(world, stack, content);
+
+            // Spew outputs infront of player
+            for (ItemStack output : stacks) {
+                player.dropItemStack(output);
+            }
+            player.tryDamageHeldItem(DamageSource.generic, damage);
+
+            // Play sfx
+            if (!stacks.isEmpty())
+                world.playSoundAtEntity(player, "random.pop", 1F, 1F);
         }
-        stack.setTagInfo("handpanContent", new NBTTagShort("handpanContent", (short) 0));
-        stack.setTagInfo("handpanProgress", new NBTTagShort("handpanProgress", (short) 200));
+        stack.setTagInfo(NBT_CONTENT, new NBTTagShort(NBT_CONTENT, (short) 0));
     }
 
     public boolean hasMesh(ItemStack stack) {
@@ -106,8 +131,6 @@ public class ItemHandpan extends Item implements IDamageableItem {
     private ItemStack getBlockFromHotbar(EntityPlayer player) {
         // Get inventory
         InventoryPlayer inventory = player.inventory;
-        int[] map = new int[]{-1,-1,-1};
-        int selected = inventory.currentItem;
 
         // Iterate through hotbar
         for (int i = 0; i < 9; i++) {
@@ -116,24 +139,9 @@ public class ItemHandpan extends Item implements IDamageableItem {
             if (at == null || !at.isBlock())
                 continue;
 
-            // Check id from the highest priority to least
-            if (at.itemID == Block.gravel.blockID && map[0] == -1){
-                map[0] = i;
-                continue;
-            }
-            if (at.itemID == Block.dirt.blockID && map[1] == -1) {
-                map[1] = i;
-                continue;
-            }
-            if (at.itemID == Block.sand.blockID && map[2] == -1) {
-                map[2] = i;
-            }
-        }
-
-        // Iterate through map
-        for (int i = 0; i < map.length; i++) {
-            if (map[i] != -1)
-                return inventory.decrStackSize(map[i], 1);
+            // Check if it has recipe
+            if (HandpanRecipeProcessor.hasRecipe(at, player.getHeldItemStack().getItemSubtype()))
+                return inventory.decrStackSize(i, 1);
         }
         return null;
     }
@@ -144,8 +152,8 @@ public class ItemHandpan extends Item implements IDamageableItem {
             if (item_stack.hasTagCompound()) {
                 // Get info
                 NBTTagCompound nbt = item_stack.getTagCompound();
-                if (nbt.hasKey("handpanContent")) {
-                    short blockID = nbt.getShort("handpanContent");
+                if (nbt.hasKey(NBT_CONTENT)) {
+                    short blockID = nbt.getShort(NBT_CONTENT);
                     if (blockID != 0) {
                         Block block = Block.getBlock(blockID);
                         String translatedName = block.getLocalizedName();
@@ -176,8 +184,17 @@ public class ItemHandpan extends Item implements IDamageableItem {
     public static int getWeightedMaxUseDuration(ItemStack stack) {
         if (stack.hasTagCompound()) {
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("handpanProgress"))
-                return stack.getTagCompound().getShort("handpanProgress");
+            if (nbt.hasKey(NBT_PROGRESS))
+                return stack.getTagCompound().getShort(NBT_PROGRESS);
+        }
+        return 200;
+    }
+
+    public static int getIntendedSpeed(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt.hasKey(NBT_SPEED))
+                return stack.getTagCompound().getShort(NBT_SPEED);
         }
         return 200;
     }
@@ -188,7 +205,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
 
     public static float getFractionUsing(ItemStack stack, int use) {
         float ticks = (float)getTicksUsing(stack, use);
-        return Math.min(ticks / 200F, 1.0F);
+        return Math.min(ticks / (float)getIntendedSpeed(stack), 1.0F);
     }
 
     @Override
