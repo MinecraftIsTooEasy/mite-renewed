@@ -17,29 +17,23 @@ public abstract class SlotCraftingMixin {
     @Mutable @Final @Shadow private final IInventory craftMatrix;
 
     @Shadow public CraftingResult crafting_result;
-    @Unique private boolean itemWasTool = false;
+    @Unique private IRecipe lastRecipe;
 
     protected SlotCraftingMixin(IInventory craftMatrix) {
         this.craftMatrix = craftMatrix;
     }
 
-    @Inject(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemStack;getItem()Lnet/minecraft/Item;", ordinal = 0))
-    private void damageDagger(EntityPlayer player, ItemStack par2ItemStack, CallbackInfo ci) {
-        // Iterate through crafting grid
-        itemWasTool = false;
-        for (int slot = this.craftMatrix.getSizeInventory() - 1; slot >= 0; --slot) {
-            ItemStack stack = this.craftMatrix.getStackInSlot(slot);
-            if (this.crafting_result == null)
-                return;
-            IRecipe recipe = this.crafting_result.recipe;
-            if (stack != null && stack.isTool() && recipe instanceof ShapelessToolRecipe) {
-                itemWasTool = true;
-                int currentDamage = stack.getItemDamage();
-                stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) recipe).getDamage());
-                if (stack.getItemDamage() >= stack.getMaxDamage()) {
-                    player.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(stack.itemID));
-                    this.craftMatrix.setInventorySlotContents(slot, null);
-                }
+    @Inject(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;", ordinal = 0))
+    private void damageDagger(EntityPlayer player, ItemStack par2ItemStack, CallbackInfo ci, @Local(ordinal = 2) int i) {
+        ItemStack stack = this.craftMatrix.getStackInSlot(i);
+        if (this.crafting_result != null )
+            lastRecipe = this.crafting_result.recipe;
+        if (stack != null && stack.isTool() && lastRecipe instanceof ShapelessToolRecipe) {
+            int currentDamage = stack.getItemDamage();
+            stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) lastRecipe).getDamage());
+            if (stack.getItemDamage() >= stack.getMaxDamage()) {
+                player.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(stack.itemID));
+                this.craftMatrix.setInventorySlotContents(i, null);
             }
         }
     }
@@ -54,7 +48,7 @@ public abstract class SlotCraftingMixin {
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
     private ItemStack decrTool(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
-        if (itemWasTool && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
+        if (lastRecipe instanceof ShapelessToolRecipe && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
         else return original.call(instance, i, j);
     }
 }
