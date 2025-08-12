@@ -5,11 +5,14 @@ import com.github.jeffyjamzhd.renewed.registry.RenewedMaterial;
 import net.minecraft.*;
 
 public class ItemPolearm extends ItemSword {
+    private final ResourceLocation handTexture;
+    public Icon handIcon;
 
-    protected ItemPolearm(int par1, Material material) {
-        super(par1, material);
+    protected ItemPolearm(int id, Material material, ResourceLocation handTexture) {
+        super(id, material);
         this.setCreativeTab(CreativeTabs.tabCombat);
         this.setReachBonus(1.0F);
+        this.handTexture = handTexture;
     }
 
     @Override
@@ -23,8 +26,13 @@ public class ItemPolearm extends ItemSword {
     }
 
     @Override
+    public int getNumComponentsForDurability() {
+        return 1;
+    }
+
+    @Override
     public float getBaseDamageVsEntity() {
-        return this.isPrimitive() ? 0.25F : 1.0F;
+        return this.isPrimitive() ? 0.5F : 1.0F;
     }
 
     @Override
@@ -34,7 +42,7 @@ public class ItemPolearm extends ItemSword {
 
     @Override
     public float getBaseDecayRateForAttackingEntity(ItemStack item_stack) {
-        return 0.25F;
+        return this.isPrimitive() ? 0.25F : 0.5F;
     }
 
     @Override
@@ -58,17 +66,20 @@ public class ItemPolearm extends ItemSword {
                     fraction_pulled = 1.0F;
                 }
 
-                EntityPolearm entityPolearm = new EntityPolearm(world, player, fraction_pulled * .8F, this, item_stack.getItemDamage() + 30);
+                EntityPolearm entityPolearm = new EntityPolearm(
+                        world, player, fraction_pulled * .8F,
+                        this, item_stack.getItemDamage() + item_stack.getScaledDamage(.5F), item_stack.getEnchantmentTagList());
+
                 if (fraction_pulled == 1.0F) {
                     entityPolearm.setIsCritical(true);
                 }
 
-                int power = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, item_stack);
-                entityPolearm.setDamage(this.getBaseDamageVsEntity() + this.getMeleeDamageBonus() + (power * 0.5F) + 2.0F);
+                int sharp = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, item_stack);
+                entityPolearm.setDamage(this.getCombinedDamageVsEntity() + 2.0F);
 
-                int punch = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, item_stack);
-                if (punch > 0) {
-                    entityPolearm.setKnockback(punch);
+                int flame = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, item_stack);
+                if (flame > 0) {
+                    entityPolearm.setFire(100);
                 }
 
                 world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + fraction_pulled * 0.5F);
@@ -84,12 +95,28 @@ public class ItemPolearm extends ItemSword {
     }
 
     @Override
+    public Icon getIconFromSubtypeForRenderPass(int par1, int par2) {
+        return par2 == 2 ? this.handIcon : this.itemIcon;
+    }
+
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public void registerIcons(IconRegister register) {
+        super.registerIcons(register);
+        handIcon = register.registerIcon(handTexture.toString());
+    }
+
+    @Override
     public EnumItemInUseAction getItemInUseAction(ItemStack par1ItemStack, EntityPlayer player) {
         return EnumItemInUseAction.BOW;
     }
 
     public boolean isPrimitive() {
-        return this.hasMaterial(Material.flint, RenewedMaterial.bone);
+        return this.hasMaterial(Material.flint, RenewedMaterial.bone, Material.obsidian);
     }
 
     public static int getTicksForMaxPull(ItemStack item_stack) {

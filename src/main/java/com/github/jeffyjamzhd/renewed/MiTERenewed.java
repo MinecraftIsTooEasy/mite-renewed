@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.registry.RenewedTracklist;
 import net.fabricmc.api.ModInitializer;
 import net.xiaoyu233.fml.ModResourceManager;
 import net.xiaoyu233.fml.reload.event.MITEEvents;

@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
+import com.github.jeffyjamzhd.renewed.api.IMaterial;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.recipe.HandpanOutput;
@@ -31,17 +32,28 @@ public class RenewedRecipes {
             if (item instanceof ItemPolearm) {
                 // Get tool material
                 Material material = ((ItemPolearm) item).getToolMaterial();
-                Item materialItem = parseItemFromMaterial(material);
+                ItemStack materialItem = parseItemFromMaterial(material);
 
                 // Create recipe
-                registry.registerShapedRecipe(new ItemStack(item), true,
-                        "MS ",
-                        " I ",
-                        "  I",
-                        'M', materialItem,
-                        'S', Item.sinew,
-                        'I', Item.stick
-                ).difficulty(425F * difficultyMod(material));
+                if (((ItemPolearm) item).isPrimitive()) {
+                    registry.registerShapedRecipe(new ItemStack(item), true,
+                            "MS ",
+                            " I ",
+                            "  I",
+                            'M', materialItem,
+                            'S', Item.sinew,
+                            'I', Item.stick
+                    ).difficulty(425F * difficultyMod(material));
+                } else {
+                    registry.registerShapedRecipe(new ItemStack(item), true,
+                            "M  ",
+                            " I ",
+                            "  I",
+                            'M', materialItem,
+                            'I', Item.stick
+                    );
+                }
+
             }
         }
     }
@@ -173,10 +185,18 @@ public class RenewedRecipes {
      * @param mat Material to provide
      * @return An item that best matches the material
      */
-    private static Item parseItemFromMaterial(Material mat) {
-        return switch (mat.getTranslationKey()) {
-            case "bone" -> RenewedItems.sharp_bone;
-            case "flint" -> Item.flint;
+    private static ItemStack parseItemFromMaterial(Material mat) {
+        return switch (((IMaterial)mat).mr$getName()) {
+            case "bone" -> new ItemStack(RenewedItems.sharp_bone);
+            case "flint" -> new ItemStack(Item.flint);
+            case "obsidian" -> new ItemStack(Block.obsidian);
+            case "copper" -> new ItemStack(Item.ingotCopper);
+            case "silver" -> new ItemStack(Item.ingotSilver);
+            case "gold" -> new ItemStack(Item.ingotGold);
+            case "iron" -> new ItemStack(Item.ingotIron);
+            case "ancient_metal" -> new ItemStack(Item.ingotAncientMetal);
+            case "mithril" -> new ItemStack(Item.ingotMithril);
+            case "adamantium" -> new ItemStack(Item.ingotAdamantium);
             default -> null;
         };
     }
@@ -220,7 +240,7 @@ public class RenewedRecipes {
                         .setDamage(30).setDifficulty(600F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
                         .setDamage(10).setDifficulty(180F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth))
+                registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth, 1, 32767))
                         .setDamage(40).setDifficulty(1200F).scaleDifficulty(fac);
 
                 // Register planks knife -> handpan

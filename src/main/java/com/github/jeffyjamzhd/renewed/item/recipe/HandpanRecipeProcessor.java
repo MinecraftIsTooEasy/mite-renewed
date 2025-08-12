@@ -40,7 +40,7 @@ public class HandpanRecipeProcessor {
         // Get recipe
         HandpanRecipe recipe = getRecipe(id, pan.getItemSubtype());
         if (recipe != null)
-            return recipe.generateOutput();
+            return recipe.generateOutput(world);
         return  List.of();
     }
 

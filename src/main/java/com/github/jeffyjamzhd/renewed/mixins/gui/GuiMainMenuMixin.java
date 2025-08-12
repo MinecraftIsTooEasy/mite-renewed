@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.ISoundManager;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -19,6 +20,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
     @Shadow private int field_92021_u_MITE;
     @Shadow private int field_92019_w;
     @Shadow private int field_92019_w_MITE;
+    @Shadow private int panoramaTimer;
     @Unique
     private static final ResourceLocation RENEWED_TEX = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/logo.png");
     @Unique
@@ -73,9 +75,30 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
         this.field_92019_w_MITE -= 56;
     }
 
+    @Inject(method = "initGui", at = @At("TAIL"))
+    private void kickstartMusic(CallbackInfo ci) {
+        ((ISoundManager) mc.sndManager).mr$setTicksToPlay(20);
+    }
+
     @Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 3))
     <E> boolean doNotAddForum(List instance, E e) {
         return false;
+    }
+
+    @Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawGradientRect(IIIIII)V"))
+    void removeGradient(GuiMainMenu instance, int a, int b, int c, int d, int e, int f) {}
+
+    @Inject(method = "updateScreen", at = @At(value = "TAIL"))
+    private void playRandomMusic(CallbackInfo ci) {
+        ISoundManager snd = ((ISoundManager) mc.sndManager);
+        if (snd.mr$isLoaded()) {
+            if (!snd.mr$isMusicPlaying()) {
+                mc.sndManager.playRandomMusicIfReady();
+                snd.mr$setMusicPitch(.93F);
+            } else {
+                snd.mr$setTicksToPlay(200);
+            }
+        }
     }
 
     @Inject(method = "addSingleplayerMultiplayerButtons", at = @At("TAIL"))
@@ -95,7 +118,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
     }
 
     @WrapOperation(method = "drawScreen", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V", ordinal = 0))
-    void translateSplash(float x, float y, float z, Operation<Void> original) {
+    void moveSplash(float x, float y, float z, Operation<Void> original) {
         original.call((this.width / 2 + 90F), 90F, 0F);
     }
 

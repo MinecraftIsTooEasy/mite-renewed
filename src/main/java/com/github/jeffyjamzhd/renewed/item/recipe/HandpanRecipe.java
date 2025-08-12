@@ -3,6 +3,7 @@ package com.github.jeffyjamzhd.renewed.item.recipe;
 import net.minecraft.Block;
 import net.minecraft.ItemStack;
 import net.minecraft.Minecraft;
+import net.minecraft.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +59,9 @@ public class HandpanRecipe {
         return this.outputs.get(ind);
     }
 
-    public List<ItemStack> generateOutput() {
+    public List<ItemStack> generateOutput(World world) {
         // Declare variables
-        Random random = Minecraft.getMinecraft().theWorld.rand;
+        Random random = world.rand;
         List<ItemStack> generated = new java.util.ArrayList<>();
 
         // Iterate

@@ -9,16 +9,21 @@
     "MinecraftMixin",
     "RecipesMITEMixin",
     "SlotCraftingMixin",
+    "WorldClientMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockWebMixin",
+    "command.CommandWeatherMixin",
     "compat.modmenu.GuiMainMenuMMMixin",
+    "entity.EntityMixin",
     "gui.GuiContainerMixin",
     "gui.GuiMainMenuMixin",
     "item.ItemBlockMixin",
     "item.ItemMixin",
     "item.MaterialMixin",
     "packet.Packet23VehicleSpawnMixin",
-    "render.ItemRendererMixin"
+    "render.ItemRendererMixin",
+    "render.model.ModelBipedMixin",
+    "sound.SoundManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

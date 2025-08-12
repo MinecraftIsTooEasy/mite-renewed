@@ -22,5 +22,12 @@
 	},
 	"mixins": [
 		"miterenewed.mixins.json"
-	]
+	],
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/SoundManager": ["com/github/jeffyjamzhd/renewed/api/ISoundManager"],
+			"net/minecraft/Material": ["com/github/jeffyjamzhd/renewed/api/IMaterial"],
+			"net/minecraft/Entity": ["com/github/jeffyjamzhd/renewed/api/IEntity"]
+		}
+	}
 }

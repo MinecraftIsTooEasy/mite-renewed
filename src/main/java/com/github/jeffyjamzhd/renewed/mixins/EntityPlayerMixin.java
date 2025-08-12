@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayer.class)
 public abstract class EntityPlayerMixin extends EntityLivingBase {
@@ -52,4 +53,9 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
             }
         }
     }
+
+//    @Inject(method = "getItemIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemBow;getFractionPulled(Lnet/minecraft/ItemStack;I)F", shift = At.Shift.BY, by = -1))
+//    protected void getItemIcon(ItemStack stack, int parameter, CallbackInfoReturnable<Icon> cir) {
+//        cir.setReturnValue();
+//    }
 }

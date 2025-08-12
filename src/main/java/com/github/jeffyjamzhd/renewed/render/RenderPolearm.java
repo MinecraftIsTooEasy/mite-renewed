@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.render;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.IMaterial;
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
@@ -9,19 +10,23 @@ import net.fabricmc.api.Environment;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 
+import java.util.HashMap;
+
 @Environment(EnvType.CLIENT)
 public class RenderPolearm extends Render {
-    private static ResourceLocation[] tex;
+    private static final HashMap<String, ResourceLocation> tex = new HashMap<>();
+    private final static String[] materials = new String[]{
+        "flint", "bone", "obsidian", "copper", "silver", "gold", "iron", "ancient_metal", "mithril", "adamantium"
+    };
 
     public RenderPolearm() {
-        if (tex == null)
-            addTextures();
+        addTextures();
     }
 
     public void addTextures() {
-        tex = new ResourceLocation[3];
-        tex[0] = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/entity/polearm/flint.png");
-        tex[1] = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/entity/polearm/bone.png");
+        for (String name : materials) {
+            tex.put(name, new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/entity/polearm/%s.png".formatted(name)));
+        }
     }
 
     public void renderPolearm(EntityPolearm entity, double x, double y, double z, float par8, float par9) {
@@ -126,13 +131,7 @@ public class RenderPolearm extends Render {
     }
 
     protected ResourceLocation getTexFromItem(ItemPolearm item) {
-        if (item == null)
-            return tex[0];
-        if (item.itemID == RenewedItems.flint_spear.itemID)
-            return tex[0];
-        if (item.itemID == RenewedItems.bone_spear.itemID)
-            return tex[1];
-        return tex[0];
+        return tex.getOrDefault(((IMaterial)item.getToolMaterial()).mr$getName(), tex.get("flint"));
     }
 
     @Override

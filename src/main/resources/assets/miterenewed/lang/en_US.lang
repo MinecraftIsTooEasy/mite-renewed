@@ -1,6 +1,14 @@
 item.sharp_bone.name=Sharp Bone
 item.bone_spear.name=Bone Spear
 item.flint_spear.name=Flint Spear
+item.obsidian_spear.name=Obsidian Spear
+item.copper_spear.name=Copper Spear
+item.silver_spear.name=Silver Spear
+item.gold_spear.name=Gold Spear
+item.iron_spear.name=Iron Spear
+item.ancient_metal_spear.name=Ancient Metal Spear
+item.mithril_spear.name=Mithril Spear
+item.adamantium_spear.name=Adamantium Spear
 item.tangled_web.name=Tangled Web
 item.silk_mesh.name=String Mesh
 item.sinew_mesh.name=Sinew Mesh
@@ -16,6 +24,7 @@ item.nopales.name=Nopales
 tooltip.handpan.contains=Contains
 tooltip.handpan.nothing=Nothing
 
+display.music.playing=Now Playing
+
 tag.wildcard.Handpan (Empty).4262=Handpans
 emi.category.miterenewed.handpan=Panning
-

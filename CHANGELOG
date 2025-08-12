@@ -3,7 +3,9 @@
 * Added a new form of sediment collection through a wooden handpan
 * Added silk and sinew meshes, for use in the handpan
 * Added an extraction recipe for wool block and knife -> 2 string
-* Added an extraction recipe for rotten flesh and knife -> 3 sinew
+* Added an extraction recipe for rotten flesh and knife -> 2 sinew
+* Added some new music features
+* Added a music display (similar to achievements)
 * Added feathers to the list of flammable materials (smelts 4 -> 1 item)
 * Added all flowers to the list of flammable materials (smelts ~16 -> 1 item)
 * Added a break noise/particles when a tool breaks during crafting

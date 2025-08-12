@@ -36,6 +36,7 @@ public class EventListen extends Handlers {
     @Subscribe
     public void onSoundsRegister(SoundsRegisterEvent event) {
         RenewedSounds.register(event);
+        RenewedTracklist.register();
     }
 
     @Subscribe

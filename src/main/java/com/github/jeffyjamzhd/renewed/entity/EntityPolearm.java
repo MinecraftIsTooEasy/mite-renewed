@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.entity;
 
+import com.github.jeffyjamzhd.renewed.api.IEntity;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import net.minecraft.*;
@@ -14,6 +15,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     public int tX = -1, tY = -1, tZ = -1;
 
     private ItemPolearm item;
+    private NBTTagList enchants;
     private int durability;
     private double damage = 2.0D;
     private int knockback;
@@ -22,18 +24,20 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     private boolean canPickup;
     private int inTile;
     private int inData;
+    private int ticks_until_next_fizz_sound;
 
     public int polearmShake = 0;
+    public boolean wasOnFire = false;
 
     public EntityPolearm(World world) {
         super(world);
-        this.setSize(1.0F, 1.0F);
+        this.setSize(.5F, .5F);
         this.renderDistanceWeight = 10.0F;
         this.item = RenewedItems.flint_spear;
         this.damage = this.item.getScaledDamage(2.0F);
     }
 
-    public EntityPolearm(World world, EntityLivingBase entity, float vel, ItemPolearm item, int durability) {
+    public EntityPolearm(World world, EntityLivingBase entity, float vel, ItemPolearm item, int durability, NBTTagList enchants) {
         super(world);
         this.setSize(1.0F, 1.0F);
         this.renderDistanceWeight = 10.0F;
@@ -41,6 +45,8 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         this.item = item;
         this.damage = this.item.getScaledDamage(2.0F);
         this.durability = durability;
+        this.enchants = enchants;
+
 
         // Set location, angles
         this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
@@ -69,7 +75,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     // Client constructor
     public EntityPolearm(WorldClient worldClient, double x, double y, double z, int itemID, int thrower) {
         super(worldClient, x, y, z);
-        this.setSize(1.5F, 1.5F);
+        this.setSize(.5F, .5F);
         this.renderDistanceWeight = 15.0F;
         this.item = (ItemPolearm) Item.getItem(itemID);
         this.owner = (EntityLivingBase) worldClient.getEntityByID(thrower);
@@ -99,21 +105,23 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         }
 
         // Handle fire
-//        if (!this.worldObj.isRemote && this.isBurning()) {
-//            Block block = this.inGround ? Block.getBlock(this.inTile) : null;
-//            if (block != null && block.blockMaterial.isFreezing()) {
-//                if (!this.isWet()) {
-//                    this.causeQuenchEffect();
-//                }
-//
-//                this.extinguish();
-//            } else if (this.isInWater()) {
-//                this.causeQuenchEffect();
-//            } else if (this.isWet() && --this.ticks_until_next_fizz_sound <= 0) {
-//                this.spawnSingleSteamParticle(true);
-//                this.ticks_until_next_fizz_sound = this.rand.nextInt(17) + 3;
-//            }
-//        }
+        if (!this.worldObj.isRemote && this.wasOnFire) {
+            Block block = this.inGround ? Block.getBlock(this.inTile) : null;
+            if (block != null && block.blockMaterial.isFreezing()) {
+                if (!this.isWet()) {
+                    this.causeQuenchEffect();
+                }
+
+                this.extinguish();
+            } else if (this.isInWater()) {
+                this.causeQuenchEffect();
+            } else if (this.isWet() && --this.ticks_until_next_fizz_sound <= 0) {
+                this.spawnSingleSteamParticle(true);
+                this.ticks_until_next_fizz_sound = this.rand.nextInt(17) + 3;
+            }
+        }
+
+        this.wasOnFire = this.isBurning();
 
         // Handle ground collision and lifespan
         if (this.inGround) {
@@ -434,6 +442,8 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         nbt.setBoolean("inGround", this.inGround);
         nbt.setBoolean("pickup", this.canPickup);
         nbt.setDouble("damage", this.damage);
+        if (this.enchants != null)
+            nbt.setTag("polearm_enchant", this.enchants);
         nbt.setInteger("polearm_id", this.item.itemID);
         nbt.setInteger("polearm_durability", this.durability);
     }
@@ -452,6 +462,8 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
             this.canPickup = nbt.getBoolean("pickup");
         if (nbt.hasKey("damage"))
             this.damage = nbt.getDouble("damage");
+        if (nbt.hasKey("polearm_enchant"))
+            this.enchants = nbt.getTagList("polearm_enchant");
 
         this.item = (ItemPolearm) Item.itemsList[nbt.getInteger("polearm_id")];
         this.durability = nbt.getInteger("polearm_durability");
@@ -460,7 +472,11 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
     @Override
     public void onCollideWithPlayer(EntityPlayer player) {
         if (!this.worldObj.isRemote && this.inGround && this.polearmShake <= 0) {
-            if (player.inventory.addItemStackToInventory(new ItemStack(this.item, 1).setItemDamage(this.durability))) {
+            ItemStack polearm = new ItemStack(this.item, 1).setItemDamage(this.durability);
+            if (this.enchants != null) {
+                polearm.setTagInfo("ench", this.enchants);
+            }
+            if (player.inventory.addItemStackToInventory(polearm)) {
                 this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 player.onItemPickup(this, 1);
                 this.setDead();
@@ -483,22 +499,12 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
         return this.owner != null ? this.owner.entityId : 0;
     }
 
-    @Override
-    public boolean canCatchFire() {
-        return false;
-    }
-
     public void setDamage(double value) {
         this.damage = value;
     }
 
     public void setKnockback(int value) {
         this.knockback = value;
-    }
-
-    @Override
-    protected boolean canTriggerWalking() {
-        return false;
     }
 
     @Override
