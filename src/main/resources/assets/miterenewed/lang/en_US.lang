@@ -1,4 +1,5 @@
 item.sharp_bone.name=Sharp Bone
+item.quern.name=Quern
 item.bone_spear.name=Bone Spear
 item.flint_spear.name=Flint Spear
 item.obsidian_spear.name=Obsidian Spear
@@ -15,16 +16,29 @@ item.sinew_mesh.name=Sinew Mesh
 item.handpan.empty.name=Handpan (Empty)
 item.handpan.sinew.name=Handpan (Sinew)
 item.handpan.silk.name=Handpan (String)
-item.sieve.name=Sieve
-item.water_trap.name=Water Trap
+item.biomass.name=Biomass
 
-item.raw_nopales.name=Raw Nopales
-item.nopales.name=Nopales
+item.raw_sirloin.name=Raw Sirloin
+item.raw_fillet.name=Raw Fillet
+item.raw_bacon.name=Raw Bacon
+item.raw_gizzard.name=Raw Gizzard
+item.raw_nopales.name=Nopales
+item.cooked_sirloin.name=Cooked Sirloin
+item.cooked_fillet.name=Cooked Fillet
+item.cooked_bacon.name=Cooked Bacon
+item.cooked_gizzard.name=Cooked Gizzard
+item.cooked_nopales.name=Cooked Nopales
+
 
 tooltip.handpan.contains=Contains
 tooltip.handpan.nothing=Nothing
 
-display.music.playing=Now Playing
-
-tag.wildcard.Handpan (Empty).4262=Handpans
 emi.category.miterenewed.handpan=Panning
+
+tag.wildcard.Raw Porkchop.319=Raw Pork
+tag.wildcard.Cooked Porkchop.320=Cooked Pork
+tag.wildcard.Raw Steak.363=Raw Beef
+tag.wildcard.Cooked Steak.364=Cooked Beef
+tag.wildcard.Raw Chicken.365=Raw Poultry
+tag.wildcard.Cooked Chicken.366=Cooked Poultry
+tag.wildcard.Handpan (Empty).4262=Handpans

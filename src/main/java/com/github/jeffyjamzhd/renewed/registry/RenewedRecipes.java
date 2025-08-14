@@ -1,8 +1,10 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
+import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.api.IMaterial;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
+import com.github.jeffyjamzhd.renewed.item.ItemQuern;
 import com.github.jeffyjamzhd.renewed.item.recipe.HandpanOutput;
 import com.github.jeffyjamzhd.renewed.item.recipe.HandpanRecipeProcessor;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
@@ -18,9 +20,11 @@ public class RenewedRecipes {
     public static void registerRecipes(RecipeRegistryEvent registry) {
         LOGGER.info("Registering recipes!");
         registerIterativeRecipes(registry);
+        registerShapedRecipes(registry);
         registerShapelessRecipes(registry);
         registerMeshRecipes(registry);
         registerHandpanRecipes();
+        registerFurnaceRecipes();
     }
 
     /**
@@ -68,12 +72,25 @@ public class RenewedRecipes {
                 new ItemStack(RenewedItems.handpan, 1, ItemHandpan.SINEW),
                 true,
                 RenewedItems.handpan, RenewedItems.sinew_mesh
-                );
+        ).difficulty(100F);
         registry.registerShapelessRecipe(
                 new ItemStack(RenewedItems.handpan, 1, ItemHandpan.SILK),
                 true,
                 RenewedItems.handpan, RenewedItems.silk_mesh
-        );
+        ).difficulty(100F);
+    }
+
+    /**
+     * General shaped recipes
+     * @param registry event
+     */
+    private static void registerShapedRecipes(RecipeRegistryEvent registry) {
+        registry.registerShapedRecipe(new ItemStack(RenewedItems.quern), true,
+                "C",
+                "B",
+                'B', Item.bowlEmpty,
+                'C', Item.cudgelWood
+        ).difficulty(50F);
     }
 
     /**
@@ -186,7 +203,7 @@ public class RenewedRecipes {
      * @return An item that best matches the material
      */
     private static ItemStack parseItemFromMaterial(Material mat) {
-        return switch (((IMaterial)mat).mr$getName()) {
+        return switch (mat.mr$getName()) {
             case "bone" -> new ItemStack(RenewedItems.sharp_bone);
             case "flint" -> new ItemStack(Item.flint);
             case "obsidian" -> new ItemStack(Block.obsidian);
@@ -222,11 +239,12 @@ public class RenewedRecipes {
         LOGGER.info("Registering special recipes!");
 
         // Iterate and add knife -> sharp bone recipes
-        for (Item item : Item.itemsList)
+        for (Item item : Item.itemsList) {
             if (item instanceof ItemDagger) {
                 // Get item material and factor
-                Material mat = ((ItemDagger) item).getToolMaterial();
-                float fac = 20F * (float)(1D / Math.sqrt(item.getCraftingDifficultyAsComponent(new ItemStack(item))));
+                float difficulty = item.getLowestCraftingDifficultyToProduce();
+                difficulty = Float.compare(difficulty, Float.MAX_VALUE) == 0 ? 70F : difficulty;
+                float fac = 20F * (1F / MathHelper.sqrt_float(difficulty));
 
                 // Register knife -> sharp bone
                 if (item.itemID != RenewedItems.sharp_bone.itemID)
@@ -236,16 +254,57 @@ public class RenewedRecipes {
                 // Register generic extraction recipes
                 registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.leather)
                         .setDamage(20).setDifficulty(450F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.sinew, 3), manager, item, Item.rottenFlesh)
+                registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.rottenFlesh)
                         .setDamage(30).setDifficulty(600F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
                         .setDamage(10).setDifficulty(180F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth, 1, 32767))
+                registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
                         .setDamage(40).setDifficulty(1200F).scaleDifficulty(fac);
 
                 // Register planks knife -> handpan
                 registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks), new ItemStack(Block.planks))
                         .setDamage(50).setDifficulty(700F).scaleDifficulty(fac);
             }
+            if (item instanceof ItemQuern) {
+                registerToolRecipe(new ItemStack(Item.sugar, 1), manager, item, Item.reed).setDamage(20).setDifficulty(225F);
+                registerToolRecipe(new ItemStack(RenewedItems.biomass, 1), manager, item,
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE))
+                        .setDamage(50).setDifficulty(400F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.WHITE), manager, item, Item.bone)
+                        .setDamage(25).setDifficulty(250F);
+            }
+        }
+    }
+
+    public static void registerFurnaceRecipes() {
+        FurnaceRecipes recipes = FurnaceRecipes.smelting();
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_pork, 1, 0),
+                new ItemStack(RenewedItems.cooked_pork, 1, 0));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_pork, 2, 1),
+                new ItemStack(RenewedItems.cooked_pork, 2, 1));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_poultry, 1, 0),
+                new ItemStack(RenewedItems.cooked_poultry, 1, 0));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_poultry, 2, 1),
+                new ItemStack(RenewedItems.cooked_poultry, 2, 1));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_poultry, 1, 2),
+                new ItemStack(RenewedItems.cooked_poultry, 1, 2));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_beef, 1, 0),
+                new ItemStack(RenewedItems.cooked_beef, 1, 0));
+        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+                new ItemStack(RenewedItems.raw_beef, 2, 1),
+                new ItemStack(RenewedItems.cooked_beef, 2, 1));
     }
 }

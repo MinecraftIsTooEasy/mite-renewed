@@ -1,17 +1,21 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
-import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
+import com.github.jeffyjamzhd.renewed.api.item.FoodData;
+import com.github.jeffyjamzhd.renewed.item.*;
 import net.minecraft.*;
 import net.xiaoyu233.fml.reload.event.ItemRegistryEvent;
 import net.xiaoyu233.fml.reload.utils.IdUtil;
+import net.xiaoyu233.fml.util.ReflectHelper;
 
+import static com.github.jeffyjamzhd.renewed.api.item.FoodData.*;
 import static net.xiaoyu233.fml.util.ReflectHelper.createInstance;
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
 public class RenewedItems {
-    // Item definitions
+    /**
+     * Renewed specific items
+     */
     public static final ItemKnife sharp_bone =
             createInstance(ItemKnife.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
     public static final Item tangled_web =
@@ -52,6 +56,26 @@ public class RenewedItems {
     public static final ItemPolearm adamantium_spear =
             createInstance(ItemPolearm.class, new Class[]{int.class, Material.class, ResourceLocation.class},
                     IdUtil.getNextItemID(), Material.adamantium, new ResourceLocation(MiTERenewed.RESOURCE_ID + "tool/polearm/hand/adamantium_spear"));
+    public static final ItemQuern quern =
+            createInstance(ItemQuern.class, new Class[]{int.class, String.class}, IdUtil.getNextItemID(), "quern");
+    public static final ItemBiomass biomass =
+            createInstance(ItemBiomass.class, new Class[]{int.class}, IdUtil.getNextItemID());
+
+    /**
+     * Vanilla overwrites
+     */
+    public static final ItemRenewedFood raw_pork =
+            new ItemRenewedFood(63, 2, Material.meat);
+    public static final ItemRenewedFood cooked_pork =
+            new ItemRenewedFood(64, 2, Material.meat);
+    public static final ItemRenewedFood raw_beef =
+            new ItemRenewedFood(107, 2, Material.meat);
+    public static final ItemRenewedFood cooked_beef =
+            new ItemRenewedFood(108, 2, Material.meat);
+    public static final ItemRenewedFood raw_poultry =
+            new ItemRenewedFood(109, 3, Material.meat);
+    public static final ItemRenewedFood cooked_poultry =
+            new ItemRenewedFood(110, 3, Material.meat);
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
@@ -71,6 +95,8 @@ public class RenewedItems {
         registerItem(registry, "sinew_mesh", "sinew_mesh", sinew_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "silk_mesh", "silk_mesh", silk_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "handpan", "tool/handpan", handpan);
+        registerItem(registry, "quern", "tool/quern", quern);
+        registerItem(registry, "biomass", "biomass", biomass);
     }
 
     /**
@@ -91,5 +117,76 @@ public class RenewedItems {
         tangled_web.setLowestCraftingDifficultyToProduce(250F);
         sinew_mesh.setLowestCraftingDifficultyToProduce(400F);
         silk_mesh.setLowestCraftingDifficultyToProduce(300F);
+
+        raw_pork
+                .setTranslationKeys("item.porkchopRaw", "item.raw_bacon")
+                .setTextures(
+                        new ResourceLocation("minecraft:porkchop_raw"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/raw_bacon"))
+                .setData(
+                        foodData(4, 4, 0, HAS_PROTEIN),
+                        foodData(2, 1, 0, HAS_PROTEIN))
+                .setAnimalProduct();
+        cooked_pork
+                .setTranslationKeys("item.porkchopCooked", "item.cooked_bacon")
+                .setTextures(
+                        new ResourceLocation("minecraft:porkchop_cooked"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/cooked_bacon"))
+                .setData(
+                        foodData(8, 8, 0, HAS_PROTEIN),
+                        foodData(4, 4, 0, HAS_PROTEIN))
+                .setXP(4, 2)
+                .setAnimalProduct();
+        raw_beef
+                .setTranslationKeys("item.beefRaw", "item.raw_sirloin")
+                .setTextures(
+                        new ResourceLocation("minecraft:beef_raw"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/raw_sirloin"))
+                .setData(
+                        foodData(5, 5, 0, HAS_PROTEIN),
+                        foodData(3, 2, 0, HAS_PROTEIN))
+                .setAnimalProduct();
+        cooked_beef
+                .setTranslationKeys("item.beefCooked", "item.cooked_sirloin")
+                .setTextures(
+                        new ResourceLocation("minecraft:beef_cooked"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/cooked_sirloin"))
+                .setData(
+                        foodData(10, 10, 0, HAS_PROTEIN),
+                        foodData(5, 5, 0, HAS_PROTEIN))
+                .setXP(4, 2)
+                .setAnimalProduct();
+        raw_poultry
+                .setTranslationKeys("item.chickenRaw", "item.raw_fillet", "item.raw_gizzard")
+                .setTextures(
+                        new ResourceLocation("minecraft:chicken_raw"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/raw_fillet"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/raw_gizzard"))
+                .setData(
+                        foodData(3, 3, 0, HAS_PROTEIN),
+                        foodData(2, 1, 0, HAS_PROTEIN),
+                        foodData(2, 4, 0, HAS_PROTEIN))
+                .setEffect(
+                        foodEffect(Potion.poison.id, .3F, 400),
+                        foodEffect(Potion.poison.id, .3F, 400),
+                        foodEffect(Potion.poison.id, .6F, 200))
+                .setAnimalProduct();
+        cooked_poultry
+                .setTranslationKeys("item.chickenCooked", "item.cooked_fillet", "item.cooked_gizzard")
+                .setTextures(
+                        new ResourceLocation("minecraft:chicken_cooked"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/cooked_fillet"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/cooked_gizzard"))
+                .setData(
+                        foodData(6, 6, 0, HAS_PROTEIN),
+                        foodData(3, 3, 0, HAS_PROTEIN),
+                        foodData(4, 10, 0, HAS_PROTEIN))
+                .setXP(4, 2, 4)
+                .setAnimalProduct();
+
+        ItemRenewedFood.setRelations(raw_poultry, cooked_poultry);
+        ItemRenewedFood.setRelations(raw_beef, cooked_beef);
+        ItemRenewedFood.setRelations(raw_pork, cooked_pork);
+
     }
 }

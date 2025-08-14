@@ -57,4 +57,23 @@ public abstract class ItemRenderPolearm {
 
         instance.renderItem(player, heldItem, 2);
     }
+
+    public static void renderPolearm3D(AbstractClientPlayer player) {
+        GL11.glRotatef(player.getItemInUseDuration() > 0 ? 180F : 0, 0F, 1F, 0F);
+        GL11.glRotatef(player.getItemInUseDuration() > 0 ? 180F : 0, 0F, 0F, 1F);
+        GL11.glTranslatef(-.05F, player.getItemInUseDuration() > 0 ? .5F : .7F, player.getItemInUseDuration() > 0 ? -.275F : -0.3125F);
+        GL11.glRotatef(180F, 0F, 0F, 1F);
+        GL11.glRotatef(-20F, 1F, 0F, 0F);
+        GL11.glRotatef(40F, 0F, 1.0F, 0F);
+    }
+
+
+    public static void handlePlayerArms(Entity entity, ModelRenderer leftArm, ModelRenderer rightArm, float idle, float delta) {
+        EntityPlayer player = entity.getAsPlayer();
+        float frac = ItemPolearm.getFractionPulled(player.getHeldItemStack(), player.getItemInUseCount());
+        float factor = 1F - (float) Math.pow(1F - frac, 3);
+
+        leftArm.rotateAngleX += -.2F + MathHelper.cos(idle * 0.5F) * 0.02F;
+        rightArm.rotateAngleX += (-3F + MathHelper.cos(idle * 0.2F) * 0.02F) * factor;
+    }
 }

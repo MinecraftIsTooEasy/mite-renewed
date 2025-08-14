@@ -27,7 +27,12 @@
 		"loom:injected_interfaces": {
 			"net/minecraft/SoundManager": ["com/github/jeffyjamzhd/renewed/api/ISoundManager"],
 			"net/minecraft/Material": ["com/github/jeffyjamzhd/renewed/api/IMaterial"],
-			"net/minecraft/Entity": ["com/github/jeffyjamzhd/renewed/api/IEntity"]
+			"net/minecraft/Entity": ["com/github/jeffyjamzhd/renewed/api/IEntity"],
+			"net/minecraft/ModelBiped": ["com/github/jeffyjamzhd/renewed/api/IModelBiped"],
+			"net/minecraft/SlotCrafting": ["com/github/jeffyjamzhd/renewed/api/ISlotCrafting"],
+			"net/minecraft/EntityPlayer": ["com/github/jeffyjamzhd/renewed/api/IEntityPlayer"],
+			"net/minecraft/FoodStats": ["com/github/jeffyjamzhd/renewed/api/IFoodStats"],
+			"net/minecraft/FurnaceRecipes": ["com/github/jeffyjamzhd/renewed/api/IFurnaceRecipes"]
 		}
 	}
 }

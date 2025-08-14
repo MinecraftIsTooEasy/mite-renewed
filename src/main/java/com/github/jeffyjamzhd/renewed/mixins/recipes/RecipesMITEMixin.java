@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.recipes;
 
 import com.github.jeffyjamzhd.renewed.registry.RenewedRecipes;
 import net.minecraft.*;

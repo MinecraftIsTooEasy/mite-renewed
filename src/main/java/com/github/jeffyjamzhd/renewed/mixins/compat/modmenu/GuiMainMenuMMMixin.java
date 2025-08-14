@@ -18,7 +18,7 @@ public class GuiMainMenuMMMixin {
             name = "onInit"
     )
     @Inject(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lcom/terraformersmc/modmenu/config/option/EnumConfigOption;getValue()Ljava/lang/Enum;", ordinal = 4))
-    private void modifyHeight(CallbackInfo ci, @Local(name = "buttonsY") LocalIntRef height) {
+    private void modifyHeight(CallbackInfo ci1, CallbackInfo ci2, @Local(name = "buttonsY") LocalIntRef height) {
         int value = height.get();
         height.set(value + 36);
     }

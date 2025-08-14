@@ -1,29 +1,29 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.entity;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
+import com.github.jeffyjamzhd.renewed.api.IFoodStats;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayer.class)
-public abstract class EntityPlayerMixin extends EntityLivingBase {
+public abstract class EntityPlayerMixin extends EntityLivingBase implements IEntityPlayer {
     public EntityPlayerMixin(World par1World) {
         super(par1World);
     }
-
     @Shadow public abstract void playSound(String par1Str, float par2, float par3);
-
     @Shadow protected int itemInUseCount;
-
-    @Shadow public abstract boolean setHeldItemInUse();
-
     @Shadow public abstract void stopUsingItem();
+
+    @Shadow protected FoodStats foodStats;
 
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityPlayer;updateItemUse(Lnet/minecraft/ItemStack;I)V", shift = At.Shift.BY, by = 2))
     protected void addUpdateForHandpan(CallbackInfo ci, @Local(name = "var1") ItemStack stack) {
@@ -54,8 +54,13 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
         }
     }
 
-//    @Inject(method = "getItemIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemBow;getFractionPulled(Lnet/minecraft/ItemStack;I)F", shift = At.Shift.BY, by = -1))
-//    protected void getItemIcon(ItemStack stack, int parameter, CallbackInfoReturnable<Icon> cir) {
-//        cir.setReturnValue();
-//    }
+    @ModifyConstant(method = "updateItemUse", constant = @Constant(intValue = 0, ordinal = 1))
+    int modifyData(int constant, @Local(argsOnly = true) ItemStack stack) {
+        return stack.getItemSubtype();
+    }
+
+    @Override
+    public void mr$addFoodValueSubtype(Item item, int subtype) {
+        ((IFoodStats)this.foodStats).mr$addFoodValueSubtype(item, subtype);
+    }
 }

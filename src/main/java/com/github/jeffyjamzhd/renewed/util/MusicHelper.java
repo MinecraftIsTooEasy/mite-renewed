@@ -52,7 +52,7 @@ public class MusicHelper {
                 return .4F;
             return .13F;
         } else {
-            return 0F;
+            return .05F;
         }
     }
 
