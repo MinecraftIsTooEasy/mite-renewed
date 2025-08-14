@@ -264,7 +264,15 @@ public class RenewedRecipes {
                 // Register planks knife -> handpan
                 registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks), new ItemStack(Block.planks))
                         .setDamage(50).setDifficulty(700F).scaleDifficulty(fac);
+
+                // Meat cutting recipes
+                registerCuttingRecipe(manager, item, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 400F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_beef, RenewedItems.cooked_beef, 30, 500F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_poultry, RenewedItems.cooked_poultry, 20, 350F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 500F, fac);
             }
+
+            // Quern recipes
             if (item instanceof ItemQuern) {
                 registerToolRecipe(new ItemStack(Item.sugar, 1), manager, item, Item.reed).setDamage(20).setDifficulty(225F);
                 registerToolRecipe(new ItemStack(RenewedItems.biomass, 1), manager, item,
@@ -283,28 +291,32 @@ public class RenewedRecipes {
         }
     }
 
+    private static void registerCuttingRecipe(CraftingManager manager, Item tool, Item raw, Item cooked, int damage, float difficulty, float scale) {
+        registerToolRecipe(new ItemStack(raw.itemID, 2, 1), manager, tool, new ItemStack(raw.itemID, 1, 0))
+                .setDamage(damage).setDifficulty(difficulty).scaleDifficulty(scale);
+        registerToolRecipe(new ItemStack(cooked.itemID, 2, 1), manager, tool, new ItemStack(cooked.itemID, 1, 0))
+                .setDamage(damage * 2).setDifficulty(difficulty * 1.75F).scaleDifficulty(scale);
+    }
+
     public static void registerFurnaceRecipes() {
         FurnaceRecipes recipes = FurnaceRecipes.smelting();
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_pork, 1, 0),
-                new ItemStack(RenewedItems.cooked_pork, 1, 0));
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_pork, 2, 1),
-                new ItemStack(RenewedItems.cooked_pork, 2, 1));
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_poultry, 1, 0),
-                new ItemStack(RenewedItems.cooked_poultry, 1, 0));
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_poultry, 2, 1),
-                new ItemStack(RenewedItems.cooked_poultry, 2, 1));
+
+        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_pork, RenewedItems.cooked_pork);
+        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_poultry, RenewedItems.cooked_poultry);
+        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_beef, RenewedItems.cooked_beef);
+        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop);
+
         ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
                 new ItemStack(RenewedItems.raw_poultry, 1, 2),
                 new ItemStack(RenewedItems.cooked_poultry, 1, 2));
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_beef, 1, 0),
-                new ItemStack(RenewedItems.cooked_beef, 1, 0));
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
-                new ItemStack(RenewedItems.raw_beef, 2, 1),
-                new ItemStack(RenewedItems.cooked_beef, 2, 1));
+    }
+
+    private static void registerFurnaceMeatRecipe(IFurnaceRecipes recipes, Item input, Item output) {
+        recipes.mr$addSmeltingComplexEntry(
+                new ItemStack(input, 1, 0),
+                new ItemStack(output, 1, 0));
+        recipes.mr$addSmeltingComplexEntry(
+                new ItemStack(input, 2, 1),
+                new ItemStack(output, 2, 1));
     }
 }

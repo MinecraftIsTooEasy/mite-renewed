@@ -22,13 +22,14 @@ item.raw_sirloin.name=Raw Sirloin
 item.raw_fillet.name=Raw Fillet
 item.raw_bacon.name=Raw Bacon
 item.raw_gizzard.name=Raw Gizzard
+item.raw_mutton_chops.name=Raw Mutton Chops
 item.raw_nopales.name=Nopales
 item.cooked_sirloin.name=Cooked Sirloin
 item.cooked_fillet.name=Cooked Fillet
 item.cooked_bacon.name=Cooked Bacon
+item.cooked_mutton_chops.name=Cooked Mutton Chops
 item.cooked_gizzard.name=Cooked Gizzard
 item.cooked_nopales.name=Cooked Nopales
-
 
 tooltip.handpan.contains=Contains
 tooltip.handpan.nothing=Nothing
@@ -41,4 +42,6 @@ tag.wildcard.Raw Steak.363=Raw Beef
 tag.wildcard.Cooked Steak.364=Cooked Beef
 tag.wildcard.Raw Chicken.365=Raw Poultry
 tag.wildcard.Cooked Chicken.366=Cooked Poultry
+tag.wildcard.Raw Lambchop.1172=Raw Mutton
+tag.wildcard.Cooked Lambchop.1173=Cooked Mutton
 tag.wildcard.Handpan (Empty).4262=Handpans

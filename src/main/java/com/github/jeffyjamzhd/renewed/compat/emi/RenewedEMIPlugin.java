@@ -36,12 +36,16 @@ public class RenewedEMIPlugin implements EmiPlugin {
             ResourceLocation cookingId = new ResourceLocation(RESOURCE_ID + "furnace/" + entry.hashCode());
             ResourceLocation worldId = new ResourceLocation(RESOURCE_ID + "world/" + entry.hashCode());
             reg.addRecipe(new EmiCookingRecipe(cookingId, entry.input(), entry.output(), VanillaEmiRecipeCategories.SMELTING, 0, entry.output().getExperienceReward()));
-            reg.addRecipe(EmiWorldInteractionRecipe.builder()
-                    .id(worldId)
-                    .leftInput(EmiStack.of(entry.input().splitStack(1)))
-                    .rightInput(EmiIngredient.of(List.of(EmiStack.of(new ItemStack(Block.fire)))), true)
-                    .output(EmiStack.of(entry.output().splitStack(1)))
-                    .build());
+
+            ItemRenewedFood input = (ItemRenewedFood) entry.input().getItem();
+            ItemRenewedFood output = (ItemRenewedFood) entry.output().getItem();
+            if (input.cookedFood != null && output.uncookedFood != null)
+                reg.addRecipe(EmiWorldInteractionRecipe.builder()
+                        .id(worldId)
+                        .leftInput(EmiStack.of(entry.input().splitStack(1)))
+                        .rightInput(EmiIngredient.of(List.of(EmiStack.of(new ItemStack(Block.fire)))), true)
+                        .output(EmiStack.of(entry.output().splitStack(1)))
+                        .build());
         }
 
 

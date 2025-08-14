@@ -76,6 +76,10 @@ public class RenewedItems {
             new ItemRenewedFood(109, 3, Material.meat);
     public static final ItemRenewedFood cooked_poultry =
             new ItemRenewedFood(110, 3, Material.meat);
+    public static final ItemRenewedFood raw_lambchop =
+            new ItemRenewedFood(916, 2, Material.meat);
+    public static final ItemRenewedFood cooked_lambchop =
+            new ItemRenewedFood(917, 2, Material.meat);
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
@@ -183,10 +187,29 @@ public class RenewedItems {
                         foodData(4, 10, 0, HAS_PROTEIN))
                 .setXP(4, 2, 4)
                 .setAnimalProduct();
+        raw_lambchop
+                .setTranslationKeys("item.lambchopRaw", "item.raw_mutton_chops")
+                .setTextures(
+                        new ResourceLocation("minecraft:food/lambchop_raw"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/raw_mutton_chops"))
+                .setData(
+                        foodData(3, 3, 0, HAS_PROTEIN),
+                        foodData(2, 1, 0, HAS_PROTEIN))
+                .setAnimalProduct();
+        cooked_lambchop
+                .setTranslationKeys("item.lambchopCooked", "item.cooked_mutton_chops")
+                .setTextures(
+                        new ResourceLocation("minecraft:food/lambchop_cooked"),
+                        new ResourceLocation(MiTERenewed.RESOURCE_ID + "food/cooked_mutton_chops"))
+                .setData(
+                        foodData(6, 6, 0, HAS_PROTEIN),
+                        foodData(3, 3, 0, HAS_PROTEIN))
+                .setXP(4, 2)
+                .setAnimalProduct();
 
         ItemRenewedFood.setRelations(raw_poultry, cooked_poultry);
         ItemRenewedFood.setRelations(raw_beef, cooked_beef);
         ItemRenewedFood.setRelations(raw_pork, cooked_pork);
-
+        ItemRenewedFood.setRelations(raw_lambchop, cooked_lambchop);
     }
 }
