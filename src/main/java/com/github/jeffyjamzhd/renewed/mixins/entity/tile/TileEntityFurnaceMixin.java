@@ -23,7 +23,7 @@ public abstract class TileEntityFurnaceMixin {
             int heat, CallbackInfo ci,
             @Local(name = "consumption") LocalIntRef consumption) {
         ItemStack input = getInputItemStack();
-        FurnaceEntry entry = ((IFurnaceRecipes)FurnaceRecipes.smelting()).mr$getComplexEntry(input, false);
+        FurnaceEntry entry = FurnaceRecipes.smelting().mr$getComplexEntry(input, false);
         if (entry != null)
             consumption.set(entry.output().stackSize);
     }

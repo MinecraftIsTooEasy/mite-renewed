@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.api.ISlotCrafting;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
@@ -10,18 +10,14 @@ import net.minecraft.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = SlotCrafting.class, priority = 1200)
 public abstract class SlotCraftingMixin implements ISlotCrafting {
     @Mutable @Final @Shadow private final IInventory craftMatrix;
-
     @Shadow public CraftingResult crafting_result;
-
     @Shadow protected abstract void setInitialItemStack(EntityPlayer player, MITEContainerCrafting container);
-
-    @Unique private IRecipe lastRecipe;
+    @Unique private IRecipe mr$lastRecipe;
 
     protected SlotCraftingMixin(IInventory craftMatrix) {
         this.craftMatrix = craftMatrix;
@@ -31,11 +27,11 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
     private void damageDagger(EntityPlayer player, ItemStack par2ItemStack, CallbackInfo ci, @Local(ordinal = 2) int i) {
         ItemStack stack = this.craftMatrix.getStackInSlot(i);
         if (this.crafting_result != null)
-            lastRecipe = this.crafting_result.recipe;
-        if (stack != null && stack.isTool() && lastRecipe instanceof ShapelessToolRecipe) {
+            mr$lastRecipe = this.crafting_result.recipe;
+        if (stack != null && stack.isTool() && mr$lastRecipe instanceof ShapelessToolRecipe) {
             // Damage tool
             int currentDamage = stack.getItemDamage();
-            stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) lastRecipe).getDamage());
+            stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) mr$lastRecipe).getDamage());
             if (stack.getItemDamage() >= stack.getMaxDamage()) {
                 player.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(stack.itemID));
                 this.craftMatrix.setInventorySlotContents(i, null);
@@ -53,7 +49,7 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
     private ItemStack decrTool(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
-        if (lastRecipe instanceof ShapelessToolRecipe && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
+        if (mr$lastRecipe instanceof ShapelessToolRecipe && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
         else return original.call(instance, i, j);
     }
 

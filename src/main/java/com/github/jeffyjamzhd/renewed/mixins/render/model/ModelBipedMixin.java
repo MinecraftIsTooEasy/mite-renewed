@@ -1,9 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins.render.model;
 
 import com.github.jeffyjamzhd.renewed.api.IModelBiped;
-import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.render.ItemRenderPolearm;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,17 +19,16 @@ public class ModelBipedMixin implements IModelBiped {
     @Shadow public boolean aimedBow;
     @Shadow public ModelRenderer bipedRightArm;
     @Shadow public ModelRenderer bipedLeftArm;
-    @Unique
-    private boolean aimedPolearm;
+    @Unique private boolean mr$aimedPolearm;
 
     @Override
     public boolean mr$isAimingPolearm() {
-        return this.aimedPolearm;
+        return this.mr$aimedPolearm;
     }
 
     @Override
     public void mr$setAimingPolearm(boolean value) {
-        aimedPolearm = value;
+        mr$aimedPolearm = value;
     }
 
     @Inject(method = "setRotationAngles", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/MathHelper;sin(F)F", ordinal = 7), cancellable = true)
@@ -40,7 +37,7 @@ public class ModelBipedMixin implements IModelBiped {
             float par4, float par5, float par6,
             Entity entity, CallbackInfo ci
     ) {
-        if (this.aimedPolearm) {
+        if (this.mr$aimedPolearm) {
             ItemRenderPolearm.handlePlayerArms(entity, bipedLeftArm, bipedRightArm, par3, par6);
             ci.cancel();
         }

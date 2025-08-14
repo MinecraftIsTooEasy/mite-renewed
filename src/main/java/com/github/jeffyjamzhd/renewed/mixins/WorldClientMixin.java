@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed.mixins;
 
-import com.github.jeffyjamzhd.renewed.api.ISoundManager;
 import com.github.jeffyjamzhd.renewed.util.MusicHelper;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Final;
@@ -18,15 +17,13 @@ public abstract class WorldClientMixin extends World {
         super(par1ISaveHandler, par2Str, par3WorldProvider, par4WorldSettings, par5Profiler, par6ILogAgent, world_creation_time, total_world_time);
     }
 
-
-
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/Profiler;endSection()V"))
     void updateMusicPitch(CallbackInfo ci) {
         // Begin section
         this.theProfiler.endStartSection("musicPitchUpdate");
 
         // Get information
-        ((ISoundManager)this.mc.sndManager)
-                .mr$setMusicPitch(MusicHelper.simulateIntendedPitch(this.getAsWorldClient(), this.getAdjustedTimeOfDay()));
+        this.mc.sndManager.mr$setMusicPitch(
+                MusicHelper.simulateIntendedPitch(this.getAsWorldClient(), this.getAdjustedTimeOfDay()));
     }
 }

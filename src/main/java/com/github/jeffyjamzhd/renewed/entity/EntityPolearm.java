@@ -1,10 +1,8 @@
 package com.github.jeffyjamzhd.renewed.entity;
 
-import com.github.jeffyjamzhd.renewed.api.IEntity;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import net.minecraft.*;
-import net.xiaoyu233.fml.util.Log;
 
 import java.util.Objects;
 import java.util.Random;

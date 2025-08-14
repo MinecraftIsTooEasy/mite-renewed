@@ -32,7 +32,7 @@ public class RenewedEMIPlugin implements EmiPlugin {
         for (HandpanRecipe recipe : HandpanRecipeProcessor.getRecipes().values())
             reg.addRecipe(new HandpanEMIRecipe(recipe));
 
-        for (FurnaceEntry entry : ((IFurnaceRecipes)FurnaceRecipes.smelting()).mr$getComplexEntries()) {
+        for (FurnaceEntry entry : FurnaceRecipes.smelting().mr$getComplexEntries()) {
             ResourceLocation cookingId = new ResourceLocation(RESOURCE_ID + "furnace/" + entry.hashCode());
             ResourceLocation worldId = new ResourceLocation(RESOURCE_ID + "world/" + entry.hashCode());
             reg.addRecipe(new EmiCookingRecipe(cookingId, entry.input(), entry.output(), VanillaEmiRecipeCategories.SMELTING, 0, entry.output().getExperienceReward()));

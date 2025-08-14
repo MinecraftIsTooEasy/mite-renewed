@@ -35,8 +35,8 @@ public abstract class MinecraftMixin {
     @Inject(method = "loadWorld(Lnet/minecraft/WorldClient;Ljava/lang/String;)V", at = @At(value = "HEAD"))
     private void stopMusicOnLoad(WorldClient world, String str, CallbackInfo ci) {
         Random rand = new Random();
-        ((ISoundManager)this.sndManager).mr$stopMusic();
-        ((ISoundManager) this.sndManager).mr$setTicksToPlay(1000 + rand.nextInt(4000));
+        this.sndManager.mr$stopMusic();
+        this.sndManager.mr$setTicksToPlay(1000 + rand.nextInt(4000));
     }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiAchievement;<init>(Lnet/minecraft/Minecraft;)V"))

@@ -125,13 +125,12 @@ public class RenderPolearm extends Render {
         renderPolearm((EntityPolearm) entity, x, y, z, g, h);
     }
 
-    // Placeholder
     protected ResourceLocation getPolearmTexture(EntityPolearm polearm) {
         return getTexFromItem(polearm.getItem());
     }
 
     protected ResourceLocation getTexFromItem(ItemPolearm item) {
-        return tex.getOrDefault(((IMaterial)item.getToolMaterial()).mr$getName(), tex.get("flint"));
+        return tex.getOrDefault(item.getToolMaterial().mr$getName(), tex.get("flint"));
     }
 
     @Override

@@ -4,7 +4,7 @@
 	"version": "${version} [Snapshot 1]",
 	"depends": {
 		"fishmodloader": ">=3.4.2",
-		"rusted_iron_core": ">=1.3.9"
+		"rusted_iron_core": ">=1.4.0"
 	},
 	"suggests": {
 		"emi": ">=1.1.23",
@@ -27,7 +27,6 @@
 		"loom:injected_interfaces": {
 			"net/minecraft/SoundManager": ["com/github/jeffyjamzhd/renewed/api/ISoundManager"],
 			"net/minecraft/Material": ["com/github/jeffyjamzhd/renewed/api/IMaterial"],
-			"net/minecraft/Entity": ["com/github/jeffyjamzhd/renewed/api/IEntity"],
 			"net/minecraft/ModelBiped": ["com/github/jeffyjamzhd/renewed/api/IModelBiped"],
 			"net/minecraft/SlotCrafting": ["com/github/jeffyjamzhd/renewed/api/ISlotCrafting"],
 			"net/minecraft/EntityPlayer": ["com/github/jeffyjamzhd/renewed/api/IEntityPlayer"],

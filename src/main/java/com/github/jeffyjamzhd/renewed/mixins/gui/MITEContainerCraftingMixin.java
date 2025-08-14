@@ -1,11 +1,10 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.api.ISlotCrafting;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MITEContainerCraftingMixin extends Container {
     @Shadow public CraftingResult current_crafting_result;
     @Shadow private CraftingResult previous_crafting_result;
-
     @Shadow protected abstract SlotCrafting getCraftingSlot();
 
     public MITEContainerCraftingMixin(EntityPlayer player) {
@@ -30,8 +28,9 @@ public abstract class MITEContainerCraftingMixin extends Container {
             boolean prevSpecial = this.previous_crafting_result.recipe instanceof ShapelessToolRecipe;
 
             if ((currentSpecial && !prevSpecial) || (!currentSpecial && prevSpecial)) {
+                MITEContainerCrafting instance = (MITEContainerCrafting) (Object) this;
                 this.player.clearCrafting();
-                ((ISlotCrafting) this.getCraftingSlot()).mr$setInitialItemStack(this.player, ((MITEContainerCrafting) (Object) this));
+                this.getCraftingSlot().mr$setInitialItemStack(this.player, instance);
 
             }
         }

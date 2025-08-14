@@ -17,7 +17,6 @@ import paulscode.sound.SoundSystem;
 import java.io.File;
 import java.util.Random;
 
-import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.RESOURCE_ID;
 
 @Mixin(SoundManager.class)
@@ -28,10 +27,8 @@ public class SoundManagerMixin implements ISoundManager {
     @Shadow private Random rand;
     @Shadow @Final private SoundPool soundPoolMusic;
 
-    @Unique
-    private SoundPoolEntry lastPlaying;
-    @Unique
-    private boolean hasPlayedMagnetic = false;
+    @Unique private SoundPoolEntry mr$lastPlaying;
+    @Unique private boolean mr$hasPlayedMagnetic = false;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void setTicksInit(ResourceManager par1ResourceManager, GameSettings par2GameSettings, File par3File, CallbackInfo ci) {
@@ -45,28 +42,28 @@ public class SoundManagerMixin implements ISoundManager {
         WorldClient world = Minecraft.getMinecraft().theWorld;
 
         if (world != null) {
-            if (world.isBloodMoon(true) && !this.hasPlayedMagnetic) {
+            if (world.isBloodMoon(true) && !this.mr$hasPlayedMagnetic) {
                 altEntry = this.soundPoolMusic.getRandomSoundFromSoundPool(RESOURCE_ID + "magnetic");
-                this.hasPlayedMagnetic = true;
+                this.mr$hasPlayedMagnetic = true;
             } else {
                 if (name.equals("magnetic")) {
                     altEntry = rerollMusic("magnetic", entry);
-                    this.hasPlayedMagnetic = false;
+                    this.mr$hasPlayedMagnetic = false;
                 }
             }
         } else {
             if (name.equals("magnetic")) {
                 altEntry = rerollMusic("magnetic", entry);
-                this.hasPlayedMagnetic = false;
+                this.mr$hasPlayedMagnetic = false;
             }
         }
 
         if (altEntry != null) {
             name = MusicHelper.getSimpleName(altEntry.getSoundName());
             this.sndSystem.backgroundMusic("BgMusic", altEntry.getSoundUrl(), altEntry.getSoundName(), false);
-            lastPlaying = altEntry;
+            mr$lastPlaying = altEntry;
         } else {
-            lastPlaying = entry;
+            mr$lastPlaying = entry;
         }
 
 
@@ -91,8 +88,8 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public String mr$getMusicTitle() {
-        if (this.loaded && this.lastPlaying != null)
-            return this.lastPlaying.getSoundName();
+        if (this.loaded && this.mr$lastPlaying != null)
+            return this.mr$lastPlaying.getSoundName();
         return ".ogg";
     }
 

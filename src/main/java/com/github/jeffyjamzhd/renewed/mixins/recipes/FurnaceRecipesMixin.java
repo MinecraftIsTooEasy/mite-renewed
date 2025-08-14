@@ -2,8 +2,6 @@ package com.github.jeffyjamzhd.renewed.mixins.recipes;
 
 import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.api.recipe.FurnaceEntry;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.FurnaceRecipes;
 import net.minecraft.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,31 +11,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
 @Mixin(FurnaceRecipes.class)
 public class FurnaceRecipesMixin implements IFurnaceRecipes {
-    @Unique
-    private List<FurnaceEntry> smeltingListComplex = new ArrayList<>();
-    @Unique
-    private Consumer<FurnaceEntry> register =
-            furnaceEntry -> smeltingListComplex.add(furnaceEntry);
+    @Unique private List<FurnaceEntry> mr$smeltingListComplex = new ArrayList<>();
+    @Unique private Consumer<FurnaceEntry> mr$register =
+            furnaceEntry -> mr$smeltingListComplex.add(furnaceEntry);
 
     @Override
     public List<FurnaceEntry> mr$getComplexEntries() {
-        return smeltingListComplex;
+        return mr$smeltingListComplex;
     }
 
     @Override
     public void mr$addSmeltingComplexEntry(ItemStack input, ItemStack output) {
-        register.accept(new FurnaceEntry(input, output));
+        mr$register.accept(new FurnaceEntry(input, output));
     }
 
     @Override
     public FurnaceEntry mr$getComplexEntry(ItemStack input, boolean ignoreInputCount) {
-        for (FurnaceEntry entry : smeltingListComplex) {
+        for (FurnaceEntry entry : mr$smeltingListComplex) {
             if (entry.input().itemID == input.itemID) {
                 ItemStack target = entry.input();
                 boolean sameSubtype = input.getItemSubtype() == target.getItemSubtype();

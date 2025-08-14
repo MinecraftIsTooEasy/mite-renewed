@@ -44,19 +44,21 @@ loom {
 }
 
 runClient{
+    dependsOn(jar)
+    args("--username", "Dev", "--session", "a.a.a.a", "--width", 800, "--height", 600)
+}
+
+runServer{
+    dependsOn(jar)
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.fmlMCPMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    shadow(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
-    implementation files("libs\\EMI.jar")
-    implementation files("libs\\RustedIronCore-1.3.9.jar")
-    implementation files("libs\\RustedIronCore-1.3.9-sources.jar")
-    implementation files("libs\\OhMyCommands-2.1.jar")
-    implementation files("libs\\ModMenu-10.1.0.jar")
+    shadow(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+    implementation fileTree(dir: "libs", include: "**.jar")
+
     implementation("it.unimi.dsi:fastutil:8.5.12")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation files(loom.getFML().toPath())
@@ -67,6 +69,7 @@ shadowJar {
     exclude("fabric.*")
     relocate("com.bawnorton.mixinsquared", "com.github.jeffyjamzhd.renewed.mixinsquared")
     mergeServiceFiles()
+    archiveFileName = "${archives_base_name} [${version}].jar"
 }
 
 processResources {
@@ -84,16 +87,19 @@ tasks.withType(JavaCompile).configureEach {
 java {
     withSourcesJar()
 
-    version = "[" + version + "]"
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
-
+    enabled = false
+    dependsOn(shadowJar)
 }
 
-// configure the maven publication
+sourcesJar {
+    archiveFileName = "${archives_base_name} [${version}-sources].jar"
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -102,9 +108,5 @@ publishing {
     }
 
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
     }
 }

@@ -26,7 +26,7 @@ public abstract class RenderPlayerRICMixin extends RendererLivingEntity {
     }
 
     @TargetHandler(
-            mixin = "moddedmite.rustedironcore.mixin.api.client.render.RenderPlayerMixin",
+            mixin = "moddedmite.rustedironcore.mixin.client.render.RenderPlayerMixin",
             name = "func_130009_a"
     )
     @WrapOperation(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V", ordinal = 2), remap = false)
@@ -45,7 +45,7 @@ public abstract class RenderPlayerRICMixin extends RendererLivingEntity {
     }
 
     @TargetHandler(
-            mixin = "moddedmite.rustedironcore.mixin.api.client.render.RenderPlayerMixin",
+            mixin = "moddedmite.rustedironcore.mixin.client.render.RenderPlayerMixin",
             name = "func_130009_a"
     )
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
