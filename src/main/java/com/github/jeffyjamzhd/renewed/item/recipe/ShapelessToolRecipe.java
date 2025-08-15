@@ -39,7 +39,7 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
     public boolean matches(InventoryCrafting inv, World world) {
         ItemStack tool = null;
         int incomingIngCount = 0;
-        List<ItemStack> ingredients = ((ShapelessRecipesAccessor)(this)).getRecipeItems();
+        List<ItemStack> ingredients = ((ShapelessRecipesAccessor)(this)).mr$getRecipeItems();
 
         // Iterate through grid
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -73,7 +73,7 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
 
     @Override
     public int getRecipeSize() {
-        return ((ShapelessRecipesAccessor)(this)).getRecipeItems().size();
+        return ((ShapelessRecipesAccessor)(this)).mr$getRecipeItems().size();
     }
 
 }

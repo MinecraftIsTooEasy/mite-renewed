@@ -1,15 +1,14 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
-import com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.api.event.listener.TracklistRegisterListener;
+import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.*;
-import static com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry.track;
+import static com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry.track;
 
-public class RenewedTracklist {
-    public static void register() {
-        LOGGER.info("Registering track list!");
-
-        TracklistRegistry.registerTrackList(
+public class RenewedTracklist implements TracklistRegisterListener {
+    public void register(TracklistRegistry registry) {
+        registry.registerTrackList(
                 track("calm1.ogg", "C418", "Minecraft"),
                 track("calm2.ogg", "C418", "Clark"),
                 track("calm3.ogg", "C418", "Sweden"),

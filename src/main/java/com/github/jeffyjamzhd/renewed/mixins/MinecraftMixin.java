@@ -1,8 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.Minecraft;
@@ -41,11 +40,11 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiAchievement;<init>(Lnet/minecraft/Minecraft;)V"))
     private void createMusicDisplay(CallbackInfo ci) {
-        TracklistRegistry.display = new GuiMusic(theMinecraft);
+        TracklistRegistry.DISPLAY = new GuiMusic(theMinecraft);
     }
 
     @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiAchievement;updateAchievementWindow()V"))
     private void updateMusicDisplay(CallbackInfo ci) {
-        TracklistRegistry.display.updateDisplay();
+        TracklistRegistry.DISPLAY.updateDisplay();
     }
 }

@@ -1,13 +1,10 @@
 package com.github.jeffyjamzhd.renewed.render.gui;
 
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.lwjgl.opengl.GL11;
-import shims.java.net.minecraft.text.Text;
 
 public class GuiMusic extends Gui {
     private static final ResourceLocation background =
@@ -28,7 +25,7 @@ public class GuiMusic extends Gui {
 
     public void queueMusic(String trackName) {
         this.displayTime = Minecraft.getSystemTime();
-        TracklistRegistry.Track track = TracklistRegistry.getTrackFromFileString(trackName);
+        TracklistRegistry.Track track = TracklistRegistry.getTrackFromSimpleName(trackName);
         this.artistName = track.artist();
         this.trackName = track.trackName();
     }

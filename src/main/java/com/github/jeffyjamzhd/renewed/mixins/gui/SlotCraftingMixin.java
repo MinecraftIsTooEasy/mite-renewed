@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.api.ISlotCrafting;
+import com.github.jeffyjamzhd.renewed.api.sound.CraftingSoundHandler;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -49,8 +50,17 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
     private ItemStack decrTool(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
-        if (mr$lastRecipe instanceof ShapelessToolRecipe && item.isTool()) return this.craftMatrix.decrStackSize(i, 0);
-        else return original.call(instance, i, j);
+        if (mr$lastRecipe instanceof ShapelessToolRecipe && item.isTool()) {
+            return this.craftMatrix.decrStackSize(i, 0);
+        } else {
+            return original.call(instance, i, j);
+        }
+    }
+
+    @Inject(method = "onPickupFromSlot", at = @At("HEAD"))
+    private void soundHook(EntityPlayer player, ItemStack stack, CallbackInfo ci) {
+        if (player.onServer())
+            CraftingSoundHandler.onCraft(stack, this.crafting_result.recipe, player.getWorld(), player);
     }
 
     @Override

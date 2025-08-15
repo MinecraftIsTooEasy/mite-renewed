@@ -1,7 +1,8 @@
 package com.github.jeffyjamzhd.renewed.mixins.sound;
 
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import com.github.jeffyjamzhd.renewed.api.music.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
+import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 import com.github.jeffyjamzhd.renewed.util.MusicHelper;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
@@ -33,6 +34,11 @@ public class SoundManagerMixin implements ISoundManager {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void setTicksInit(ResourceManager par1ResourceManager, GameSettings par2GameSettings, File par3File, CallbackInfo ci) {
         this.ticksBeforeMusic = 0;
+    }
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void tracklistRegistry(ResourceManager resource, GameSettings gs, File file, CallbackInfo ci) {
+        TracklistRegisterEvent.init();
     }
 
     @Inject(method = "playRandomMusicIfReady", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;play(Ljava/lang/String;)V"))
@@ -68,7 +74,7 @@ public class SoundManagerMixin implements ISoundManager {
 
 
         this.ticksBeforeMusic = 500 + rand.nextInt(2500);
-        TracklistRegistry.display.queueMusic(name);
+        TracklistRegistry.DISPLAY.queueMusic(name);
     }
 
     @Unique

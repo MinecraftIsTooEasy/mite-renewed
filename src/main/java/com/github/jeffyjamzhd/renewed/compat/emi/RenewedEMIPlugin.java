@@ -20,11 +20,14 @@ import net.minecraft.*;
 
 import java.util.List;
 
+import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.RESOURCE_ID;
 
 public class RenewedEMIPlugin implements EmiPlugin {
     @Override
     public void register(EmiRegistry reg) {
+        LOGGER.info("Registering EMI plugin.");
+
         // Add category
         reg.addCategory(RenewedRecipeCategories.HANDPAN);
 

@@ -1,5 +1,8 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.api.event.CraftingSoundRegisterEvent;
+import com.github.jeffyjamzhd.renewed.api.event.HandpanRegisterEvent;
+import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
 import com.github.jeffyjamzhd.renewed.command.CommandTransform;
 import com.github.jeffyjamzhd.renewed.registry.*;
 import com.google.common.eventbus.Subscribe;
@@ -36,7 +39,6 @@ public class EventListen extends Handlers {
     @Subscribe
     public void onSoundsRegister(SoundsRegisterEvent event) {
         RenewedSounds.register(event);
-        RenewedTracklist.register();
     }
 
     @Subscribe
@@ -52,9 +54,10 @@ public class EventListen extends Handlers {
         event.register(new CommandTransform());
     }
 
-
-
     public static void register() {
         EntityTracker.register(new RenewedTracker());
+        TracklistRegisterEvent.register(new RenewedTracklist());
+        CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
+        HandpanRegisterEvent.register(new RenewedHandpanRecipes());
     }
 }

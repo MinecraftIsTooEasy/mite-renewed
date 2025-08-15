@@ -13,18 +13,19 @@ import java.util.function.Consumer;
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
 public class HandpanRecipeProcessor {
-    private static final HashMap<Key, HandpanRecipe> RECIPES = new HashMap<>();
+    public static final HandpanRecipeProcessor INSTANCE = new HandpanRecipeProcessor();
+    public static final HashMap<Key, HandpanRecipe> RECIPES = new HashMap<>();
     private static final Consumer<HandpanRecipe> REGISTRY =
             recipe -> RECIPES.put(new Key(recipe.getInput().itemID, recipe.getSubtype()), recipe);
 
-    public static void registerHandpanRecipe(Block input, HandpanOutput... outputs) {
+    public void registerHandpanRecipe(Block input, HandpanOutput... outputs) {
         HandpanRecipe.Builder builder = HandpanRecipe.Builder.input(new ItemStack(input));
         for (HandpanOutput output : outputs)
             builder = builder.output(output);
         builder.build(REGISTRY);
     }
 
-    public static void registerHandpanRecipe(Block input, int damage, int speed, int subtype, HandpanOutput... outputs) {
+    public void registerHandpanRecipe(Block input, int damage, int speed, int subtype, HandpanOutput... outputs) {
         HandpanRecipe.Builder builder = HandpanRecipe.Builder.input(new ItemStack(input));
         for (HandpanOutput output : outputs)
             builder = builder.output(output);

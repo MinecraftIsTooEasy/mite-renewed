@@ -10,5 +10,5 @@ import java.util.List;
 @Mixin(ShapelessRecipes.class)
 public interface ShapelessRecipesAccessor {
     @Accessor("recipeItems")
-    List<ItemStack> getRecipeItems();
+    List<ItemStack> mr$getRecipeItems();
 }

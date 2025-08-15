@@ -23,7 +23,6 @@ public class RenewedRecipes {
         registerShapedRecipes(registry);
         registerShapelessRecipes(registry);
         registerMeshRecipes(registry);
-        registerHandpanRecipes();
         registerFurnaceRecipes();
     }
 
@@ -109,61 +108,6 @@ public class RenewedRecipes {
                 "SSS",
                 'S', Item.sinew
         ).difficulty(775F);
-    }
-
-    /**
-     * Handpan specific recipes
-     */
-    private static void registerHandpanRecipes() {
-        // Sinew mesh
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.gravel, 10, 120, 1,
-                new HandpanOutput(Block.gravel, .5F),
-                new HandpanOutput(Item.chipFlint, .33F),
-                new HandpanOutput(Item.shardObsidian, .25F),
-                new HandpanOutput(Item.copperNugget, .08F),
-                new HandpanOutput(Item.flint, .05F)
-        );
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.dirt, 5, 160, 1,
-                new HandpanOutput(Block.dirt, .5F),
-                new HandpanOutput(Item.wormRaw, .3F),
-                new HandpanOutput(Item.bone, .05F),
-                new HandpanOutput(Item.copperNugget, .05F)
-        );
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.sand, 5, 80, 1,
-                HandpanOutput.of(Block.sand, .5F),
-                HandpanOutput.of(Item.clay, .33F),
-                HandpanOutput.of(Item.reed, .1F)
-        );
-
-        // Silk/string mesh
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.gravel, 15, 160, 2,
-                HandpanOutput.of(Block.gravel, .33F),
-                HandpanOutput.of(Item.copperNugget, .5F),
-                HandpanOutput.of(Item.silverNugget, .25F),
-                HandpanOutput.of(Item.goldNugget, .075F),
-                HandpanOutput.of(Item.shardDiamond, .02F)
-        );
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.dirt, 10, 220, 2,
-                HandpanOutput.of(Block.dirt, .33F),
-                HandpanOutput.of(Item.wormRaw, .5F),
-                HandpanOutput.of(Item.seeds, .75F),
-                HandpanOutput.of(Item.pumpkinSeeds, .1F),
-                HandpanOutput.of(Item.bone, .075F),
-                HandpanOutput.of(Item.copperNugget, .1F)
-        );
-        HandpanRecipeProcessor.registerHandpanRecipe(
-                Block.sand, 10, 120, 2,
-                HandpanOutput.of(Block.sand, .33F),
-                HandpanOutput.of(Item.reed, .2F),
-                HandpanOutput.of(Item.shardGlass, .33F),
-                HandpanOutput.of(Item.shardEmerald, .04F),
-                HandpanOutput.of(Item.copperNugget, .1F)
-        );
     }
 
     /**
@@ -301,12 +245,12 @@ public class RenewedRecipes {
     public static void registerFurnaceRecipes() {
         FurnaceRecipes recipes = FurnaceRecipes.smelting();
 
-        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_pork, RenewedItems.cooked_pork);
-        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_poultry, RenewedItems.cooked_poultry);
-        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_beef, RenewedItems.cooked_beef);
-        registerFurnaceMeatRecipe((IFurnaceRecipes) recipes, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop);
+        registerFurnaceMeatRecipe(recipes, RenewedItems.raw_pork, RenewedItems.cooked_pork);
+        registerFurnaceMeatRecipe(recipes, RenewedItems.raw_poultry, RenewedItems.cooked_poultry);
+        registerFurnaceMeatRecipe(recipes, RenewedItems.raw_beef, RenewedItems.cooked_beef);
+        registerFurnaceMeatRecipe(recipes, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop);
 
-        ((IFurnaceRecipes)recipes).mr$addSmeltingComplexEntry(
+        recipes.mr$addSmeltingComplexEntry(
                 new ItemStack(RenewedItems.raw_poultry, 1, 2),
                 new ItemStack(RenewedItems.cooked_poultry, 1, 2));
     }

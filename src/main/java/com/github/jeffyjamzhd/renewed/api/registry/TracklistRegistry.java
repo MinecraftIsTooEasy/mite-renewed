@@ -1,14 +1,14 @@
-package com.github.jeffyjamzhd.renewed.api.music;
+package com.github.jeffyjamzhd.renewed.api.registry;
 
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import net.minecraft.I18n;
-import shims.java.net.minecraft.text.Text;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
 
 public class TracklistRegistry {
-    public static GuiMusic display;
+    public static TracklistRegistry INSTANCE = new TracklistRegistry();
+    public static GuiMusic DISPLAY;
     public static HashMap<String, Track> TRACKLIST = new HashMap<>();
     public static Consumer<Track> REGISTRY = s -> TRACKLIST.put(s.fileName, s);
 
@@ -16,7 +16,7 @@ public class TracklistRegistry {
      * Registers provided keys into the tracklist
      * @param tracks Set of entries
      */
-    public static void registerTrackList(Track... tracks) {
+    public void registerTrackList(Track... tracks) {
         for (Track track : tracks) {
             REGISTRY.accept(track);
         }
@@ -26,7 +26,7 @@ public class TracklistRegistry {
      * Registers provided key into the tracklist
      * @param track Entry
      */
-    public static void registerTrack(Track track) {
+    public void registerTrack(Track track) {
         REGISTRY.accept(track);
     }
 
@@ -40,7 +40,7 @@ public class TracklistRegistry {
         return new Track(fileName, artist, trackName);
     }
 
-    public static Track getTrackFromFileString(String fileName) {
+    public static Track getTrackFromSimpleName(String fileName) {
         if (!fileName.contains(".ogg"))
             fileName += ".ogg";
         return TRACKLIST.getOrDefault(fileName, null);

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "miterenewed",
-	"version": "${version} [Snapshot 1]",
+	"version": "${version}",
 	"depends": {
 		"fishmodloader": ">=3.4.2",
 		"rusted_iron_core": ">=1.4.0"

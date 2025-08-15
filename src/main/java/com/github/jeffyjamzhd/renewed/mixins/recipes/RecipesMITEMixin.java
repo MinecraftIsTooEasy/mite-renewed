@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.recipes;
 
+import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import com.github.jeffyjamzhd.renewed.registry.RenewedRecipes;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,5 +30,23 @@ public class RecipesMITEMixin {
     @ModifyArg(method = "addCraftingRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/ShapedRecipes;setDifficulty(F)Lnet/minecraft/IRecipe;", ordinal = 0), index = 0)
     private static float modifySinewDifficulty(float difficulty) {
         return 625F;
+    }
+
+    /**
+     * Modifies beef stew to accept subtypes
+     */
+    @ModifyArg(method = "addCraftingRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/CraftingManager;addShapelessRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapelessRecipes;", ordinal = 11), index = 1)
+    private static Object[] modBeefStew(Object[] original) {
+        original[0] = new ItemStack(RenewedItems.cooked_beef, 1, Short.MAX_VALUE);
+        return original;
+    }
+
+    /**
+     * Modifies chicken soup to accept subtypes
+     */
+    @ModifyArg(method = "addCraftingRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/CraftingManager;addShapelessRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapelessRecipes;", ordinal = 12), index = 1)
+    private static Object[] modChickenSoup(Object[] original) {
+        original[0] = new ItemStack(RenewedItems.cooked_poultry, 1, Short.MAX_VALUE);
+        return original;
     }
 }

@@ -121,6 +121,7 @@ public class RenewedItems {
         tangled_web.setLowestCraftingDifficultyToProduce(250F);
         sinew_mesh.setLowestCraftingDifficultyToProduce(400F);
         silk_mesh.setLowestCraftingDifficultyToProduce(300F);
+        biomass.setLowestCraftingDifficultyToProduce(0F);
 
         raw_pork
                 .setTranslationKeys("item.porkchopRaw", "item.raw_bacon")
@@ -130,7 +131,9 @@ public class RenewedItems {
                 .setData(
                         foodData(4, 4, 0, HAS_PROTEIN),
                         foodData(2, 1, 0, HAS_PROTEIN))
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         cooked_pork
                 .setTranslationKeys("item.porkchopCooked", "item.cooked_bacon")
                 .setTextures(
@@ -140,7 +143,9 @@ public class RenewedItems {
                         foodData(8, 8, 0, HAS_PROTEIN),
                         foodData(4, 4, 0, HAS_PROTEIN))
                 .setXP(4, 2)
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         raw_beef
                 .setTranslationKeys("item.beefRaw", "item.raw_sirloin")
                 .setTextures(
@@ -149,7 +154,9 @@ public class RenewedItems {
                 .setData(
                         foodData(5, 5, 0, HAS_PROTEIN),
                         foodData(3, 2, 0, HAS_PROTEIN))
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         cooked_beef
                 .setTranslationKeys("item.beefCooked", "item.cooked_sirloin")
                 .setTextures(
@@ -159,7 +166,9 @@ public class RenewedItems {
                         foodData(10, 10, 0, HAS_PROTEIN),
                         foodData(5, 5, 0, HAS_PROTEIN))
                 .setXP(4, 2)
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         raw_poultry
                 .setTranslationKeys("item.chickenRaw", "item.raw_fillet", "item.raw_gizzard")
                 .setTextures(
@@ -174,7 +183,9 @@ public class RenewedItems {
                         foodEffect(Potion.poison.id, .3F, 400),
                         foodEffect(Potion.poison.id, .3F, 400),
                         foodEffect(Potion.poison.id, .6F, 200))
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         cooked_poultry
                 .setTranslationKeys("item.chickenCooked", "item.cooked_fillet", "item.cooked_gizzard")
                 .setTextures(
@@ -186,7 +197,9 @@ public class RenewedItems {
                         foodData(3, 3, 0, HAS_PROTEIN),
                         foodData(4, 10, 0, HAS_PROTEIN))
                 .setXP(4, 2, 4)
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         raw_lambchop
                 .setTranslationKeys("item.lambchopRaw", "item.raw_mutton_chops")
                 .setTextures(
@@ -195,7 +208,9 @@ public class RenewedItems {
                 .setData(
                         foodData(3, 3, 0, HAS_PROTEIN),
                         foodData(2, 1, 0, HAS_PROTEIN))
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
         cooked_lambchop
                 .setTranslationKeys("item.lambchopCooked", "item.cooked_mutton_chops")
                 .setTextures(
@@ -205,7 +220,9 @@ public class RenewedItems {
                         foodData(6, 6, 0, HAS_PROTEIN),
                         foodData(3, 3, 0, HAS_PROTEIN))
                 .setXP(4, 2)
-                .setAnimalProduct();
+                .setAnimalProduct()
+                .setCraftingDifficultyAsComponent(100F)
+                .setLowestCraftingDifficultyToProduce(0F);
 
         ItemRenewedFood.setRelations(raw_poultry, cooked_poultry);
         ItemRenewedFood.setRelations(raw_beef, cooked_beef);
