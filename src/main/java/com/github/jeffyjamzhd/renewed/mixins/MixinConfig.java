@@ -25,7 +25,6 @@ public class MixinConfig implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClass, String mixinClass) {
         if (mixinClass.contains("GuiMainMenuMMMixin") && !FishModLoader.hasMod("modmenu")) return false;
-        if (mixinClass.contains("RenderPlayerMixin")) return false;
         return true;
     }
 

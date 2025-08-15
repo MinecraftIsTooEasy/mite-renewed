@@ -45,9 +45,9 @@ public class RenewedEMIPlugin implements EmiPlugin {
             if (input.cookedFood != null && output.uncookedFood != null)
                 reg.addRecipe(EmiWorldInteractionRecipe.builder()
                         .id(worldId)
-                        .leftInput(EmiStack.of(entry.input().splitStack(1)))
+                        .leftInput(EmiStack.of(entry.input().copy().splitStack(1)))
                         .rightInput(EmiIngredient.of(List.of(EmiStack.of(new ItemStack(Block.fire)))), true)
-                        .output(EmiStack.of(entry.output().splitStack(1)))
+                        .output(EmiStack.of(entry.output().copy().splitStack(1)))
                         .build());
         }
 

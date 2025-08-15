@@ -1,19 +1,29 @@
 # R198 Changelog
-* Added a new main menu
-* Added a new form of sediment collection through a wooden handpan
-* Added silk and sinew meshes, for use in the handpan
-* Added an extraction recipe for wool block and knife -> 2 string
-* Added an extraction recipe for rotten flesh and knife -> 2 sinew
-* Added some new music features
-* Added a music display (similar to achievements)
-* Added feathers to the list of flammable materials (smelts 4 -> 1 item)
-* Added all flowers to the list of flammable materials (smelts ~16 -> 1 item)
-* Added a break noise/particles when a tool breaks during crafting
-* Added optional EMI and ModMenu integration
-* Added a new item renderer for polearms
-* Added additional mod logging for debugging
++ A new main menu
++ A new music display and tracklist system
++ Music pitching based on world context like time and weather
++ Handpans, a new form of and upgrade to gravel processing
++ Handpan silk and sinew meshes
++ Quern, specialized tool for grinding items in the crafting grid
++ Biomass, a fuel source made from flowers
++ Food cuttings
++ Obsidian polearm
++ Metal polearms
++ New first person and third person rendering for polearms
++ Crafting sounds
++ Optional EMI and ModMenu integration
++ Additional logging in the console for debugging
++ Extraction recipe for wool block -> 2 string
++ Extraction recipe for rotten flesh -> 2 sinew
++ Extraction recipe for sappling -> 1 stick
++ Feathers are now fuel items (4 feathers to cook 1 item)
++ Renewed event/listeners for addon developers
+* Reworked vanilla/MITE meat items to allow for food subtypes
+* Adjusted various craft times for Renewed recipes
 * Fixed tool recipe parsing
-* Removed Creeperbrine
+* Fixed zombie tool rendering
+* Fixed bone knives being registered as fuel
+- Removed Creeperbrine
 
 # R197 Changelog
 * Added a new weapon class called polearms. They have reach similar to scythes but have lesser damage than a sword.

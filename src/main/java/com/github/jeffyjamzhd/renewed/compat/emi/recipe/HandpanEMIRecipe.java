@@ -86,15 +86,15 @@ public class HandpanEMIRecipe implements EmiRecipe {
                             renderOutputs.get(ind).item,
                             getDisplayWidth() / 2 - 8 + (18 * (x - 2)),
                             25 + (18 * y));
-                    widget.appendTooltip(Text.translatable(formatting + "Chance: %d%%".formatted((int) (renderOutputs.get(ind).chance * 100F))));
+                    widget.appendTooltip(Text.literal(formatting).append(Text.translatable("tooltip.emi.handpan.chance", (int) (renderOutputs.get(ind).chance * 100F))));
                     continue;
                 }
                 widgetHolder.addSlot(getDisplayWidth() / 2 - 8 + (18 * (x - 2)), 25 + (18 * y));
             }
         }
 
-        mesh.appendTooltip(Text.translatable(formatting + "Takes %d damage after process".formatted(this.damage)));
-        input.appendTooltip(Text.translatable(formatting + "Takes %.1fs to process".formatted(this.speedToSeconds())));
+        mesh.appendTooltip(Text.literal(formatting).append(Text.translatable("tooltip.emi.handpan.process", this.damage)));
+        input.appendTooltip(Text.literal(formatting).append(Text.translatable("tooltip.emi.handpan.time", this.speedToSeconds())));
     }
 
     private float speedToSeconds() {

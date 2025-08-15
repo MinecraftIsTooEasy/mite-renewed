@@ -28,13 +28,14 @@ public class MusicHelper {
             else
                 offset += Math.min(target * (time / (float) speed), target);
         } else {
-            int speed = 1500;
+            int speed = 3000;
             time -= WorldClient.getTimeOfSunrise();
             offset += Math.max(target - (time / (float) speed), 0F);
         }
 
         // Calculate weather factor and return
-        offset += (float) (0.07 * world.getRainStrength(0.001F));
+        offset += (float) (0.05 * world.getRainStrength(0.001F));
+        offset += (float) (0.05 * world.getWeightedThunderStrength(0.001F));
         return 1F - offset;
     }
 

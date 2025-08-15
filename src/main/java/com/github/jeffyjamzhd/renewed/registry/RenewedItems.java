@@ -16,8 +16,8 @@ public class RenewedItems {
     /**
      * Renewed specific items
      */
-    public static final ItemKnife sharp_bone =
-            createInstance(ItemKnife.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
+    public static final ItemBoneKnife sharp_bone =
+            createInstance(ItemBoneKnife.class, new Class[]{int.class, Material.class}, IdUtil.getNextItemID(), RenewedMaterial.bone);
     public static final Item tangled_web =
             createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, IdUtil.getNextItemID(), Material.silk, "tangled_web");
     public static final ItemPolearm flint_spear =

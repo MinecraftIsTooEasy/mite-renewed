@@ -28,10 +28,13 @@
     "recipes.CraftingManagerMixin",
     "recipes.FurnaceRecipesMixin",
     "recipes.RecipesMITEMixin",
+    "sound.SoundManagerMixin"
+  ],
+  "client": [
+    "render.model.ModelBipedMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
-    "render.model.ModelBipedMixin",
-    "sound.SoundManagerMixin"
+    "render.RenderPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

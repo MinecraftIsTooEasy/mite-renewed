@@ -33,6 +33,9 @@ item.cooked_nopales.name=Cooked Nopales
 
 tooltip.handpan.contains=Contains
 tooltip.handpan.nothing=Nothing
+tooltip.emi.handpan.process=Takes %d damage after process
+tooltip.emi.handpan.time=Takes %.1fs to process
+tooltip.emi.handpan.chance=Chance: %d%%
 
 emi.category.miterenewed.handpan=Panning
 

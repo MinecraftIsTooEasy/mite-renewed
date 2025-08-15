@@ -45,13 +45,22 @@ public class FurnaceRecipesMixin implements IFurnaceRecipes {
         return null;
     }
 
+    @Inject(method = "getSmeltingResult", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
+    public void complexRecipeCheck1(
+            ItemStack input, int heat, CallbackInfoReturnable<ItemStack> cir
+    ) {
+        FurnaceEntry entry = mr$getComplexEntry(input, false);
+        if (entry != null)
+            cir.setReturnValue(entry.output().copy());
+    }
+
     @Inject(method = "getSmeltingResult", at = @At(value = "RETURN", ordinal = 2), cancellable = true)
-    public void complexRecipeCheck(
+    public void complexRecipeCheck2(
             ItemStack input, int heat, CallbackInfoReturnable<ItemStack> cir
             ) {
         FurnaceEntry entry = mr$getComplexEntry(input, false);
         if (entry != null)
-            cir.setReturnValue(entry.output());
+            cir.setReturnValue(entry.output().copy());
     }
 
     @Inject(method = "doesSmeltingRecipeExistFor", at = @At("RETURN"), cancellable = true)

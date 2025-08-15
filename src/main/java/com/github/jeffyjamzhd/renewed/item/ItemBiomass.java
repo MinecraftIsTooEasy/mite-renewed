@@ -7,7 +7,7 @@ import net.minecraft.Material;
 
 public class ItemBiomass extends Item {
     public ItemBiomass(int id) {
-        super(id, Material.plants, "biomass");
+        super(id, Material.wood, "biomass");
         this.setMaxStackSize(8);
         this.setCraftingDifficultyAsComponent(250F);
         this.setCreativeTab(CreativeTabs.tabMaterials);
