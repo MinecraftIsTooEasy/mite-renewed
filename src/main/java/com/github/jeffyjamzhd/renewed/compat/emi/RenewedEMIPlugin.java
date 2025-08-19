@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed.compat.emi;
 
-import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.api.recipe.FurnaceEntry;
 import com.github.jeffyjamzhd.renewed.compat.emi.recipe.HandpanEMIRecipe;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedFood;

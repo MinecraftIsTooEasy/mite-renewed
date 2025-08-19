@@ -57,7 +57,8 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
                 // Item is not tool, match against ingredients
                 boolean valid = false;
                 for (ItemStack ingredient : ingredients) {
-                    if (ingredient.itemID == current.itemID) {
+                    if (ingredient.itemID == current.itemID &&
+                            (ingredient.getItemSubtype() == Short.MAX_VALUE || ingredient.getItemSubtype() == current.getItemSubtype())) {
                         incomingIngCount++;
                         valid = true;
                         break;

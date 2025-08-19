@@ -28,10 +28,14 @@ public abstract class MITEContainerCraftingMixin extends Container {
         if (this.current_crafting_result == null || this.previous_crafting_result == null)
             return;
         if (CraftingResult.haveEquivalentItemStacks(this.current_crafting_result, this.previous_crafting_result)) {
+            Optional<ItemStack> prevTool = Optional.empty(), currTool = Optional.empty();
+
             IRecipe prevRecipe = this.previous_crafting_result.recipe;
             IRecipe currRecipe = this.current_crafting_result.recipe;
-            Optional<ItemStack> prevTool = Arrays.stream(prevRecipe.getComponents()).filter(ItemStack::isTool).findFirst();
-            Optional<ItemStack> currTool = Arrays.stream(currRecipe.getComponents()).filter(ItemStack::isTool).findFirst();
+            if (prevRecipe instanceof ShapelessToolRecipe)
+                prevTool = Arrays.stream(prevRecipe.getComponents()).filter(ItemStack::isTool).findFirst();
+            if (currRecipe instanceof ShapelessToolRecipe)
+                currTool = Arrays.stream(currRecipe.getComponents()).filter(ItemStack::isTool).findFirst();
             boolean prevSpecial = prevRecipe instanceof ShapelessToolRecipe;
             boolean currentSpecial = currRecipe instanceof ShapelessToolRecipe;
 
