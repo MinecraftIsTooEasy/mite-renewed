@@ -1,12 +1,9 @@
 Farmers Delight (MIT)
-```
 textures/items/food/raw_mutton_chops
 textures/items/food/cooked_mutton_chops
 textures/items/food/raw_bacon
 textures/items/food/cooked_bacon
 textures/items/food/raw_fillet
 textures/items/food/cooked_fillet
-```
 
-Unless stated otherwise, all files within this directory and it's subdirectories are licensed under MIT
-
+Unless stated otherwise above, all files within this directory and it's subdirectories are licensed under MIT
