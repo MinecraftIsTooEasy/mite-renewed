@@ -57,9 +57,9 @@ public class ItemPolearm extends ItemSword {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack item_stack, World world, EntityPlayer player, int item_in_use_count) {
-        if (!world.isRemote) {
-            float fraction_pulled = getFractionPulled(item_stack, item_in_use_count);
+    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int item_in_use_count) {
+        if (!world.isRemote && player.inventory.getCurrentItemStack() != null) {
+            float fraction_pulled = getFractionPulled(itemStack, item_in_use_count);
             fraction_pulled = (fraction_pulled * fraction_pulled + fraction_pulled * 2.0F) / 3.0F;
             if (!(fraction_pulled < 0.1F)) {
                 if (fraction_pulled > 1.0F) {
@@ -68,16 +68,16 @@ public class ItemPolearm extends ItemSword {
 
                 EntityPolearm entityPolearm = new EntityPolearm(
                         world, player, fraction_pulled * .8F,
-                        this, item_stack.getItemDamage() + item_stack.getScaledDamage(.5F), item_stack.getEnchantmentTagList());
+                        this, itemStack.getItemDamage() + itemStack.getScaledDamage(.5F), itemStack.getEnchantmentTagList());
 
                 if (fraction_pulled == 1.0F) {
                     entityPolearm.setIsCritical(true);
                 }
 
-                int sharp = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, item_stack);
+                int sharp = EnchantmentHelper.getEnchantmentLevel(Enchantment.sharpness.effectId, itemStack);
                 entityPolearm.setDamage(this.getCombinedDamageVsEntity() + 2.0F);
 
-                int flame = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, item_stack);
+                int flame = EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, itemStack);
                 if (flame > 0) {
                     entityPolearm.setFire(100);
                 }
