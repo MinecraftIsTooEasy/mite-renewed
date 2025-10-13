@@ -24,7 +24,8 @@ public class CraftingSound {
     }
 
     public void attemptSound(ItemStack output, IRecipe recipe, World world, EntityPlayer player) {
-        this.sound.play(output, recipe, world, player);
+        if (recipe != null)
+            this.sound.play(output, recipe, world, player);
     }
 
     public static CraftingSound of(Material material, ConditionalSound sound) {
@@ -48,7 +49,6 @@ public class CraftingSound {
     public static Metal metalSound(Material mat) {
         return new Metal(mat);
     }
-
 
     /**
      * Generic recipe craft sound, with no extra checks/variation
