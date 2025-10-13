@@ -1,16 +1,24 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.fabricmc.loader.impl.ModContainerImpl;
+import net.fabricmc.loader.impl.metadata.LoaderModMetadata;
+import net.xiaoyu233.fml.FishModLoader;
 import net.xiaoyu233.fml.ModResourceManager;
 import net.xiaoyu233.fml.reload.event.MITEEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class MiTERenewed implements ModInitializer {
-    public static final String VERSION = "R198";
+    public static final String VERSION;
+    public static final String NAMESPACE;
+    public static final Logger LOGGER;
     public static final String RESOURCE_ID = "miterenewed:";
-    public static final String NAMESPACE = "MiTE Renewed";
-    public static final Logger LOGGER = LogManager.getLogger(NAMESPACE);
 
     @Override
     public void onInitialize() {
@@ -22,5 +30,15 @@ public class MiTERenewed implements ModInitializer {
 
     public static String getVersionString() {
         return NAMESPACE + " " + VERSION;
+    }
+
+    static {
+
+        Optional<ModContainer> mod = FishModLoader.getModContainer("miterenewed");
+        ModMetadata meta = mod.get().getMetadata();
+
+        VERSION = meta.getVersion().getFriendlyString();
+        NAMESPACE = meta.getName();
+        LOGGER = LogManager.getLogger(NAMESPACE);
     }
 }

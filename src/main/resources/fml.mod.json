@@ -11,7 +11,7 @@
 		"modmenu": ">=10.1.0"
 	},
 	"environment": "*",
-	"name": "MiTE: Renewed",
+	"name": "MiTE Renewed",
 	"description": "A subjective continuation of MiTE's development",
 	"authors": ["jeffyjamzhd"],
 	"contributors": ["Xy_Lose", "vb1dra#6847"],
