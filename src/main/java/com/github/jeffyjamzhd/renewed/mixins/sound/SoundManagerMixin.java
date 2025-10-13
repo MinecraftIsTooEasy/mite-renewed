@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.sound;
 
+import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
 import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
@@ -28,6 +29,7 @@ public class SoundManagerMixin implements ISoundManager {
     @Shadow private Random rand;
     @Shadow @Final private SoundPool soundPoolMusic;
 
+    @Shadow @Final private GameSettings options;
     @Unique private SoundPoolEntry mr$lastPlaying;
     @Unique private boolean mr$hasPlayedMagnetic = false;
 
@@ -53,13 +55,13 @@ public class SoundManagerMixin implements ISoundManager {
                 this.mr$hasPlayedMagnetic = true;
             } else {
                 if (name.equals("magnetic")) {
-                    altEntry = rerollMusic("magnetic", entry);
+                    altEntry = mr$rerollMusic("magnetic", entry);
                     this.mr$hasPlayedMagnetic = false;
                 }
             }
         } else {
             if (name.equals("magnetic")) {
-                altEntry = rerollMusic("magnetic", entry);
+                altEntry = mr$rerollMusic("magnetic", entry);
                 this.mr$hasPlayedMagnetic = false;
             }
         }
@@ -75,10 +77,13 @@ public class SoundManagerMixin implements ISoundManager {
 
         this.ticksBeforeMusic = 500 + rand.nextInt(2500);
         TracklistRegistry.DISPLAY.queueMusic(name);
+        this.sndSystem.setVolume("BgMusic", this.options.musicVolume);
+
+        // MiTERenewed.LOGGER.info(this.options.musicVolume);
     }
 
     @Unique
-    private SoundPoolEntry rerollMusic(String name, SoundPoolEntry entry) {
+    private SoundPoolEntry mr$rerollMusic(String name, SoundPoolEntry entry) {
         SoundPoolEntry newEntry = entry;
         while (MusicHelper.getSimpleName(newEntry.getSoundName()).equals(name))
             newEntry = this.soundPoolMusic.getRandomSound();
