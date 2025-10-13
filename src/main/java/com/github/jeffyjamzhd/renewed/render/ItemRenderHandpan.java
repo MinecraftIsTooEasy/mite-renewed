@@ -48,7 +48,7 @@ public class ItemRenderHandpan {
         Minecraft.getMinecraft().getTextureManager().bindTexture(player.getLocationSkin());
 
         // Translate and animate
-        GL11.glTranslatef(.4F, .3F, 0F);
+        GL11.glTranslatef(.4F, .15F, 0F);
         GL11.glTranslatef(animX, 0, animZ);
 
         prevAnimX = animX;
@@ -57,11 +57,11 @@ public class ItemRenderHandpan {
         for(int i = 0; i < 2; ++i) {
             int var24 = i * 2 - 1;
             GL11.glPushMatrix();
-            GL11.glTranslatef(-0.0F, -0.7F, 1.1F * (float)var24);
-            GL11.glRotatef((float)(-25 * var24), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(30.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef((float)(-86 * var24), 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(.25F + 0.2F * var25, -.95F - 0.05F * var25, .6F * (float)var24);
+
+            GL11.glRotatef(-50.0F + 10F * var25, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef((float) (-25 * var24), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef((float)(45 * var24), 0.0F, 1.0F, 0.0F);
             Render var27 = RenderManager.instance.getEntityRenderObject(Minecraft.getMinecraft().thePlayer);
             RenderPlayer var26 = (RenderPlayer)var27;
             float var16 = 1.0F;
@@ -70,7 +70,7 @@ public class ItemRenderHandpan {
             GL11.glPopMatrix();
         }
 
-        GL11.glRotatef(var25 * -25.0F + 15F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(var25 * -25.0F + 25F, 0.0F, 0.0F, 1.0F);
         GL11.glTranslatef(var25 * .25F, 0F, 0F);
         var22 = player.getSwingProgress(par1);
         var13 = MathHelper.sin(var22 * var22 * (float)Math.PI);
