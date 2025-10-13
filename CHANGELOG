@@ -1,3 +1,24 @@
+# 0.2.4 Changelog
++ Lowered handpan volume significantly
++ Improvements to the handpan renderer
++ Fixed a crash when combining two repairable items
++ Fixed music randomly defaulting to 100% volume if enabled
++ Fixed dupe exploit involving spears
++ Switched over to SemVer schema
+
+# R198-2 Changelog
++ Fixed another critical crafting bug, oops!
++ Updated Chinese translation
+
+This will be the last version of MiTE: Renewed to use the original Avernite version schema, and future releases will
+adopt semantic versioning instead. The versioning scheme used has caused a bit of confusion, and I do not want to give
+off the impression that this is an officially endorsed continuation. This project is an unofficial addon that attempts
+to expand upon MiTE while trying to stay aligned with MiTE's design/difficulty. I only claim ownership over the work
+I've done on this project. I apologize for the confusion (or for getting anyone's hopes up) regarding this project
+
+# R198-1 Changelog
++ Fixed critical crafting bug
+
 # R198 Changelog
 + A new main menu
 + A new music display and tracklist system
