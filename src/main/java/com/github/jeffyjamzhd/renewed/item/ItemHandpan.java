@@ -83,7 +83,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
                     stack.setTagInfo(NBT_PROGRESS, new NBTTagShort(NBT_PROGRESS, (short) use));
                     stack.setTagInfo(NBT_SPEED, new NBTTagShort(NBT_SPEED, (short) use));
                     stack.setTagInfo(NBT_DAMAGE, new NBTTagByte(NBT_DAMAGE, (byte) damage));
-                    player.worldObj.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "item.handpan.insert", 1F, 1F);
+                    player.worldObj.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "item.handpan.insert", .7F, 1F);
                     return true;
                 }
                 return false;
@@ -119,7 +119,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
 
             // Play sfx
             if (!stacks.isEmpty())
-                world.playSoundAtEntity(player, "random.pop", 1F, 1F);
+                world.playSoundAtEntity(player, "random.pop", .7F, 1F);
         }
         stack.setTagInfo(NBT_CONTENT, new NBTTagShort(NBT_CONTENT, (short) 0));
     }

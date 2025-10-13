@@ -48,7 +48,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
 
             // Sound effects
             if (this.itemInUseCount % 12 == 0 && !this.worldObj.isRemote) {
-                this.worldObj.playSoundAtEntity(this, MiTERenewed.RESOURCE_ID + "item.handpan.splash", 0.5F + 0.5F * (float) this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + .7F);
+                this.worldObj.playSoundAtEntity(this, MiTERenewed.RESOURCE_ID + "item.handpan.splash", 0.2F + this.rand.nextFloat() * 0.1F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + .8F);
                 this.entityFX(EnumEntityFX.splash);
             }
         }
@@ -61,6 +61,6 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
 
     @Override
     public void mr$addFoodValueSubtype(Item item, int subtype) {
-        ((IFoodStats)this.foodStats).mr$addFoodValueSubtype(item, subtype);
+        this.foodStats.mr$addFoodValueSubtype(item, subtype);
     }
 }
