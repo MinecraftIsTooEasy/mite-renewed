@@ -1,11 +1,8 @@
 package com.github.jeffyjamzhd.renewed;
 
-import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.fabricmc.loader.impl.ModContainerImpl;
-import net.fabricmc.loader.impl.metadata.LoaderModMetadata;
 import net.xiaoyu233.fml.FishModLoader;
 import net.xiaoyu233.fml.ModResourceManager;
 import net.xiaoyu233.fml.reload.event.MITEEvents;
@@ -33,7 +30,6 @@ public class MiTERenewed implements ModInitializer {
     }
 
     static {
-
         Optional<ModContainer> mod = FishModLoader.getModContainer("miterenewed");
         ModMetadata meta = mod.get().getMetadata();
 

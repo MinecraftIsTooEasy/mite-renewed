@@ -1,10 +1,8 @@
 package com.github.jeffyjamzhd.renewed.render;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.api.IMaterial;
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
-import com.github.jeffyjamzhd.renewed.registry.RenewedItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.*;

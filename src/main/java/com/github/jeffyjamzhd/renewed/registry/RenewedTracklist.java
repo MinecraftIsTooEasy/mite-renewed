@@ -3,7 +3,6 @@ package com.github.jeffyjamzhd.renewed.registry;
 import com.github.jeffyjamzhd.renewed.api.event.listener.TracklistRegisterListener;
 import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 
-import static com.github.jeffyjamzhd.renewed.MiTERenewed.*;
 import static com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry.track;
 
 public class RenewedTracklist implements TracklistRegisterListener {

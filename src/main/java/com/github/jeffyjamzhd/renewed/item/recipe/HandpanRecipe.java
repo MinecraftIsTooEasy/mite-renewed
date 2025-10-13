@@ -2,7 +2,6 @@ package com.github.jeffyjamzhd.renewed.item.recipe;
 
 import net.minecraft.Block;
 import net.minecraft.ItemStack;
-import net.minecraft.Minecraft;
 import net.minecraft.World;
 
 import java.util.ArrayList;

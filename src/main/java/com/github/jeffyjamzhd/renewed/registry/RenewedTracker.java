@@ -7,7 +7,6 @@ import moddedmite.rustedironcore.api.util.IdUtilExtra;
 import net.minecraft.Entity;
 import net.minecraft.Packet23VehicleSpawn;
 import net.minecraft.WorldClient;
-import net.xiaoyu233.fml.reload.utils.IdUtil;
 
 import java.util.function.Consumer;
 

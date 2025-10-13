@@ -1,12 +1,10 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.api.item.FoodData;
 import com.github.jeffyjamzhd.renewed.item.*;
 import net.minecraft.*;
 import net.xiaoyu233.fml.reload.event.ItemRegistryEvent;
 import net.xiaoyu233.fml.reload.utils.IdUtil;
-import net.xiaoyu233.fml.util.ReflectHelper;
 
 import static com.github.jeffyjamzhd.renewed.api.item.FoodData.*;
 import static net.xiaoyu233.fml.util.ReflectHelper.createInstance;

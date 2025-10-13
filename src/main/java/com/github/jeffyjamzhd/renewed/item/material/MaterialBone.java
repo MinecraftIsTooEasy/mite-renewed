@@ -2,9 +2,7 @@ package com.github.jeffyjamzhd.renewed.item.material;
 
 import huix.glacier.api.extension.material.GlacierMaterial;
 import huix.glacier.api.extension.material.IArrowMaterial;
-import huix.glacier.api.extension.material.IEquipmentMaterial;
 import huix.glacier.api.extension.material.IToolMaterial;
-import net.minecraft.Material;
 
 public class MaterialBone extends GlacierMaterial implements IToolMaterial, IArrowMaterial {
     public MaterialBone() {

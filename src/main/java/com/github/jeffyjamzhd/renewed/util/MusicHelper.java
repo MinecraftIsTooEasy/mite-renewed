@@ -1,7 +1,6 @@
 package com.github.jeffyjamzhd.renewed.util;
 
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.Minecraft;
 import net.minecraft.SoundManager;
 import net.minecraft.WorldClient;

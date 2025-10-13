@@ -2,11 +2,9 @@ package com.github.jeffyjamzhd.renewed.mixins.render;
 
 import com.github.jeffyjamzhd.renewed.render.fix.RenderBipedFix;
 import net.minecraft.*;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderBiped.class)

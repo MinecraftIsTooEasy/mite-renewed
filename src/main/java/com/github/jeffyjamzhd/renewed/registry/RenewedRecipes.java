@@ -1,12 +1,9 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
-import com.github.jeffyjamzhd.renewed.api.IMaterial;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemQuern;
-import com.github.jeffyjamzhd.renewed.item.recipe.HandpanOutput;
-import com.github.jeffyjamzhd.renewed.item.recipe.HandpanRecipeProcessor;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.*;
 import net.xiaoyu233.fml.reload.event.RecipeRegistryEvent;

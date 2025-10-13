@@ -2,7 +2,6 @@ package com.github.jeffyjamzhd.renewed.mixins.entity;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
-import com.github.jeffyjamzhd.renewed.api.IFoodStats;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;

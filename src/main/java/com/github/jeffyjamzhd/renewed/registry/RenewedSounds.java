@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
-import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import net.minecraft.ResourceLocation;
 import net.xiaoyu233.fml.reload.event.SoundsRegisterEvent;
 

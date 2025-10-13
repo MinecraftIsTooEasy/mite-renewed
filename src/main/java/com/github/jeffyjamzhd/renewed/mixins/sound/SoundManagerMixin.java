@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed.mixins.sound;
 
-import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
 import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;

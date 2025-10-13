@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed.mixins.gui;
 
-import com.github.jeffyjamzhd.renewed.api.ISlotCrafting;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
