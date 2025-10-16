@@ -12,18 +12,18 @@ public class RenewedHandpanRecipes implements HandpanRegisterListener {
         // Sinew mesh recipes
         registry.registerHandpanRecipe(
                 Block.gravel, 10, 120, 1,
-                new HandpanOutput(Block.gravel, .5F),
-                new HandpanOutput(Item.chipFlint, .33F),
-                new HandpanOutput(Item.shardObsidian, .25F),
-                new HandpanOutput(Item.copperNugget, .08F),
-                new HandpanOutput(Item.flint, .05F)
+                HandpanOutput.of(Block.gravel, .5F),
+                HandpanOutput.of(Item.chipFlint, .33F),
+                HandpanOutput.of(Item.shardObsidian, .25F),
+                HandpanOutput.of(Item.copperNugget, .08F),
+                HandpanOutput.of(Item.flint, .05F)
         );
         registry.registerHandpanRecipe(
                 Block.dirt, 5, 160, 1,
-                new HandpanOutput(Block.dirt, .5F),
-                new HandpanOutput(Item.wormRaw, .3F),
-                new HandpanOutput(Item.bone, .05F),
-                new HandpanOutput(Item.copperNugget, .05F)
+                HandpanOutput.of(Block.dirt, .5F),
+                HandpanOutput.of(Item.wormRaw, .3F),
+                HandpanOutput.of(Item.bone, .05F),
+                HandpanOutput.of(Item.copperNugget, .05F)
         );
         registry.registerHandpanRecipe(
                 Block.sand, 5, 80, 1,
@@ -46,9 +46,10 @@ public class RenewedHandpanRecipes implements HandpanRegisterListener {
                 HandpanOutput.of(Block.dirt, .33F),
                 HandpanOutput.of(Item.wormRaw, .5F),
                 HandpanOutput.of(Item.seeds, .75F),
-                HandpanOutput.of(Item.pumpkinSeeds, .1F),
-                HandpanOutput.of(Item.bone, .075F),
-                HandpanOutput.of(Item.copperNugget, .1F)
+                HandpanOutput.of(Item.pumpkinSeeds, .25F),
+                HandpanOutput.of(Item.bone, .1F),
+                HandpanOutput.of(Item.copperNugget, .1F),
+                HandpanOutput.of(Item.melonSeeds, .025F)
         );
         registry.registerHandpanRecipe(
                 Block.sand, 10, 120, 2,
