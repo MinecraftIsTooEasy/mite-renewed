@@ -121,6 +121,7 @@ public class ItemHandpan extends Item implements IDamageableItem {
             if (!stacks.isEmpty())
                 world.playSoundAtEntity(player, "random.pop", .7F, 1F);
         }
+
         stack.setTagInfo(NBT_CONTENT, new NBTTagShort(NBT_CONTENT, (short) 0));
     }
 
@@ -223,4 +224,8 @@ public class ItemHandpan extends Item implements IDamageableItem {
         return 0;
     }
 
+    @Override
+    public boolean mr$isAutoUse(ItemStack stack) {
+        return true;
+    }
 }
