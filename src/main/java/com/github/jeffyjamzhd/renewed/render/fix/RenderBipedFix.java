@@ -9,7 +9,8 @@ public class RenderBipedFix {
      */
     public static void fixZombieItem() {
         GL11.glScalef(1F, -1F, 1F);
-        GL11.glRotatef(10F, 1, 0, 0);
-        GL11.glTranslatef(0F, -1F, 0F);
+        GL11.glRotatef(-10F, 1, 0, 0);
+        GL11.glRotatef(180F, 0, 0, 1);
+        GL11.glTranslatef(0.15F, -.05F, -.1F);
     }
 }
