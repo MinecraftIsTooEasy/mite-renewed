@@ -8,9 +8,11 @@ import static com.github.jeffyjamzhd.renewed.api.sound.CraftingSound.basicSound;
 import static com.github.jeffyjamzhd.renewed.api.sound.CraftingSound.metalSound;
 
 import com.github.jeffyjamzhd.renewed.api.event.listener.CraftingSoundRegisterListener;
+import com.github.jeffyjamzhd.renewed.item.ItemRenewedFood;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.Block;
 import net.minecraft.Item;
+import net.minecraft.ItemFood;
 import net.minecraft.Material;
 
 import java.util.Random;
@@ -24,6 +26,8 @@ public class RenewedCraftingSounds implements CraftingSoundRegisterListener {
         register.registerSafe(CraftingSound.of(Material.wood, (output, recipe, world, player) -> {
             // Wood edge cases
             if (output.itemID == Block.workbench.blockID && output.getItemSubtype() < 5)
+                return;
+            if (output.getItem() instanceof ItemFood || output.getItem() instanceof ItemRenewedFood)
                 return;
 
             // Wood alternates
