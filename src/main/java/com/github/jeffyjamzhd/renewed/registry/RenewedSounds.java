@@ -18,6 +18,9 @@ public class RenewedSounds {
     public static final ResourceLocation MUSIC_EXCUSE = new ResourceLocation(RESOURCE_ID + "renewed3");
     public static final ResourceLocation MUSIC_FLAKE = new ResourceLocation(RESOURCE_ID + "renewed4");
     public static final ResourceLocation MUSIC_PEANUTS = new ResourceLocation(RESOURCE_ID + "renewed5");
+    public static final ResourceLocation MUSIC_MOOG_CITY = new ResourceLocation(RESOURCE_ID + "renewed6");
+    public static final ResourceLocation MUSIC_MOOG_CITY_2 = new ResourceLocation(RESOURCE_ID + "renewed7");
+    public static final ResourceLocation MUSIC_EQUINOXE = new ResourceLocation(RESOURCE_ID + "renewed8");
     public static final ResourceLocation MUSIC_CALM4 = new ResourceLocation(RESOURCE_ID + "magnetic");
 
     public static void register(SoundsRegisterEvent event) {
@@ -33,6 +36,9 @@ public class RenewedSounds {
         event.registerMusic(MUSIC_ELEVEN);
         event.registerMusic(MUSIC_FLAKE);
         event.registerMusic(MUSIC_PEANUTS);
+        event.registerMusic(MUSIC_MOOG_CITY);
+        event.registerMusic(MUSIC_MOOG_CITY_2);
+        event.registerMusic(MUSIC_EQUINOXE);
         event.registerMusic(MUSIC_CALM4);
     }
 }

@@ -25,7 +25,10 @@ public class RenewedTracklist implements TracklistRegisterListener {
                 track("renewed2.ogg", "C418", "Eleven"),
                 track("renewed3.ogg", "C418", "Excuse"),
                 track("renewed4.ogg", "C418", "Flake"),
-                track("renewed5.ogg", "C418", "Peanuts")
+                track("renewed5.ogg", "C418", "Peanuts"),
+                track("renewed6.ogg", "C418", "Moog City"),
+                track("renewed7.ogg", "C418", "Moog City 2"),
+                track("renewed8.ogg", "C418", "Équinoxe")
         );
     }
 }
