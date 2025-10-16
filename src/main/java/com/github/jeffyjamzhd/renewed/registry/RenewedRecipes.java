@@ -44,6 +44,14 @@ public class RenewedRecipes {
                             'S', Item.sinew,
                             'I', Item.stick
                     ).difficulty(425F * difficultyMod(material));
+                    registry.registerShapedRecipe(new ItemStack(item), true,
+                            "M  ",
+                            "SI ",
+                            "  I",
+                            'M', materialItem,
+                            'S', Item.sinew,
+                            'I', Item.stick
+                    ).difficulty(425F * difficultyMod(material));
                 } else {
                     registry.registerShapedRecipe(new ItemStack(item), true,
                             "M  ",
@@ -53,7 +61,6 @@ public class RenewedRecipes {
                             'I', Item.stick
                     );
                 }
-
             }
         }
     }
@@ -101,13 +108,13 @@ public class RenewedRecipes {
     private static void registerMeshRecipes(RecipeRegistryEvent registry) {
         // Create mesh recipes
         registry.registerShapedRecipe(new ItemStack(RenewedItems.silk_mesh), true,
-                "SSS",
-                "SSS",
+                "SS",
+                "SS",
                 'S', Item.silk
         ).difficulty(325F);
         registry.registerShapedRecipe(new ItemStack(RenewedItems.sinew_mesh), true,
-                "SSS",
-                "SSS",
+                "SS",
+                "SS",
                 'S', Item.sinew
         ).difficulty(775F);
     }
@@ -195,34 +202,39 @@ public class RenewedRecipes {
                 // Register knife -> sharp bone
                 if (item.itemID != RenewedItems.sharp_bone.itemID)
                     registerToolRecipe(new ItemStack(RenewedItems.sharp_bone), manager, item, Item.bone)
-                            .setDamage(100).setDifficulty(1200F).scaleDifficulty(fac);
+                            .setDamage(100).setDifficulty(900F).scaleDifficulty(fac);
 
                 // Register generic extraction recipes
                 registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.leather)
-                        .setDamage(20).setDifficulty(450F).scaleDifficulty(fac);
+                        .setDamage(20).setDifficulty(250F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.rottenFlesh)
-                        .setDamage(30).setDifficulty(600F).scaleDifficulty(fac);
+                        .setDamage(30).setDifficulty(400F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
-                        .setDamage(10).setDifficulty(180F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk, 2), manager, item, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
-                        .setDamage(40).setDifficulty(1200F).scaleDifficulty(fac);
+                        .setDamage(10).setDifficulty(140F).scaleDifficulty(fac);
+                registerToolRecipe(new ItemStack(Item.silk), manager, item, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
+                        .setDamage(40).setDifficulty(400F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.stick, 2), manager, item, new ItemStack(Block.sapling, 1, Short.MAX_VALUE))
                         .setDamage(60).setDifficulty(600F).scaleDifficulty(fac);
 
                 // Register planks knife -> handpan
                 registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks), new ItemStack(Block.planks))
-                        .setDamage(50).setDifficulty(700F).scaleDifficulty(fac);
+                        .setDamage(50).setDifficulty(600F).scaleDifficulty(fac);
 
                 // Meat cutting recipes
-                registerCuttingRecipe(manager, item, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 400F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_beef, RenewedItems.cooked_beef, 30, 500F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_poultry, RenewedItems.cooked_poultry, 20, 350F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 500F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 200F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_beef, RenewedItems.cooked_beef, 30, 300F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_poultry, RenewedItems.cooked_poultry, 20, 175F, fac);
+                registerCuttingRecipe(manager, item, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 300F, fac);
             }
 
             // Quern recipes
             if (item instanceof ItemQuern) {
-                registerToolRecipe(new ItemStack(Item.sugar, 1), manager, item, Item.reed).setDamage(20).setDifficulty(200F);
+                registerToolRecipe(new ItemStack(Item.sugar, 1), manager, item, Item.reed)
+                        .setDamage(20)
+                        .setDifficulty(200F);
+                registerToolRecipe(new ItemStack(Item.flour, 1), manager, item, Item.wheat)
+                        .setDamage(35)
+                        .setDifficulty(500F);
                 registerToolRecipe(new ItemStack(RenewedItems.biomass, 1), manager, item,
                         new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
                         new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
@@ -232,23 +244,41 @@ public class RenewedRecipes {
                         new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
                         new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
                         new ItemStack(Block.plantRed, 1, Short.MAX_VALUE))
-                        .setDamage(50).setDifficulty(400F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.RED), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ROSE))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.YELLOW), manager, item, new ItemStack(Block.plantYellow))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.LIGHT_BLUE), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ORCHID))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.MAGENTA), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ALLIUM))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.ORANGE), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.TULIP))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.PINK), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAHLIA))
-                        .setDamage(10).setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.GRAY), manager, item, new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAISY))
-                        .setDamage(10).setDifficulty(100F);
+                        .setDamage(50)
+                        .setDifficulty(400F);
+
+                // Dyes
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.RED), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ROSE))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.YELLOW), manager, item,
+                        new ItemStack(Block.plantYellow))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.LIGHT_BLUE), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ORCHID))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.MAGENTA), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ALLIUM))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.ORANGE), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.TULIP))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.PINK), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAHLIA))
+                        .setDamage(10)
+                        .setDifficulty(100F);
+                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.GRAY), manager, item,
+                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAISY))
+                        .setDamage(10)
+                        .setDifficulty(100F);
                 registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.WHITE), manager, item, Item.bone)
-                        .setDamage(25).setDifficulty(250F);
+                        .setDamage(25)
+                        .setDifficulty(250F);
             }
         }
     }
@@ -257,7 +287,7 @@ public class RenewedRecipes {
         registerToolRecipe(new ItemStack(raw.itemID, 2, 1), manager, tool, new ItemStack(raw.itemID, 1, 0))
                 .setDamage(damage).setDifficulty(difficulty).scaleDifficulty(scale);
         registerToolRecipe(new ItemStack(cooked.itemID, 2, 1), manager, tool, new ItemStack(cooked.itemID, 1, 0))
-                .setDamage(damage * 2).setDifficulty(difficulty * 1.75F).scaleDifficulty(scale);
+                .setDamage(damage * 2).setDifficulty(difficulty + difficulty * 1.75F).scaleDifficulty(scale);
     }
 
     public static void registerFurnaceRecipes() {
