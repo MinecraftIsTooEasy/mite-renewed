@@ -6,13 +6,17 @@
   "minVersion": "0.8.3",
   "mixins": [
     "MinecraftMixin",
-    "WorldClientMixin",
+    "PlayerControllerMPMixin",
     "accessor.ShapelessRecipesAccessor",
+    "block.BlockBreakInfoMixin",
+    "block.BlockMixin",
     "block.BlockWebMixin",
     "compat.emi.EmiFoodRecipeMixin",
     "compat.emi.MITEPluginMixin",
     "compat.modmenu.GuiMainMenuMMMixin",
+    "compat.rustedironcore.BlockGravelRICMixin",
     "compat.rustedironcore.RenderPlayerRICMixin",
+    "compat.rustedironcore.TickListenerMixin",
     "entity.EntityChickenMixin",
     "entity.EntityItemMixin",
     "entity.EntityPlayerMixin",
@@ -22,19 +26,25 @@
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",
     "gui.SlotCraftingMixin",
+    "item.ItemManureMixin",
     "item.ItemMixin",
     "item.MaterialMixin",
     "packet.Packet23VehicleSpawnMixin",
     "recipes.CraftingManagerMixin",
     "recipes.FurnaceRecipesMixin",
     "recipes.RecipesMITEMixin",
-    "sound.SoundManagerMixin"
+    "render.RenderBlocksMixin",
+    "sound.SoundManagerMixin",
+    "world.WorldClientMixin",
+    "world.WorldGenReedMixin",
+    "world.WorldMixin"
   ],
   "client": [
-    "render.model.ModelBipedMixin",
+    "NetClientHandlerMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
-    "render.RenderPlayerMixin"
+    "render.RenderPlayerMixin",
+    "render.model.ModelBipedMixin"
   ],
   "injectors": {
     "defaultRequire": 1

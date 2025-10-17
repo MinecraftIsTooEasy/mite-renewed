@@ -18,6 +18,7 @@
 	"entrypoints": {
 		"preLaunch": ["com.github.jeffyjamzhd.renewed.EarlyRiser"],
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"],
+		"registry": ["com.github.jeffyjamzhd.renewed.RenewedGameRegistry"],
 		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"]
 	},
 	"mixins": [
@@ -25,6 +26,8 @@
 	],
 	"custom": {
 		"loom:injected_interfaces": {
+			"net/minecraft/Item": ["com/github/jeffyjamzhd/renewed/api/IItem"],
+			"net/minecraft/Block": ["com/github/jeffyjamzhd/renewed/api/IBlock"],
 			"net/minecraft/SoundManager": ["com/github/jeffyjamzhd/renewed/api/ISoundManager"],
 			"net/minecraft/Material": ["com/github/jeffyjamzhd/renewed/api/IMaterial"],
 			"net/minecraft/ModelBiped": ["com/github/jeffyjamzhd/renewed/api/IModelBiped"],

@@ -1,3 +1,27 @@
+# 0.2.5 Changelog
+## [General]
++ Gravel drops have been reworked so that only flint and flint chips will drop when mining with gravel your fist
++ Handpans can now be automatically used by holding RMB and pressing LMB
++ Added new localized logo art for Chinese language
++ Added new music tracks from C418: Moog City, Moog City 2, Équinoxe
++ Added particles to manure when used on farmland
++ Reduced the time it takes for most cutting recipes to complete
++ Reduced mesh recipe from 6 components to 4 components
++ Reduced wool to string conversion from 2 string to 1 string
++ Fixed zombies holding their tools backwards
++ Fixed salads and other soups making the sawing noise
+
+## [Sugarcane]
++ Sugarcane mechanics have been overhauled
++ Sugarcane now naturally generates it's bottom stem as rooted
++ Newly planted sugarcane will slowly root over time
++ Rooting process takes around a full moon cycle
++ Rooted sugarcane will grow sugarcane around vanilla rates, not dependent on climate
+
+## [Development]
++ New rendering implementation for "crossed-squares" rendered blocks (render type 1)
++ New hardness overload method for variable hardness blocks
+
 # 0.2.4 Changelog
 + Lowered handpan volume significantly
 + Improvements to the handpan renderer
@@ -8,7 +32,7 @@
 
 # R198-2 Changelog
 + Fixed another critical crafting bug, oops!
-+ Updated Chinese translation
++ Updated Chinese translation (Xy_Lose)
 
 This will be the last version of MiTE: Renewed to use the original Avernite version schema, and future releases will
 adopt semantic versioning instead. The versioning scheme used has caused a bit of confusion, and I do not want to give

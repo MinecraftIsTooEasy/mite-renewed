@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.world;
 
 import com.github.jeffyjamzhd.renewed.util.MusicHelper;
 import net.minecraft.*;
