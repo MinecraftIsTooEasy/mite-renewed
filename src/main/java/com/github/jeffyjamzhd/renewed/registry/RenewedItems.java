@@ -78,6 +78,11 @@ public class RenewedItems {
             new ItemRenewedFood(916, 2, Material.meat);
     public static final ItemRenewedFood cooked_lambchop =
             new ItemRenewedFood(917, 2, Material.meat);
+    public static final Item reed = new ItemSugarCane(82, "reeds")
+            .setMaxStackSize(16)
+            .setCraftingDifficultyAsComponent(100F)
+            .setUnlocalizedName("reeds")
+            .setCreativeTab(CreativeTabs.tabMisc);
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
