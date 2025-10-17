@@ -23,6 +23,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
     @Shadow private int panoramaTimer;
     @Unique
     private static final ResourceLocation RENEWED_TEX = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/logo.png");
+    private static final ResourceLocation RENEWED_TEX_CHINA = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/logo_zh.png");
     @Unique
     private static final ResourceLocation[] PANORAMA_TEX = new ResourceLocation[]{
             new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/panorama/panorama_0.png"),
@@ -45,7 +46,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
 
     @ModifyArg(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/TextureManager;bindTexture(Lnet/minecraft/ResourceLocation;)V", ordinal = 0))
     ResourceLocation modifyBindGL(ResourceLocation _a) {
-        return RENEWED_TEX;
+        return isChinese() ? RENEWED_TEX_CHINA : RENEWED_TEX;
     }
 
     @WrapOperation(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawTexturedModalRect(IIIIII)V", ordinal = 5))
@@ -55,11 +56,11 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
             int d, int e, int f,
             Operation<Void> original) {
         // Draw rectangle
-        this.drawGradientRect(0, 20, this.width, 95, 0x70000000, 0xB0000000);
+        this.drawGradientRect(0, 20, this.width, 95 + (isChinese() ? 16 : 0), 0x70000000, 0xB0000000);
 
         // Draw logo
         int width = this.width / 2;
-        original.call(instance, width - (146 / 2), 30, 0, 0, 155, 56);
+        original.call(instance, width - (146 / 2), 30, 0, 0, 155, 74);
     }
 
     @ModifyVariable(method = "initGui", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;isDemo()Z"), index = 3)
@@ -77,7 +78,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void kickstartMusic(CallbackInfo ci) {
-        ((ISoundManager) mc.sndManager).mr$setTicksToPlay(20);
+        mc.sndManager.mr$setTicksToPlay(20);
     }
 
     @Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 3))
@@ -122,5 +123,11 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
         original.call((this.width / 2 + 90F), 90F, 0F);
     }
 
-
+    @Unique
+    boolean isChinese() {
+        return Minecraft.getMinecraft().getLanguageManager()
+                .getCurrentLanguage()
+                .getLanguageCode()
+                .equals("zh_CN");
+    }
 }
