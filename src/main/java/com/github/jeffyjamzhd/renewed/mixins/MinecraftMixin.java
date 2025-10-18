@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.music.RenewedMusicEngine;
 import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -20,6 +21,8 @@ public abstract class MinecraftMixin {
 
     @Shadow public EntityClientPlayerMP thePlayer;
 
+    @Shadow private ReloadableResourceManager mcResourceManager;
+
     @ModifyReturnValue(method = "getVersionDescriptor", at = @At("RETURN"))
     private static String modifyVersion(String original) {
         return MiTERenewed.getVersionString();
@@ -28,6 +31,15 @@ public abstract class MinecraftMixin {
     @ModifyArg(method = "startGame", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"), index = 0)
     private String setTitle(String newTitle) {
         return Minecraft.getVersionDescriptor(true);
+    }
+
+    @Inject(method = "startGame", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/ReloadableResourceManager;registerReloadListener(Lnet/minecraft/ResourceManagerReloadListener;)V",
+            ordinal = 6))
+    public void addReloadForMusicEngine(CallbackInfo ci) {
+        this.mcResourceManager
+                .registerReloadListener(new RenewedMusicEngine((Minecraft) (Object) this, this.sndManager));
     }
 
     @ModifyArg(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/RightClickFilter;setExclusive(I)Lnet/minecraft/RightClickFilter;"))
