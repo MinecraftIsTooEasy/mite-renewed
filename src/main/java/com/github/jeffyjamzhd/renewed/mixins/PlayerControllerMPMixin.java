@@ -12,6 +12,6 @@ public class PlayerControllerMPMixin {
     @ModifyReturnValue(method = "isItemStackEligibleForAUM", at = @At("RETURN"))
     public boolean aumExtraCondition(
             boolean original, @Local(argsOnly = true) ItemStack stack) {
-        return original || stack.getItem().mr$isAutoUse(stack);
+        return original || (stack != null && stack.getItem().mr$isAutoUse(stack));
     }
 }

@@ -33,7 +33,7 @@ public abstract class MinecraftMixin {
     @ModifyArg(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/RightClickFilter;setExclusive(I)Lnet/minecraft/RightClickFilter;"))
     public int modifyClickMouseArg(int allowed_action) {
         ItemStack stack = thePlayer.getHeldItemStack();
-        return stack.getItem().mr$isAutoUse(stack) ? 8 : allowed_action;
+        return stack != null && stack.getItem().mr$isAutoUse(stack) ? 8 : allowed_action;
     }
 
     @Inject(method = "loadWorld(Lnet/minecraft/WorldClient;Ljava/lang/String;)V", at = @At(value = "HEAD"))
