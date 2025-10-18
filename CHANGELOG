@@ -1,3 +1,7 @@
+# 0.2.6 Changelog
+## [General]
++ Fixed auto use crashing when item becomes empty
+
 # 0.2.5 Changelog
 ## [General]
 + Gravel drops have been reworked so that only flint and flint chips will drop when mining with gravel your fist
