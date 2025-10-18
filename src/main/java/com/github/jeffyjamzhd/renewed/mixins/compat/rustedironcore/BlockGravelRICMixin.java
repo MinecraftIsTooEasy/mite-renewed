@@ -25,7 +25,7 @@ abstract class BlockGravelRICMixin extends BlockFalling {
     private void dropBlockAsEntityItemFist(BlockBreakInfo info, CallbackInfoReturnable<Integer> cir) {
         if (!info.wasExploded() && info.wasHarvestedByPlayer()) {
             // Do not run if we're using an item
-            if (info.getHarvesterItem() != null) {
+            if (info.getHarvesterItem() != null && info.getHarvesterItem() instanceof ItemTool) {
                 return;
             }
 
