@@ -7,6 +7,7 @@ import net.minecraft.ResourceLocation;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MusicKeyDeserializer
         implements JsonDeserializer<Map<ResourceLocation, MusicMetadata>> {
@@ -20,13 +21,21 @@ public class MusicKeyDeserializer
         JsonObject object = json.getAsJsonObject();
         Map<ResourceLocation, MusicMetadata> result = new HashMap<>();
 
+        // Enter each music entry
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+            // Music entry key, and values
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
+            // Parse path from key, replicate data to MusicMetadata
             ResourceLocation location = fromPath(key);
             MusicMetadata data = context.deserialize(value, MusicMetadata.class);
 
+            // Going to parse conditions differently
+            if (value.getAsJsonObject().has("conditions")) {
+                JsonObject conditionObject = (JsonObject) value.getAsJsonObject().get("conditions");
+                data.supplyConditions(Optional.of(conditionObject));
+            }
             result.put(location, data);
         }
 
