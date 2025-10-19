@@ -31,14 +31,14 @@ public class RenewedSounds {
         event.registerSound(CRAFTING_WOOD);
         event.registerSound(CRAFTING_CHOP);
 
-        event.registerMusic(MUSIC_EXCUSE);
-        event.registerMusic(MUSIC_CHRIS);
-        event.registerMusic(MUSIC_ELEVEN);
-        event.registerMusic(MUSIC_FLAKE);
-        event.registerMusic(MUSIC_PEANUTS);
-        event.registerMusic(MUSIC_MOOG_CITY);
-        event.registerMusic(MUSIC_MOOG_CITY_2);
-        event.registerMusic(MUSIC_EQUINOXE);
-        event.registerMusic(MUSIC_CALM4);
+//        event.registerMusic(MUSIC_EXCUSE);
+//        event.registerMusic(MUSIC_CHRIS);
+//        event.registerMusic(MUSIC_ELEVEN);
+//        event.registerMusic(MUSIC_FLAKE);
+//        event.registerMusic(MUSIC_PEANUTS);
+//        event.registerMusic(MUSIC_MOOG_CITY);
+//        event.registerMusic(MUSIC_MOOG_CITY_2);
+//        event.registerMusic(MUSIC_EQUINOXE);
+//        event.registerMusic(MUSIC_CALM4);
     }
 }
