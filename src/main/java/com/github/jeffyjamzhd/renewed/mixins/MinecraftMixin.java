@@ -1,11 +1,8 @@
 package com.github.jeffyjamzhd.renewed.mixins;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.api.music.RenewedMusicEngine;
-import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,10 +15,7 @@ import java.util.Random;
 public abstract class MinecraftMixin {
     @Shadow public SoundManager sndManager;
     @Shadow public static Minecraft theMinecraft;
-
     @Shadow public EntityClientPlayerMP thePlayer;
-
-    @Shadow private ReloadableResourceManager mcResourceManager;
 
     @ModifyReturnValue(method = "getVersionDescriptor", at = @At("RETURN"))
     private static String modifyVersion(String original) {
@@ -31,15 +25,6 @@ public abstract class MinecraftMixin {
     @ModifyArg(method = "startGame", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"), index = 0)
     private String setTitle(String newTitle) {
         return Minecraft.getVersionDescriptor(true);
-    }
-
-    @Inject(method = "startGame", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/ReloadableResourceManager;registerReloadListener(Lnet/minecraft/ResourceManagerReloadListener;)V",
-            ordinal = 6))
-    public void addReloadForMusicEngine(CallbackInfo ci) {
-        this.mcResourceManager
-                .registerReloadListener(new RenewedMusicEngine((Minecraft) (Object) this, this.sndManager));
     }
 
     @ModifyArg(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/RightClickFilter;setExclusive(I)Lnet/minecraft/RightClickFilter;"))
@@ -55,14 +40,14 @@ public abstract class MinecraftMixin {
         this.sndManager.mr$setTicksToPlay(1000 + rand.nextInt(4000));
     }
 
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiAchievement;<init>(Lnet/minecraft/Minecraft;)V"))
+    @Inject(method = "startGame", at = @At("TAIL"))
     private void createMusicDisplay(CallbackInfo ci) {
-        TracklistRegistry.DISPLAY = new GuiMusic(theMinecraft);
+        this.sndManager.mr$getMusicEngine().provideGuiReference(new GuiMusic(theMinecraft));
     }
 
     @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiAchievement;updateAchievementWindow()V"))
     private void updateMusicDisplay(CallbackInfo ci) {
-        TracklistRegistry.DISPLAY.updateDisplay();
+        this.sndManager.mr$getMusicEngine().gui.updateDisplay();
     }
 
 

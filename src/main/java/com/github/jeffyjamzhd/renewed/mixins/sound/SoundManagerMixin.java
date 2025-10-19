@@ -1,10 +1,8 @@
 package com.github.jeffyjamzhd.renewed.mixins.sound;
 
 import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
-import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.api.music.RenewedMusicEngine;
 import com.github.jeffyjamzhd.renewed.util.MusicHelper;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,73 +10,110 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulscode.sound.SoundSystem;
 
 import java.io.File;
 import java.util.Random;
 
-import static com.github.jeffyjamzhd.renewed.MiTERenewed.RESOURCE_ID;
-
 @Mixin(SoundManager.class)
 public class SoundManagerMixin implements ISoundManager {
+    @Shadow @Final private SoundPool soundPoolMusic;
+    @Shadow @Final private GameSettings options;
     @Shadow private SoundSystem sndSystem;
     @Shadow private int ticksBeforeMusic;
     @Shadow private boolean loaded;
     @Shadow private Random rand;
-    @Shadow @Final private SoundPool soundPoolMusic;
 
-    @Shadow @Final private GameSettings options;
     @Unique private SoundPoolEntry mr$lastPlaying;
     @Unique private boolean mr$hasPlayedMagnetic = false;
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void setTicksInit(ResourceManager par1ResourceManager, GameSettings par2GameSettings, File par3File, CallbackInfo ci) {
-        this.ticksBeforeMusic = 0;
-    }
+    @Unique private RenewedMusicEngine musicEngine;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void tracklistRegistry(ResourceManager resource, GameSettings gs, File file, CallbackInfo ci) {
-        TracklistRegisterEvent.init();
+    private void setTicksInit(
+            ResourceManager resourceManager,
+            GameSettings gameSettings,
+            File assets,
+            CallbackInfo ci) {
+        this.musicEngine = new RenewedMusicEngine(resourceManager, this.options, this.rand);
+        ((ReloadableResourceManager) resourceManager).registerReloadListener(this.musicEngine);
     }
 
-    @Inject(method = "playRandomMusicIfReady", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;play(Ljava/lang/String;)V"))
-    private void configureMusic(CallbackInfo ci, @Local(name = "var1")SoundPoolEntry entry) {
-        String name = MusicHelper.getSimpleName(entry.getSoundName());
-        SoundPoolEntry altEntry = null;
-        WorldClient world = Minecraft.getMinecraft().theWorld;
+//    @Inject(method = "<init>", at = @At("TAIL"))
+//    private void tracklistRegistry(ResourceManager resource, GameSettings gs, File file, CallbackInfo ci) {
+//        TracklistRegisterEvent.init();
+//    }
 
-        if (world != null) {
-            if (world.isBloodMoon(true) && !this.mr$hasPlayedMagnetic) {
-                altEntry = this.soundPoolMusic.getRandomSoundFromSoundPool(RESOURCE_ID + "magnetic");
-                this.mr$hasPlayedMagnetic = true;
-            } else {
-                if (name.equals("magnetic")) {
-                    altEntry = mr$rerollMusic("magnetic", entry);
-                    this.mr$hasPlayedMagnetic = false;
-                }
-            }
-        } else {
-            if (name.equals("magnetic")) {
-                altEntry = mr$rerollMusic("magnetic", entry);
-                this.mr$hasPlayedMagnetic = false;
-            }
-        }
+    @Redirect(method = "loadSoundFile", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;addMusic(Ljava/lang/String;)V"))
+    private void noMoreMusic(SoundManager instance, String par1Str) {
+    }
 
-        if (altEntry != null) {
-            name = MusicHelper.getSimpleName(altEntry.getSoundName());
-            this.sndSystem.backgroundMusic("BgMusic", altEntry.getSoundUrl(), altEntry.getSoundName(), false);
-            mr$lastPlaying = altEntry;
-        } else {
-            mr$lastPlaying = entry;
-        }
+    @Inject(method = "playRandomMusicIfReady", at = @At("HEAD"), cancellable = true)
+    private void playMusicHook(CallbackInfo ci) {
+        this.musicEngine.tickEngine();
+        ci.cancel();
+    }
+
+    @Inject(method = "onSoundOptionsChanged", at = @At("HEAD"), cancellable = true)
+    private void soundOptionsChangedHook(CallbackInfo ci) {
+        this.musicEngine.onSoundOptionsChanged();
+        ci.cancel();
+    }
+
+    @Inject(method = "func_130080_a", at = @At("RETURN"))
+    private static void provideSoundSystemHook(
+            SoundManager soundManager,
+            SoundSystem soundSystem,
+            CallbackInfoReturnable<SoundSystem> cir) {
+        soundManager.mr$getMusicEngine().provideSoundSystemReference(soundSystem);
+    }
+
+//    @Inject(method = "playRandomMusicIfReady", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;play(Ljava/lang/String;)V"))
+//    private void configureMusic(CallbackInfo ci, @Local(name = "var1")SoundPoolEntry entry) {
+//        String name = MusicHelper.getSimpleName(entry.getSoundName());
+//        SoundPoolEntry altEntry = null;
+//        WorldClient world = Minecraft.getMinecraft().theWorld;
+//
+//        if (world != null) {
+//            if (world.isBloodMoon(true) && !this.mr$hasPlayedMagnetic) {
+//                altEntry = this.soundPoolMusic.getRandomSoundFromSoundPool(RESOURCE_ID + "magnetic");
+//                this.mr$hasPlayedMagnetic = true;
+//            } else {
+//                if (name.equals("magnetic")) {
+//                    altEntry = mr$rerollMusic("magnetic", entry);
+//                    this.mr$hasPlayedMagnetic = false;
+//                }
+//            }
+//        } else {
+//            if (name.equals("magnetic")) {
+//                altEntry = mr$rerollMusic("magnetic", entry);
+//                this.mr$hasPlayedMagnetic = false;
+//            }
+//        }
+//
+//        if (altEntry != null) {
+//            name = MusicHelper.getSimpleName(altEntry.getSoundName());
+//            this.sndSystem.backgroundMusic("BgMusic", altEntry.getSoundUrl(), altEntry.getSoundName(), false);
+//            mr$lastPlaying = altEntry;
+//        } else {
+//            mr$lastPlaying = entry;
+//        }
+//
+//
+//        this.ticksBeforeMusic = 500 + rand.nextInt(2500);
+//        TracklistRegistry.DISPLAY.queueMusic(name);
+//        this.sndSystem.setVolume("BgMusic", this.options.musicVolume);
+//
+//        // MiTERenewed.LOGGER.info(this.options.musicVolume);
+//    }
 
 
-        this.ticksBeforeMusic = 500 + rand.nextInt(2500);
-        TracklistRegistry.DISPLAY.queueMusic(name);
-        this.sndSystem.setVolume("BgMusic", this.options.musicVolume);
-
-        // MiTERenewed.LOGGER.info(this.options.musicVolume);
+    @Override
+    public RenewedMusicEngine mr$getMusicEngine() {
+        return this.musicEngine;
     }
 
     @Unique
@@ -91,9 +126,7 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public float mr$getMusicPitch() {
-        if (this.loaded)
-            return this.sndSystem.getPitch("BgMusic");
-        return 0F;
+        return this.musicEngine.getPitch();
     }
 
     @Override
@@ -105,8 +138,7 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public void mr$setMusicPitch(float value) {
-        if (this.loaded)
-            this.sndSystem.setPitch("BgMusic", value);
+        this.musicEngine.setPitch(value);
     }
 
     @Override
@@ -116,9 +148,7 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public boolean mr$isMusicPlaying() {
-        if (this.loaded)
-            return this.sndSystem.playing("BgMusic");
-        return false;
+        return this.musicEngine.isPlaying();
     }
 
     @Override
@@ -129,6 +159,6 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public void mr$setTicksToPlay(int ticks) {
-        ticksBeforeMusic = ticks;
+        this.musicEngine.setDelay(ticks);
     }
 }
