@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.api.music;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.event.MusicConditionRegisterEvent;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -79,6 +80,9 @@ public class RenewedMusicEngine
         this.soundPoolRenewedMusic = new SoundPool(manager, "music", false);
         this.random = random;
         this.music = new HashMap<>();
+
+        // Send out event
+        MusicConditionRegisterEvent.init();
     }
 
     /**
@@ -246,8 +250,8 @@ public class RenewedMusicEngine
                 this.soundPoolRenewedMusic.addSound(location.toString());
                 MiTERenewed.LOGGER.info("{} - {}, by {}",
                         location.toString(),
-                        metadata.title(),
-                        metadata.artist());
+                        metadata.getTitle(),
+                        metadata.getArtist());
             });
 
         } catch (Exception e) {
