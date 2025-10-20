@@ -31,7 +31,7 @@ public class MusicKeyDeserializer
             ResourceLocation location = fromPath(key);
             MusicMetadata data = context.deserialize(value, MusicMetadata.class);
 
-            // Going to parse conditions differently
+            // Parse conditions, if any
             if (value.getAsJsonObject().has("conditions")) {
                 JsonObject conditionObject = (JsonObject) value.getAsJsonObject().get("conditions");
                 data.supplyConditions(Optional.of(conditionObject));
