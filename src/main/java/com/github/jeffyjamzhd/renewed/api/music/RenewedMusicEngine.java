@@ -22,11 +22,7 @@ import java.util.*;
 @Environment(EnvType.CLIENT)
 public class RenewedMusicEngine
         implements ResourceManagerReloadListener {
-    private static final int RARE_COOLDOWN = 20 * 60 * 24;
-    private static final int VANILLA_COOLDOWN = 20 * 60 * 10;
-    private static final int DEFAULT_COOLDOWN = 20 * 60 * 3;
     private static final int FADE_OUT_TICKS = 100;
-
     private static final int STATE_COOLDOWN = 0;
     private static final int STATE_ACTIVE = 1;
     private static final int STATE_TRANSITION = 2;
@@ -64,6 +60,10 @@ public class RenewedMusicEngine
      * Currently playing track
      */
     private MusicMetadata track;
+    /**
+     * Currently playing track location
+     */
+    private ResourceLocation trackLocation;
     /**
      * Ticks left before the next track plays
      */
@@ -151,21 +151,25 @@ public class RenewedMusicEngine
 
         String trackToPlay = determineMusicTrack(world, player);
         SoundPoolEntry entry = this.soundPoolRenewedMusic.getRandomSoundFromSoundPool(trackToPlay);
-        MiTERenewed.LOGGER.info("Tried to play {}", entry.getSoundName());
         if (entry != null) {
-            this.ticksBeforeNextTrack = 20;
+            // Play music
+            this.setDelay();
             this.soundSystem.backgroundMusic(CHANNEL_NAME, entry.getSoundUrl(), entry.getSoundName(), false);
             this.soundSystem.setVolume(CHANNEL_NAME, this.getVolume());
             this.soundSystem.play(CHANNEL_NAME);
-
             this.setState(STATE_ACTIVE);
+
+            MiTERenewed.LOGGER.info("Tried to play {}", entry.getSoundName());
 
             // Queue display
             this.gui.queueMusic(track);
         } else {
             // Reset track, as its invalid (didn't load)
             this.track = null;
-            MiTERenewed.LOGGER.error("Could not load track. Likely a malformed asset path. {}", trackToPlay);
+            if (!trackToPlay.isEmpty()) {
+                MiTERenewed.LOGGER.error("Could not load track. Likely a malformed asset path. {}", trackToPlay);
+            }
+            this.setDelay();
         }
     }
 
@@ -228,6 +232,11 @@ public class RenewedMusicEngine
         // Iterate through registered tracks and evaluate
         sortMusic(world, player);
 
+        // Do nothing if sorted music is empty
+        if (sortedMusic.isEmpty()) {
+            return "";
+        }
+
         // Do random pick from best match
         List<ResourceLocation> locations;
         locations = this.sortedMusic
@@ -235,11 +244,20 @@ public class RenewedMusicEngine
                 .getValue()
                 .stream()
                 .toList();
-        int random = this.random.nextInt(locations.size());
-        ResourceLocation location = locations.get(random);
+
+        // Roll for hopefully unique track
+        int rolls = 0;
+        ResourceLocation location = trackLocation;
+        while (rolls < 3 && location == trackLocation) {
+            int random = this.random.nextInt(locations.size());
+            location = locations.get(random);
+            rolls++;
+        }
 
         // Set track, return asset path
         this.track = this.music.get(location);
+        this.trackLocation = location;
+        this.trackConditionValue = this.sortedMusic.lastKey();
         return this.parseResourceLocationForLoading(location);
     }
 
@@ -247,7 +265,7 @@ public class RenewedMusicEngine
         // Check self
         Optional<Integer> checkContainer = this.track.getConditions()
                 .stream()
-                .map(condition -> condition.check(world, player) ? 1 : -1)
+                .map(condition -> condition.check(world, player) ? condition.getPriority() : -condition.getPriority())
                 .reduce(Integer::sum);
 
         // Sort music
@@ -263,8 +281,14 @@ public class RenewedMusicEngine
 
             // If current track is misaligned with its current placement,
             // we should transition
-            return !(check < trackConditionValue);
+            if (check < trackConditionValue) {
+                return false;
+            }
+
+            // Update value
+            this.trackConditionValue = check;
         }
+
         // Otherwise, we're fine.
         return true;
     }
@@ -282,11 +306,14 @@ public class RenewedMusicEngine
 
             Optional<Integer> checkContainer = data.getConditions()
                     .stream()
-                    .map(condition -> condition.check(world, player) ? 1 : -1)
+                    .map(condition -> condition.check(world, player) ? condition.getPriority() : -condition.getPriority())
                     .reduce(Integer::sum);
 
             if (checkContainer.isPresent()) {
                 int value = checkContainer.get();
+                if (value < 0) {
+                    continue;
+                }
                 this.sortedMusic.putIfAbsent(value, new HashSet<>());
                 this.sortedMusic.get(value).add(key);
             } else {
@@ -306,7 +333,7 @@ public class RenewedMusicEngine
         float time = world.getAdjustedTimeOfDay();
         float target = targetOffset(world);
 
-        if (track.trackPreventsPitching()) {
+        if (track == null || track.trackPreventsPitching()) {
             this.setPitch(1F);
             return;
         }
@@ -351,6 +378,13 @@ public class RenewedMusicEngine
 
     public float getVolume() {
         return this.settings.musicVolume;
+    }
+
+    public void setDelay() {
+        String ticksEnumString = MiTERenewed.TICKS_UNTIL_NEXT_SONG.get();
+        MusicDelay ticksEnum = MusicDelay.fromString(ticksEnumString);
+        int ticks = ticksEnum.getTicksBeforeNext();
+        this.setDelay((int) (ticks * 0.75F) + random.nextInt((int) (ticks * 0.25)));
     }
 
     public void setDelay(int delayTicks) {

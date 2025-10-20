@@ -16,4 +16,9 @@ public class MCGeneric implements IMusicCondition {
     public String getIdentifier() {
         return "miterenewed:generic";
     }
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
 }

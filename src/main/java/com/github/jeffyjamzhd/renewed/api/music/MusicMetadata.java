@@ -5,7 +5,6 @@ import com.github.jeffyjamzhd.renewed.api.music.conditions.MCGeneric;
 import com.github.jeffyjamzhd.renewed.api.registry.MusicConditionRegistry;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
@@ -21,8 +20,8 @@ public class MusicMetadata {
     private String artist;
     @SerializedName("prevent_pitching")
     private boolean preventPitching;
-    @SerializedName("hide_tooltip")
-    private boolean hideTooltip;
+    @SerializedName("hide_display")
+    private boolean hideDisplay;
 
     /**
      * Conditions for this music track to play
@@ -41,8 +40,8 @@ public class MusicMetadata {
         return this.preventPitching;
     }
 
-    public boolean hidesTooltip() {
-        return this.hideTooltip;
+    public boolean hidesDisplay() {
+        return this.hideDisplay;
     }
 
     public ArrayList<IMusicCondition> getConditions() {

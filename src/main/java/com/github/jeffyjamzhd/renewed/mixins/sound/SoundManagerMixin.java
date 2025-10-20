@@ -20,16 +20,9 @@ import java.util.Random;
 
 @Mixin(SoundManager.class)
 public class SoundManagerMixin implements ISoundManager {
-    @Shadow @Final private SoundPool soundPoolMusic;
     @Shadow @Final private GameSettings options;
-    @Shadow private SoundSystem sndSystem;
-    @Shadow private int ticksBeforeMusic;
     @Shadow private boolean loaded;
     @Shadow private Random rand;
-
-    @Unique private SoundPoolEntry mr$lastPlaying;
-    @Unique private boolean mr$hasPlayedMagnetic = false;
-
     @Unique private RenewedMusicEngine musicEngine;
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -42,18 +35,13 @@ public class SoundManagerMixin implements ISoundManager {
         ((ReloadableResourceManager) resourceManager).registerReloadListener(this.musicEngine);
     }
 
-//    @Inject(method = "<init>", at = @At("TAIL"))
-//    private void tracklistRegistry(ResourceManager resource, GameSettings gs, File file, CallbackInfo ci) {
-//        TracklistRegisterEvent.init();
-//    }
-
     @Redirect(method = "loadSoundFile", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;addMusic(Ljava/lang/String;)V"))
     private void noMoreMusic(SoundManager instance, String par1Str) {
     }
 
     @Inject(method = "playRandomMusicIfReady", at = @At("HEAD"), cancellable = true)
     private void playMusicHook(CallbackInfo ci) {
-        this.musicEngine.tickEngine();
+        this.musicEngine.tickEngine(null, null);
         ci.cancel();
     }
 
@@ -71,69 +59,9 @@ public class SoundManagerMixin implements ISoundManager {
         soundManager.mr$getMusicEngine().provideSoundSystemReference(soundSystem);
     }
 
-//    @Inject(method = "playRandomMusicIfReady", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;play(Ljava/lang/String;)V"))
-//    private void configureMusic(CallbackInfo ci, @Local(name = "var1")SoundPoolEntry entry) {
-//        String name = MusicHelper.getSimpleName(entry.getSoundName());
-//        SoundPoolEntry altEntry = null;
-//        WorldClient world = Minecraft.getMinecraft().theWorld;
-//
-//        if (world != null) {
-//            if (world.isBloodMoon(true) && !this.mr$hasPlayedMagnetic) {
-//                altEntry = this.soundPoolMusic.getRandomSoundFromSoundPool(RESOURCE_ID + "magnetic");
-//                this.mr$hasPlayedMagnetic = true;
-//            } else {
-//                if (name.equals("magnetic")) {
-//                    altEntry = mr$rerollMusic("magnetic", entry);
-//                    this.mr$hasPlayedMagnetic = false;
-//                }
-//            }
-//        } else {
-//            if (name.equals("magnetic")) {
-//                altEntry = mr$rerollMusic("magnetic", entry);
-//                this.mr$hasPlayedMagnetic = false;
-//            }
-//        }
-//
-//        if (altEntry != null) {
-//            name = MusicHelper.getSimpleName(altEntry.getSoundName());
-//            this.sndSystem.backgroundMusic("BgMusic", altEntry.getSoundUrl(), altEntry.getSoundName(), false);
-//            mr$lastPlaying = altEntry;
-//        } else {
-//            mr$lastPlaying = entry;
-//        }
-//
-//
-//        this.ticksBeforeMusic = 500 + rand.nextInt(2500);
-//        TracklistRegistry.DISPLAY.queueMusic(name);
-//        this.sndSystem.setVolume("BgMusic", this.options.musicVolume);
-//
-//        // MiTERenewed.LOGGER.info(this.options.musicVolume);
-//    }
-
-
     @Override
     public RenewedMusicEngine mr$getMusicEngine() {
         return this.musicEngine;
-    }
-
-    @Unique
-    private SoundPoolEntry mr$rerollMusic(String name, SoundPoolEntry entry) {
-        SoundPoolEntry newEntry = entry;
-        while (MusicHelper.getSimpleName(newEntry.getSoundName()).equals(name))
-            newEntry = this.soundPoolMusic.getRandomSound();
-        return newEntry;
-    }
-
-    @Override
-    public float mr$getMusicPitch() {
-        return this.musicEngine.getPitch();
-    }
-
-    @Override
-    public String mr$getMusicTitle() {
-        if (this.loaded && this.mr$lastPlaying != null)
-            return this.mr$lastPlaying.getSoundName();
-        return ".ogg";
     }
 
     @Override
@@ -153,8 +81,7 @@ public class SoundManagerMixin implements ISoundManager {
 
     @Override
     public void mr$stopMusic() {
-        if (this.loaded)
-            this.sndSystem.stop("BgMusic");
+        this.musicEngine.stopMusic();
     }
 
     @Override

@@ -95,7 +95,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
         if (snd.mr$isLoaded()) {
             if (!snd.mr$isMusicPlaying()) {
                 mc.sndManager.playRandomMusicIfReady();
-                snd.mr$setMusicPitch(.857F);
+                snd.mr$setMusicPitch(.85F);
             } else {
                 snd.mr$setTicksToPlay(200);
             }

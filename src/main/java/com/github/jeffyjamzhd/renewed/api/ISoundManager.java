@@ -11,22 +11,6 @@ public interface ISoundManager {
     }
 
     /**
-     * Grabs music pitch
-     * @return Current music pitch
-     */
-    default float mr$getMusicPitch() {
-        return 0F;
-    }
-
-    /**
-     * Grabs current music playing
-     * @return Current music title
-     */
-    default String mr$getMusicTitle() {
-        return "";
-    }
-
-    /**
      * Sets the ticks before playing another song
      * @param ticks Ticks
      */

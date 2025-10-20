@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Random;
-
 @Mixin(value = Minecraft.class, priority = 1)
 public abstract class MinecraftMixin {
     @Shadow public SoundManager sndManager;
@@ -35,9 +33,8 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "loadWorld(Lnet/minecraft/WorldClient;Ljava/lang/String;)V", at = @At(value = "HEAD"))
     private void stopMusicOnLoad(WorldClient world, String str, CallbackInfo ci) {
-        Random rand = new Random();
         this.sndManager.mr$stopMusic();
-        this.sndManager.mr$setTicksToPlay(20);
+        this.sndManager.mr$getMusicEngine().setDelay();
     }
 
     @Inject(method = "startGame", at = @At("TAIL"))
