@@ -25,9 +25,11 @@ public class GuiMusic extends Gui {
     }
 
     public void queueMusic(MusicMetadata metadata) {
-        this.displayTime = Minecraft.getSystemTime();
-        this.artistName = metadata.getArtist();
-        this.trackName = metadata.getTitle();
+        if (!metadata.hidesTooltip()) {
+            this.displayTime = Minecraft.getSystemTime();
+            this.artistName = metadata.getArtist();
+            this.trackName = metadata.getTitle();
+        }
     }
 
     private void updateWindowScale() {
