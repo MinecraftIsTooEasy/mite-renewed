@@ -1,86 +1,256 @@
 {
   "minecraft:calm1.ogg" : {
     "title": "Minecraft",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:calm2.ogg" : {
     "title": "Clark",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:calm3.ogg" : {
     "title": "Sweden",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:piano1.ogg" : {
     "title": "Dry Hands",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 24000
+      }
+    }
   },
   "minecraft:piano2.ogg" : {
     "title": "Wet Hands",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:piano3.ogg" : {
     "title": "Mice on Venus",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 24000
+      }
+    }
   },
   "minecraft:hal1.ogg" : {
     "title": "Subwoofer Lullaby",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 24000
+      }
+    }
   },
   "minecraft:hal2.ogg" : {
     "title": "Living Mice",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:hal3.ogg" : {
     "title": "Haggstrom",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "minecraft:hal4.ogg" : {
     "title": "Danny",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 24000
+      }
+    }
   },
   "minecraft:nuance1.ogg" : {
     "title": "Key",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:title": {}
+    }
   },
   "minecraft:nuance2.ogg" : {
     "title": "Oxygene",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 14000
+      }
+    }
   },
   "miterenewed:magnetic.ogg" : {
     "title": "Magnetic Circuit",
-    "artist": "Markus Persson"
+    "artist": "Markus Persson",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:event": {
+        "blood_moon": true
+      }
+    }
   },
   "miterenewed:renewed1.ogg" : {
     "title": "Chris",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 12000,
+        "to" : 16000
+      }
+    }
   },
   "miterenewed:renewed2.ogg" : {
     "title": "Eleven",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 14000,
+        "to" : 24000
+      }
+    }
   },
   "miterenewed:renewed3.ogg" : {
     "title": "Excuse",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 14000,
+        "to" : 24000
+      }
+    }
   },
   "miterenewed:renewed4.ogg" : {
     "title": "Flake",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 14000,
+        "to" : 24000
+      }
+    }
   },
   "miterenewed:renewed5.ogg" : {
     "title": "Peanuts",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 4000
+      }
+    }
   },
   "miterenewed:renewed6.ogg" : {
     "title": "Moog City",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:title": {}
+    }
   },
   "miterenewed:renewed7.ogg" : {
     "title": "Moog City 2",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:title": {}
+    }
   },
   "miterenewed:renewed8.ogg" : {
     "title": "Équinoxe",
-    "artist": "C418"
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 4000
+      }
+    }
   }
 }
