@@ -37,7 +37,7 @@ public abstract class MinecraftMixin {
     private void stopMusicOnLoad(WorldClient world, String str, CallbackInfo ci) {
         Random rand = new Random();
         this.sndManager.mr$stopMusic();
-        this.sndManager.mr$setTicksToPlay(1000 + rand.nextInt(4000));
+        this.sndManager.mr$setTicksToPlay(20);
     }
 
     @Inject(method = "startGame", at = @At("TAIL"))
