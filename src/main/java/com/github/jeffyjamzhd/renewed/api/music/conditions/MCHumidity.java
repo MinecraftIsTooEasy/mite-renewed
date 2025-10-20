@@ -7,23 +7,24 @@ import net.minecraft.World;
 
 import javax.annotation.Nullable;
 
-public class MCTime implements IMusicCondition {
+public class MCHumidity implements IMusicCondition {
     @SerializedName("from")
-    private int lowerBound;
+    private float lowerBound;
     @SerializedName("to")
-    private int upperBound;
+    private float upperBound;
 
     @Override
     public boolean check(@Nullable World world, @Nullable EntityPlayer player) {
-        if (world != null) {
-            int currentTime = world.getTimeOfDay();
-            return currentTime >= lowerBound && currentTime <= upperBound;
+        if (world != null && player != null) {
+            float humidity = world.getBiomeGenForCoords(player.getBlockPosX(), player.getBlockPosZ())
+                    .getFloatTemperature();
+            return humidity >= lowerBound && humidity <= upperBound;
         }
         return false;
     }
 
     @Override
     public String getIdentifier() {
-        return "miterenewed:time";
+        return "miterenewed:humidity";
     }
 }

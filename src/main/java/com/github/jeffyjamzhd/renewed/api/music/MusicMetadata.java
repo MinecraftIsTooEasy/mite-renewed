@@ -19,15 +19,30 @@ public class MusicMetadata {
     private String title;
     @SerializedName("artist")
     private String artist;
+    @SerializedName("prevent_pitching")
+    private boolean preventPitching;
+    @SerializedName("hide_tooltip")
+    private boolean hideTooltip;
 
+    /**
+     * Conditions for this music track to play
+     */
     private transient ArrayList<IMusicCondition> conditions;
 
     public String getTitle() {
-        return title != null ? title : "Unknown Artist";
+        return this.title != null ? this.title : "Unknown Track";
     }
 
     public String getArtist() {
-        return artist != null ? artist : "Unknown Track";
+        return this.artist != null ? this.artist : "Unknown Artist";
+    }
+
+    public boolean trackPreventsPitching() {
+        return this.preventPitching;
+    }
+
+    public boolean hidesTooltip() {
+        return this.hideTooltip;
     }
 
     public ArrayList<IMusicCondition> getConditions() {

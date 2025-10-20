@@ -7,23 +7,14 @@ import net.minecraft.World;
 
 import javax.annotation.Nullable;
 
-public class MCTime implements IMusicCondition {
-    @SerializedName("from")
-    private int lowerBound;
-    @SerializedName("to")
-    private int upperBound;
-
+public class MCTitle implements IMusicCondition {
     @Override
     public boolean check(@Nullable World world, @Nullable EntityPlayer player) {
-        if (world != null) {
-            int currentTime = world.getTimeOfDay();
-            return currentTime >= lowerBound && currentTime <= upperBound;
-        }
-        return false;
+        return world == null;
     }
 
     @Override
     public String getIdentifier() {
-        return "miterenewed:time";
+        return "miterenewed:title";
     }
 }
