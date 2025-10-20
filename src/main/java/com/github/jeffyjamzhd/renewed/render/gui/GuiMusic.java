@@ -5,6 +5,8 @@ import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.lwjgl.opengl.GL11;
 
+import java.util.List;
+
 public class GuiMusic extends Gui {
     private static final ResourceLocation background =
             new ResourceLocation("textures/gui/achievement/achievement_background.png");
@@ -69,7 +71,7 @@ public class GuiMusic extends Gui {
                     var3 = 2F - var3;
                 }
 
-                var3 *= 4F;
+                var3 *= 6F;
                 var3 = 1F - var3;
                 if (var3 < 0F) {
                     var3 = 0F;
@@ -79,20 +81,39 @@ public class GuiMusic extends Gui {
                 var3 *= var3;
                 int var5 = 0;
                 int var6 = -(int) (var3 * 36F);
+
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                this.mc.getTextureManager().bindTexture(background);
+                GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_LIGHTING);
+                this.mc.getTextureManager().bindTexture(background);
+
+                // Parse text
+                @SuppressWarnings("unchecked")
+                List<String> formattedTitle = this.mc.fontRenderer.listFormattedStringToWidth(this.trackName, 128);
+                this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
 
                 // Draw
-                this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
-                this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 7, 0xFF44FF00, true);
-                this.mc.fontRenderer.drawString(this.trackName, var5 + 30, var6 + 18, -1, true);
+                if (formattedTitle.size() > 1) {
+                    double fadeFac = 1D - (Math.min(0.2D, Math.max(0, anim - 0.40D)) * 10D);
+                    int fadeComp = (int) (250 * fadeFac) << 24;
+
+                    if (anim >= 0.5) {
+                        this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 12, 0x0544FF00 - fadeComp, true);
+                    } else {
+                        this.mc.fontRenderer.drawString(formattedTitle.get(0), var5 + 30, var6 + 7, 0x05FFFFFF + fadeComp, true);
+                        this.mc.fontRenderer.drawString(formattedTitle.get(1), var5 + 30, var6 + 17, 0x05FFFFFF + fadeComp, true);
+                    }
+                } else {
+                    this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 7, 0xFF44FF00, true);
+                    this.mc.fontRenderer.drawString(this.trackName, var5 + 30, var6 + 17, 0xFFFFFFFF, true);
+                }
 
                 RenderHelper.enableGUIStandardItemLighting();
                 GL11.glEnable(32826);
                 GL11.glEnable(GL11.GL_COLOR_MATERIAL);
                 GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_BLEND);
                 this.itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), Item.recordCat.getItemStackForStatsIcon(), var5 + 8, var6 + 8);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(true);
