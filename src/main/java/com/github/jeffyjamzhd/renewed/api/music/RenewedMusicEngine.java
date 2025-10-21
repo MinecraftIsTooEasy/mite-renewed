@@ -81,6 +81,10 @@ public class RenewedMusicEngine
      */
     private boolean transitionOut;
     /**
+     * If the transition was manually called
+     */
+    private boolean transitionOutForced;
+    /**
      * Current engine state
      */
     private int state = STATE_COOLDOWN;
@@ -159,6 +163,9 @@ public class RenewedMusicEngine
             this.soundSystem.play(CHANNEL_NAME);
             this.setState(STATE_ACTIVE);
 
+            if (world != null)
+                this.simulateIntendedPitch(world.getAsWorldClient(), false);
+
             MiTERenewed.LOGGER.info("Tried to play {}", entry.getSoundName());
 
             // Queue display
@@ -180,7 +187,7 @@ public class RenewedMusicEngine
         }
 
         // Handle transition
-        if (this.transitionOut) {
+        if (this.transitionOut || this.transitionOutForced) {
             this.ticksBeforeTransition--;
             if (this.ticksBeforeTransition <= 0) {
                 stopMusic();
@@ -195,13 +202,20 @@ public class RenewedMusicEngine
 
         // Set volume
         float busVolume;
-        if (this.transitionOut) {
+        if (this.transitionOut || this.transitionOutForced) {
             busVolume = Math.max(0F, getVolume() - (1F - (ticksBeforeTransition / (float) FADE_OUT_TICKS)));
         } else {
             busVolume = Math.min(getVolume(), getVolume() - (1F - (ticksBeforeTransition / (float) FADE_OUT_TICKS)));
         }
 
         this.soundSystem.setVolume(CHANNEL_NAME, busVolume);
+    }
+
+    public void fadeOutCurrentTrack() {
+        if (this.isLoaded && this.isPlaying()) {
+            this.setState(STATE_TRANSITION);
+            this.transitionOutForced = true;
+        }
     }
 
     private void checkForTransition(World world, EntityPlayer player) {
@@ -220,6 +234,10 @@ public class RenewedMusicEngine
                     this.ticksBeforeTransition = FADE_OUT_TICKS;
                     this.state = incoming;
                 }
+            }
+            case STATE_COOLDOWN -> {
+                this.state = incoming;
+                this.transitionOutForced = false;
             }
             default -> this.state = incoming;
         }
@@ -333,21 +351,28 @@ public class RenewedMusicEngine
      * @param world Client's world
      * @return The intended music pitch
      */
-    public void simulateIntendedPitch(WorldClient world) {
+    public void simulateIntendedPitch(WorldClient world, boolean interpolated) {
         float offset = 0F;
         float time = world.getAdjustedTimeOfDay();
         float target = targetOffset(world);
 
-        if (track == null || track.trackPreventsPitching()) {
-            this.setPitch(1F);
+        // Do not simulate if no track is playing
+        if (track == null) {
+            return;
+        }
+
+        // Do not pitch if there's a fixed pitch set
+        Optional<Float> fixedPitch = track.getFixedPitch();
+        if (fixedPitch.isPresent()) {
+            this.setPitch(fixedPitch.get());
             return;
         }
 
         // Calculate time factor
-        if (time > WorldClient.getTimeOfSunset() - 1500 || time < WorldClient.getTimeOfSunrise()) {
+        if (time > WorldClient.getTimeOfSunset() - 2000 || time < WorldClient.getTimeOfSunrise()) {
             // Nighttime
             int speed = world.isBloodMoon(false) ? 2000 : 4000;
-            time -= -1500 + WorldClient.getTimeOfSunset();
+            time -= WorldClient.getTimeOfSunset() - 2000;
 
             if (time <= 0 || time > speed)
                 offset += target;
@@ -362,14 +387,20 @@ public class RenewedMusicEngine
         // Calculate weather factor and return
         offset += (float) (0.05 * world.getRainStrength(0.001F));
         offset += (float) (0.05 * world.getWeightedThunderStrength(0.001F));
-        this.setPitch(1F - offset);
+        float intended = 1F - offset;
+        if (interpolated) {
+            float current = this.getPitch();
+            this.setPitch(current + (intended - current) * 0.02F);
+        } else {
+            this.setPitch(intended);
+        }
     }
 
     public static float targetOffset(WorldClient world) {
         if (world.isBloodMoon(false)) {
             return .4F;
         } else {
-            return .05F;
+            return .1F;
         }
     }
 
@@ -400,10 +431,6 @@ public class RenewedMusicEngine
         if (!this.isLoaded) {
             MiTERenewed.LOGGER.warn("Tried to change pitch of music, but engine is not loaded!");
             return;
-        }
-
-        if (this.track == null || this.track.trackPreventsPitching()) {
-            this.soundSystem.setPitch(CHANNEL_NAME, 1F);
         }
 
         this.soundSystem.setPitch(CHANNEL_NAME, pitch);
@@ -499,7 +526,7 @@ public class RenewedMusicEngine
             this.music.forEach((location, metadata) -> {
                 // Add to pool and log entry
                 this.soundPoolRenewedMusic.addSound(location.toString());
-                MiTERenewed.LOGGER.info("{} - \"{}\" by {}",
+                MiTERenewed.LOGGER.info("Registered {} | \"{}\" by {}",
                         location.toString(),
                         metadata.getTitle(),
                         metadata.getArtist());

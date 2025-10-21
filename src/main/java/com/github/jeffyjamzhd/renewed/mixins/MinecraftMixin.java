@@ -33,8 +33,7 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "loadWorld(Lnet/minecraft/WorldClient;Ljava/lang/String;)V", at = @At(value = "HEAD"))
     private void stopMusicOnLoad(WorldClient world, String str, CallbackInfo ci) {
-        this.sndManager.mr$stopMusic();
-        this.sndManager.mr$getMusicEngine().setDelay();
+        this.sndManager.mr$getMusicEngine().fadeOutCurrentTrack();
     }
 
     @Inject(method = "startGame", at = @At("TAIL"))

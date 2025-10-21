@@ -21,6 +21,6 @@ public abstract class WorldClientMixin extends World {
     void updateMusicPitch(CallbackInfo ci) {
         // Begin section
         this.theProfiler.endStartSection("musicPitchUpdate");
-        this.mc.sndManager.mr$getMusicEngine().simulateIntendedPitch(this.getAsWorldClient());
+        this.mc.sndManager.mr$getMusicEngine().simulateIntendedPitch(this.getAsWorldClient(), true);
     }
 }
