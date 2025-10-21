@@ -34,6 +34,7 @@ Posisble metadata fields:
 - ``artist`` - Artist attributed for making the track
 - ``prevent_pitching`` - Prevents this music from having its pitch altered
 - ``hide_display`` - Prevents this music from showing the track display
+- ``partial`` - When ``true``, music will stop playing if conditions no longer match
 
 The music engine is based on context provided by the world and your player. Most tracks built into
 MiTE Renewed only utilize dimension and time conditions, but a full list of possible conditions and

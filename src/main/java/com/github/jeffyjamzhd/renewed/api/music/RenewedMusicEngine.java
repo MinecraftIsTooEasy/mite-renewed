@@ -262,6 +262,11 @@ public class RenewedMusicEngine
     }
 
     private boolean trackStillMatchesConditions(World world, EntityPlayer player) {
+        // Ignore if track cannot be "cut-off"
+        if (track == null || !track.canBeCutoff()) {
+            return true;
+        }
+
         // Check self
         Optional<Integer> checkContainer = this.track.getConditions()
                 .stream()

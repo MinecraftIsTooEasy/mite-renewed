@@ -22,6 +22,8 @@ public class MusicMetadata {
     private boolean preventPitching;
     @SerializedName("hide_display")
     private boolean hideDisplay;
+    @SerializedName("partial")
+    private boolean canBeCutoff;
 
     /**
      * Conditions for this music track to play
@@ -38,6 +40,10 @@ public class MusicMetadata {
 
     public boolean trackPreventsPitching() {
         return this.preventPitching;
+    }
+
+    public boolean canBeCutoff() {
+        return this.canBeCutoff;
     }
 
     public boolean hidesDisplay() {
