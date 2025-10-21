@@ -397,6 +397,10 @@ public class RenewedMusicEngine
             return;
         }
 
+        if (this.track == null || this.track.trackPreventsPitching()) {
+            this.soundSystem.setPitch(CHANNEL_NAME, 1F);
+        }
+
         this.soundSystem.setPitch(CHANNEL_NAME, pitch);
     }
 
