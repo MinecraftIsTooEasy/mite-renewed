@@ -8,7 +8,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -21,7 +21,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -34,7 +34,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -60,7 +60,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -99,7 +99,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -112,7 +112,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -145,7 +145,7 @@
       },
       "miterenewed:time": {
         "from" : 0,
-        "to" : 14000
+        "to" : 11500
       }
     }
   },
@@ -169,8 +169,8 @@
         "dimension": "overworld"
       },
       "miterenewed:time": {
-        "from" : 12000,
-        "to" : 16000
+        "from" : 11500,
+        "to" : 12500
       }
     }
   },
@@ -182,7 +182,7 @@
         "dimension": "overworld"
       },
       "miterenewed:time": {
-        "from" : 14000,
+        "from" : 12500,
         "to" : 24000
       }
     }
@@ -195,7 +195,7 @@
         "dimension": "overworld"
       },
       "miterenewed:time": {
-        "from" : 14000,
+        "from" : 12500,
         "to" : 24000
       }
     }
@@ -208,7 +208,7 @@
         "dimension": "overworld"
       },
       "miterenewed:time": {
-        "from" : 14000,
+        "from" : 12500,
         "to" : 24000
       }
     }
@@ -250,6 +250,20 @@
       "miterenewed:time": {
         "from" : 0,
         "to" : 4000
+      }
+    }
+  },
+  "miterenewed:renewed9.ogg" : {
+    "title": "Ki",
+    "artist": "C418",
+    "prevent_pitching": false,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 11500,
+        "to" : 12500
       }
     }
   }
