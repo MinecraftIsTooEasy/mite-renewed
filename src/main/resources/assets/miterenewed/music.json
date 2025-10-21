@@ -132,6 +132,8 @@
   "minecraft:nuance1.ogg" : {
     "title": "Key",
     "artist": "C418",
+    "partial": true,
+    "fixed_pitch" : 0.85,
     "conditions" : {
       "miterenewed:title": {}
     }
@@ -229,6 +231,8 @@
   "miterenewed:renewed6.ogg" : {
     "title": "Moog City",
     "artist": "C418",
+    "partial": true,
+    "fixed_pitch" : 0.85,
     "conditions" : {
       "miterenewed:title": {}
     }
@@ -236,6 +240,8 @@
   "miterenewed:renewed7.ogg" : {
     "title": "Moog City 2",
     "artist": "C418",
+    "partial": true,
+    "fixed_pitch" : 0.85,
     "conditions" : {
       "miterenewed:title": {}
     }
@@ -256,13 +262,12 @@
   "miterenewed:renewed9.ogg" : {
     "title": "Ki",
     "artist": "C418",
-    "prevent_pitching": false,
     "conditions" : {
       "miterenewed:dimension": {
         "dimension": "overworld"
       },
       "miterenewed:time": {
-        "from" : 11500,
+        "from" : 11000,
         "to" : 12500
       }
     }
