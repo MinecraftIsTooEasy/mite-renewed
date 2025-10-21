@@ -1,6 +1,5 @@
 package com.github.jeffyjamzhd.renewed;
 
-import com.github.jeffyjamzhd.renewed.api.music.MusicDelay;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
