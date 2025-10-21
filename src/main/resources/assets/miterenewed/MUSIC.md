@@ -32,9 +32,9 @@ in-game track display.
 Posisble metadata fields:
 - ``title`` - Title of the track
 - ``artist`` - Artist attributed for making the track
-- ``prevent_pitching`` - Prevents this music from having its pitch altered
-- ``hide_display`` - Prevents this music from showing the track display
 - ``partial`` - When ``true``, music will stop playing if conditions no longer match
+- ``fixed_pitch`` - Decimal value representing the pitch this song will always play at
+- ``hide_display`` - Prevents this music from showing the track display
 
 The music engine is based on context provided by the world and your player. Most tracks built into
 MiTE Renewed only utilize dimension and time conditions, but a full list of possible conditions and
@@ -47,11 +47,11 @@ their arguments are as follows:
   - ``from`` - Start time period
   - ``to`` - End time period
 - ``miterenewed:height`` - Only allows this music to play when the player is between two y-levels
-    - ``from`` - Lowest acceptable height
-    - ``to`` - Highest acceptable height
+  - ``from`` - Lowest acceptable height
+  - ``to`` - Highest acceptable height
 - ``miterenewed:humidity`` - Only allows this music to play when the player is within a biome temperature range
-    - ``from`` - Lowest acceptable temperature
-    - ``to`` - Highest acceptable temperature
+  - ``from`` - Lowest acceptable temperature
+  - ``to`` - Highest acceptable temperature
 - ``miterenewed:event`` - Only allows this music to play during an event
   - ``blood_moon`` - Set to ``true`` if the music plays during the blood moon
   - ``harvest_moon`` - Set to ``true`` if the music plays during the harvest moon

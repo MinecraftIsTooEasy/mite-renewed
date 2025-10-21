@@ -18,8 +18,8 @@ public class MusicMetadata {
     private String title;
     @SerializedName("artist")
     private String artist;
-    @SerializedName("prevent_pitching")
-    private boolean preventPitching;
+    @SerializedName("fixed_pitch")
+    private float fixedPitch = Float.NaN;
     @SerializedName("hide_display")
     private boolean hideDisplay;
     @SerializedName("partial")
@@ -38,8 +38,8 @@ public class MusicMetadata {
         return this.artist != null ? this.artist : "Unknown Artist";
     }
 
-    public boolean trackPreventsPitching() {
-        return this.preventPitching;
+    public Optional<Float> getFixedPitch() {
+        return !Float.isNaN(this.fixedPitch) ? Optional.of(this.fixedPitch) : Optional.empty();
     }
 
     public boolean canBeCutoff() {
@@ -60,12 +60,12 @@ public class MusicMetadata {
         return this.conditions;
     }
 
-    public void supplyConditions(Optional<JsonObject> conditions) {
+    public void supplyConditions(JsonObject conditions) {
         // Initialize
         this.conditions = new ArrayList<>();
 
         // Parse conditions
-        conditions.ifPresent(this::parseJsonConditions);
+        this.parseJsonConditions(conditions);
 
         // Add default if empty
         if (this.conditions.isEmpty()) {
@@ -86,7 +86,13 @@ public class MusicMetadata {
 
                 Class<? extends IMusicCondition> condition = conditions.get(key);
                 IMusicCondition parsed = new Gson().fromJson(element, condition);
-                this.conditions.add(parsed);
+                try {
+                    parsed.validate();
+                    this.conditions.add(parsed);
+                } catch (Exception e) {
+                    String message = "{} | {} - " + e.getMessage();
+                    MiTERenewed.LOGGER.warn(message, title, parsed.getIdentifier());
+                }
             } catch (Exception e) {
                 MiTERenewed.LOGGER.error(e.getMessage());
             }

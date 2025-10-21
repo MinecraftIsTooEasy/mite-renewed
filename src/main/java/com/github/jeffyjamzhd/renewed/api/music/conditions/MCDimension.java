@@ -20,6 +20,13 @@ public class MCDimension implements IMusicCondition {
     }
 
     @Override
+    public void validate() throws Exception {
+        if (this.dimension == null) {
+            throw new Exception("Dimension was not properly supplied!");
+        }
+    }
+
+    @Override
     public String getIdentifier() {
         return "miterenewed:dimension";
     }

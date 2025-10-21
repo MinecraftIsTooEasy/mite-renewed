@@ -34,7 +34,7 @@ public class MusicKeyDeserializer
             // Parse conditions, if any
             if (value.getAsJsonObject().has("conditions")) {
                 JsonObject conditionObject = (JsonObject) value.getAsJsonObject().get("conditions");
-                data.supplyConditions(Optional.of(conditionObject));
+                data.supplyConditions(conditionObject);
             }
             result.put(location, data);
         }

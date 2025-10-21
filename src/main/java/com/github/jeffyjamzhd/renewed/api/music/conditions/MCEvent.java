@@ -30,10 +30,16 @@ public class MCEvent implements IMusicCondition {
                 return true;
             if (rain && world.getRainStrength(0) > 0F)
                 return true;
-            if (thunder && world.getWeightedThunderStrength(0) > 0F)
-                return true;
+            return thunder && world.getWeightedThunderStrength(0) > 0F;
         }
         return false;
+    }
+
+    @Override
+    public void validate() throws Exception {
+        if (!bloodMoon && !harvestMoon && !blueMoon && !rain && !thunder) {
+            throw new Exception("No event defined for condition");
+        }
     }
 
     @Override

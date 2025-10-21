@@ -12,6 +12,12 @@ public interface IMusicCondition {
     boolean check(@Nullable World world, @Nullable EntityPlayer player);
 
     /**
+     * Checker method ran upon resource reload, validates condition metadata
+     */
+    default void validate() throws Exception {
+    }
+
+    /**
      * Returns identifier of this music condition
      */
     String getIdentifier();
