@@ -1,2 +1,7 @@
 accessWidener v2 named
 accessible field net/minecraft/GameSettings mc Lnet/minecraft/Minecraft;
+accessible field net/minecraft/Material durability F
+accessible method net/minecraft/EntityLivestock addWater (F)V
+accessible method net/minecraft/EntityCow getMilk ()I
+accessible method net/minecraft/EntityCow setMilk (I)V
+accessible field net/minecraft/ItemVessel standard_volume I
