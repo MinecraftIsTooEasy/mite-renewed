@@ -1,10 +1,11 @@
 package com.github.jeffyjamzhd.renewed.render.gui;
 
-import com.github.jeffyjamzhd.renewed.api.ISoundManager;
-import com.github.jeffyjamzhd.renewed.api.registry.TracklistRegistry;
+import com.github.jeffyjamzhd.renewed.api.music.MusicMetadata;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class GuiMusic extends Gui {
     private static final ResourceLocation background =
@@ -23,11 +24,12 @@ public class GuiMusic extends Gui {
         this.itemRenderer = new RenderItem();
     }
 
-    public void queueMusic(String trackName) {
-        this.displayTime = Minecraft.getSystemTime();
-        TracklistRegistry.Track track = TracklistRegistry.getTrackFromSimpleName(trackName);
-        this.artistName = track.artist();
-        this.trackName = track.trackName();
+    public void queueMusic(MusicMetadata metadata) {
+        if (!metadata.hidesDisplay()) {
+            this.displayTime = Minecraft.getSystemTime();
+            this.artistName = metadata.getArtist();
+            this.trackName = metadata.getTitle();
+        }
     }
 
     private void updateWindowScale() {
@@ -49,57 +51,79 @@ public class GuiMusic extends Gui {
     }
 
     public void updateDisplay() {
-        boolean isMusicPlaying = ((ISoundManager)Minecraft.getMinecraft().sndManager).mr$isMusicPlaying();
-        if (Minecraft.theMinecraft.gameSettings.gui_mode == 0 && !Main.is_MITE_DS && Minecraft.theMinecraft.gameSettings.musicVolume > 0F) {
-            if (!this.trackName.isBlank() && this.displayTime != 0L && isMusicPlaying) {
-                double anim = (Minecraft.getSystemTime() - this.displayTime) / 6000F;
-                if (!(anim < 0F) && !(anim > 1F)) {
-                    GL11.glPushMatrix();
-                    this.updateWindowScale();
-                    GL11.glDisable(GL11.GL_DEPTH_TEST);
-                    GL11.glDepthMask(false);
-                    double var3 = anim * (double) 2F;
-                    if (var3 > 1F) {
-                        var3 = 2F - var3;
-                    }
-
-                    var3 *= 4F;
-                    var3 = 1F - var3;
-                    if (var3 < 0F) {
-                        var3 = 0F;
-                    }
-
-                    var3 *= var3;
-                    var3 *= var3;
-                    int var5 = 0;
-                    int var6 = -(int) (var3 * 36F);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
-                    this.mc.getTextureManager().bindTexture(background);
-                    GL11.glDisable(GL11.GL_LIGHTING);
-
-                    // Draw
-                    this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
-                    this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 7, 0xFF44FF00, true);
-                    this.mc.fontRenderer.drawString(this.trackName, var5 + 30, var6 + 18, -1, true);
-
-                    RenderHelper.enableGUIStandardItemLighting();
-                    GL11.glEnable(32826);
-                    GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-                    GL11.glEnable(GL11.GL_LIGHTING);
-                    this.itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), Item.recordCat.getItemStackForStatsIcon(), var5 + 8, var6 + 8);
-                    GL11.glDisable(GL11.GL_LIGHTING);
-                    GL11.glDepthMask(true);
-                    GL11.glEnable(GL11.GL_DEPTH_TEST);
-                    GL11.glPopMatrix();
-                } else {
-                    this.displayTime = 0L;
-                }
-            }
-        } else if (Minecraft.theMinecraft.gameSettings.musicVolume <= 0F) {
+        if (Minecraft.theMinecraft.gameSettings.gui_mode != 0
+            || Main.is_MITE_DS
+            || this.mc.gameSettings.musicVolume <= 0F)
+        {
             this.displayTime = 0L;
             this.artistName = "";
             this.trackName = "";
+            return;
+        }
+
+        if (this.displayTime != 0L) {
+            double anim = (Minecraft.getSystemTime() - this.displayTime) / 6000F;
+            if (!(anim < 0F) && !(anim > 1F)) {
+                GL11.glPushMatrix();
+                this.updateWindowScale();
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDepthMask(false);
+                double var3 = anim * (double) 2F;
+                if (var3 > 1F) {
+                    var3 = 2F - var3;
+                }
+
+                var3 *= 6F;
+                var3 = 1F - var3;
+                if (var3 < 0F) {
+                    var3 = 0F;
+                }
+
+                var3 *= var3;
+                var3 *= var3;
+                int var5 = 0;
+                int var6 = -(int) (var3 * 36F);
+
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                this.mc.getTextureManager().bindTexture(background);
+
+                // Parse text
+                @SuppressWarnings("unchecked")
+                List<String> formattedTitle = this.mc.fontRenderer.listFormattedStringToWidth(this.trackName, 128);
+                this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
+
+                // Draw
+                if (formattedTitle.size() > 1) {
+                    double fadeFac = 1D - (Math.min(0.2D, Math.max(0, anim - 0.40D)) * 10D);
+                    int fadeComp = (int) (250 * fadeFac) << 24;
+
+                    if (anim >= 0.5) {
+                        this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 12, 0x0544FF00 - fadeComp, true);
+                    } else {
+                        this.mc.fontRenderer.drawString(formattedTitle.get(0), var5 + 30, var6 + 7, 0x05FFFFFF + fadeComp, true);
+                        this.mc.fontRenderer.drawString(formattedTitle.get(1), var5 + 30, var6 + 17, 0x05FFFFFF + fadeComp, true);
+                    }
+                } else {
+                    this.mc.fontRenderer.drawString(this.artistName, var5 + 30, var6 + 7, 0xFF44FF00, true);
+                    this.mc.fontRenderer.drawString(this.trackName, var5 + 30, var6 + 17, 0xFFFFFFFF, true);
+                }
+
+                RenderHelper.enableGUIStandardItemLighting();
+                GL11.glEnable(32826);
+                GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_BLEND);
+                this.itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), Item.recordCat.getItemStackForStatsIcon(), var5 + 8, var6 + 8);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDepthMask(true);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glPopMatrix();
+            } else {
+                this.displayTime = 0L;
+            }
         }
     }
 }

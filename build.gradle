@@ -34,6 +34,7 @@ configurations {
 loom {
     mergedMinecraftJar()
     setFML(new File("libs\\fml-3.4.2.jar"))
+    accessWidenerPath = file("src\\main\\resources\\renewed.accesswidener")
 
     mods {
         "MiTE-Renewed" {

@@ -24,6 +24,7 @@
 	"mixins": [
 		"miterenewed.mixins.json"
 	],
+	"accessWidener": "renewed.accesswidener",
 	"custom": {
 		"loom:injected_interfaces": {
 			"net/minecraft/Item": ["com/github/jeffyjamzhd/renewed/api/IItem"],

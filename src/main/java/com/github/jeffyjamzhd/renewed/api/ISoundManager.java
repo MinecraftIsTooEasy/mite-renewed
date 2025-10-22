@@ -1,20 +1,13 @@
 package com.github.jeffyjamzhd.renewed.api;
 
+import com.github.jeffyjamzhd.renewed.api.music.RenewedMusicEngine;
+
 public interface ISoundManager {
     /**
-     * Grabs music pitch
-     * @return Current music pitch
+     * @return MiTE Renewed's music engine
      */
-    default float mr$getMusicPitch() {
-        return 0F;
-    }
-
-    /**
-     * Grabs current music playing
-     * @return Current music title
-     */
-    default String mr$getMusicTitle() {
-        return "";
+    default RenewedMusicEngine mr$getMusicEngine() {
+        return null;
     }
 
     /**

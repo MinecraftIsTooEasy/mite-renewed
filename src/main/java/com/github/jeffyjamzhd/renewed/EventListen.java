@@ -2,7 +2,7 @@ package com.github.jeffyjamzhd.renewed;
 
 import com.github.jeffyjamzhd.renewed.api.event.CraftingSoundRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.event.HandpanRegisterEvent;
-import com.github.jeffyjamzhd.renewed.api.event.TracklistRegisterEvent;
+import com.github.jeffyjamzhd.renewed.api.event.MusicConditionRegisterEvent;
 import com.github.jeffyjamzhd.renewed.command.CommandTransform;
 import com.github.jeffyjamzhd.renewed.registry.*;
 import com.google.common.eventbus.Subscribe;
@@ -56,8 +56,8 @@ public class EventListen extends Handlers {
 
     public static void register() {
         EntityTracker.register(new RenewedTracker());
-        TracklistRegisterEvent.register(new RenewedTracklist());
         CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
         HandpanRegisterEvent.register(new RenewedHandpanRecipes());
+        MusicConditionRegisterEvent.register(new RenewedMusicConditions());
     }
 }
