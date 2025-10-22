@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.handler.RenewedFurnaceHandler;
+import moddedmite.rustedironcore.api.event.Handlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -30,13 +32,19 @@ public class MiTERenewed implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing MiTE Renewed!");
         ModResourceManager.addResourcePackDomain(RESOURCE_ID.substring(0, RESOURCE_ID.length()-1));
+
         MITEEvents.MITE_EVENT_BUS.register(new EventListen());
         EventListen.register();
+        this.registerHandlers();
     }
 
     @Override
     public Optional<ConfigRegistry> createConfig() {
         return Optional.of(new ConfigRegistry(CONFIG, RENEWED_CONFIG_FILE));
+    }
+
+    private void registerHandlers() {
+        Handlers.FurnaceUpdate.register(new RenewedFurnaceHandler());
     }
 
     public static String getVersionString() {
