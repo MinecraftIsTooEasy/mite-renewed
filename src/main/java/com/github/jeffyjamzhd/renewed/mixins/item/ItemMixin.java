@@ -38,9 +38,4 @@ public class ItemMixin implements IItem {
     private static ItemBucket replaceAllBuckets(int id, Material material, Material contents) {
         return new ItemRenewedBucket(id, material, contents);
     }
-
-    @Override
-    public int mr$getMaxStackSize() {
-        return this.maxStackSize;
-    }
 }

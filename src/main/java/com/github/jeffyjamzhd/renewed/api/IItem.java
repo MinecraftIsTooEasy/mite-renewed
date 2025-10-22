@@ -10,11 +10,4 @@ public interface IItem {
     default boolean mr$isAutoUse(ItemStack stack) {
         return false;
     }
-
-    /**
-     * Gets the max stack size
-     */
-    default int mr$getMaxStackSize() {
-        return 1;
-    }
 }

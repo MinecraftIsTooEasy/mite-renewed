@@ -177,15 +177,7 @@ public class ItemRenewedBucket extends ItemBucket implements IDamageableItem {
 
     @Override
     public int getItemStackLimit(int subtype, int damage) {
-        if (damage > 0) {
-            return 1;
-        }
-        return this.mr$getMaxStackSize();
-    }
-
-    @Override
-    public boolean hasQuality() {
-        return false;
+        return 1;
     }
 
     @Override
@@ -208,10 +200,6 @@ public class ItemRenewedBucket extends ItemBucket implements IDamageableItem {
             return 1;
         }
 
-        // Adamantium = infinite use
-        if (material == Material.adamantium) {
-            return 0;
-        }
         return (int) material.durability;
     }
 
@@ -219,12 +207,38 @@ public class ItemRenewedBucket extends ItemBucket implements IDamageableItem {
         return new ItemStack(to).setItemDamage(from.getItemDamage());
     }
 
+    /**
+     * {@code true} if this bucket can be damaged
+     */
     public boolean getsDamaged() {
         return this.getVesselMaterial() != Material.adamantium;
     }
 
+    /**
+     * {@code true} if holding lava
+     */
     public boolean isHoldingLava() {
         return this.getContents() == Material.lava;
+    }
+
+    @Override
+    public boolean isRepairable() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRepairCost() {
+        return false;
+    }
+
+    @Override
+    public Item getRepairItem() {
+        return null;
+    }
+
+    @Override
+    public Material getMaterialForRepairs() {
+        return null;
     }
 
     @Override
