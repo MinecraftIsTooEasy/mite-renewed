@@ -1,5 +1,6 @@
 # 0.2.6 Changelog
 ## [General]
++ Buckets now use a durability system instead of a random break chance system
 + Fixed auto use crashing when item becomes empty
 
 # 0.2.5 Changelog
