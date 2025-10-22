@@ -27,6 +27,7 @@
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",
     "gui.SlotCraftingMixin",
+    "item.ItemBlockMixin",
     "item.ItemBucketMilkMixin",
     "item.ItemManureMixin",
     "item.ItemMixin",
