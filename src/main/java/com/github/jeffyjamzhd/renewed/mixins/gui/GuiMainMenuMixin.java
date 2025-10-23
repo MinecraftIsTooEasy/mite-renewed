@@ -20,7 +20,6 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
     @Shadow private int field_92021_u_MITE;
     @Shadow private int field_92019_w;
     @Shadow private int field_92019_w_MITE;
-    @Shadow private int panoramaTimer;
     @Unique
     private static final ResourceLocation RENEWED_TEX = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/logo.png");
     private static final ResourceLocation RENEWED_TEX_CHINA = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/logo_zh.png");
@@ -95,7 +94,6 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
         if (snd.mr$isLoaded()) {
             if (!snd.mr$isMusicPlaying()) {
                 mc.sndManager.playRandomMusicIfReady();
-                snd.mr$setMusicPitch(.85F);
             }
         }
     }

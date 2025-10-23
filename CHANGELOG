@@ -1,7 +1,22 @@
 # 0.2.6 Changelog
 ## [General]
-+ Buckets now use a durability system instead of a random break chance system
++ Data driven music system overhaul. Additional details can be found in mod assets
++ Added 8 new songs from C418 that play under various conditions
++ Temporary config file system, allowing you to set music frequency
++ Most buckets now use a durability system instead of a random break chance system
++ Buckets now take damage when placing lava, and when lava buckets are used in smelting
++ Buckets now take damage when removing Cobblestone from them
++ Buckets no longer stack
++ Sandstone Oven has been renamed to Sandstone Furnace
++ Sandstone Furnace is now able to smelt ores like the Stone Furnace can
++ Charcoal is now hot enough to smelt ores
++ Charcoal burn time has been decreased to 4 items, and now only crafts into 2 torches
++ Leads can now be crafted with all slime types
 + Fixed auto use crashing when item becomes empty
+
+## [Development]
++ Added new hook for allowing damaged item in crafting recipes
++ Edited a few repair related methods/recipe parsing to fix some oversights in vanilla code
 
 # 0.2.5 Changelog
 ## [General]

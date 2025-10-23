@@ -19,7 +19,7 @@ public class MusicMetadata {
     @SerializedName("artist")
     private String artist;
     @SerializedName("fixed_pitch")
-    private float fixedPitch = Float.NaN;
+    private float fixedPitch;
     @SerializedName("hide_display")
     private boolean hideDisplay;
     @SerializedName("partial")
@@ -39,7 +39,7 @@ public class MusicMetadata {
     }
 
     public Optional<Float> getFixedPitch() {
-        return !Float.isNaN(this.fixedPitch) ? Optional.of(this.fixedPitch) : Optional.empty();
+        return this.fixedPitch > 0F ? Optional.of(this.fixedPitch) : Optional.empty();
     }
 
     public boolean canBeCutoff() {

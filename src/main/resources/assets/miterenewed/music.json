@@ -271,5 +271,86 @@
         "to" : 12500
       }
     }
+  },
+  "miterenewed:sunrise1.ogg" : {
+    "title": "Pr Department",
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 0,
+        "to" : 2000
+      }
+    }
+  },
+  "miterenewed:reminisce1.ogg" : {
+    "title": "Wooden Love",
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 12500,
+        "to" : 24000
+      }
+    }
+  },
+  "miterenewed:reminisce2.ogg" : {
+    "title": "For the Sake of Making Games",
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 12500,
+        "to" : 24000
+      }
+    }
+  },
+  "miterenewed:reminisce3.ogg" : {
+    "title": "Impostor Syndrome",
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 12500,
+        "to" : 24000
+      }
+    }
+  },
+  "miterenewed:reminisce4.ogg" : {
+    "title": "0x10c",
+    "artist": "C418",
+    "partial": true,
+    "fixed_pitch": 1.0,
+    "conditions" : {
+      "miterenewed:title": {}
+    }
+  },
+  "miterenewed:underworld1.ogg" : {
+    "title": "No Pressure",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "underworld"
+      }
+    }
+  },
+  "miterenewed:underworld2.ogg" : {
+    "title": "One Second Is Enough to Die For",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "underworld"
+      }
+    }
   }
 }

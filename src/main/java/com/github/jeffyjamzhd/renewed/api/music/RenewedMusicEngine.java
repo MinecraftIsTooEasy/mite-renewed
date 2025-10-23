@@ -162,9 +162,7 @@ public class RenewedMusicEngine
             this.soundSystem.setVolume(CHANNEL_NAME, this.getVolume());
             this.soundSystem.play(CHANNEL_NAME);
             this.setState(STATE_ACTIVE);
-
-            if (world != null)
-                this.simulateIntendedPitch(world.getAsWorldClient(), false);
+            this.simulateIntendedPitch(world != null ? world.getAsWorldClient() : null, false);
 
             MiTERenewed.LOGGER.info("Tried to play {}", entry.getSoundName());
 
@@ -352,10 +350,6 @@ public class RenewedMusicEngine
      * @return The intended music pitch
      */
     public void simulateIntendedPitch(WorldClient world, boolean interpolated) {
-        float offset = 0F;
-        float time = world.getAdjustedTimeOfDay();
-        float target = targetOffset(world);
-
         // Do not simulate if no track is playing
         if (track == null) {
             return;
@@ -367,6 +361,16 @@ public class RenewedMusicEngine
             this.setPitch(fixedPitch.get());
             return;
         }
+
+        // Do not simulate further if world is null
+        if (world == null) {
+            this.setPitch(1F);
+            return;
+        }
+
+        float offset = 0F;
+        float time = world.getAdjustedTimeOfDay();
+        float target = targetOffset(world);
 
         // Calculate time factor
         if (time > WorldClient.getTimeOfSunset() - 2000 || time < WorldClient.getTimeOfSunrise()) {
@@ -390,7 +394,7 @@ public class RenewedMusicEngine
         float intended = 1F - offset;
         if (interpolated) {
             float current = this.getPitch();
-            this.setPitch(current + (intended - current) * 0.02F);
+            this.setPitch(current + (intended - current) * 0.01F);
         } else {
             this.setPitch(intended);
         }
