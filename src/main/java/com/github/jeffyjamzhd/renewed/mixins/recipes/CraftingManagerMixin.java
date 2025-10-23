@@ -3,6 +3,7 @@ package com.github.jeffyjamzhd.renewed.mixins.recipes;
 import com.github.jeffyjamzhd.renewed.api.event.CraftingSoundRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.event.HandpanRegisterEvent;
 import net.minecraft.CraftingManager;
+import net.minecraft.Item;
 import net.minecraft.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +18,27 @@ public class CraftingManagerMixin {
         CraftingSoundRegisterEvent.init();
         HandpanRegisterEvent.init();
     }
+
+    @ModifyArg(method = "<init>", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/CraftingManager;addRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapedRecipes;",
+            ordinal = 7),
+            index = 1)
+    private Object[] modifyLeashRecipeSilk(Object[] array) {
+        array[array.length-1] = new ItemStack(Item.slimeBall, 1, Short.MAX_VALUE);
+        return array;
+    }
+
+    @ModifyArg(method = "<init>", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/CraftingManager;addRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapedRecipes;",
+            ordinal = 8),
+            index = 1)
+    private Object[] modifyLeashRecipeSinew(Object[] array) {
+        array[array.length-1] = new ItemStack(Item.slimeBall, 1, Short.MAX_VALUE);
+        return array;
+    }
+
 
     @ModifyArg(method = "<init>", at = @At(
             value = "INVOKE",
