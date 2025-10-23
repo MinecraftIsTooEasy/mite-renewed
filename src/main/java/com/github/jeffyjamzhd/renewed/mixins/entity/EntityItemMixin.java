@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins.entity;
 
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedFood;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,9 +17,7 @@ public abstract class EntityItemMixin extends Entity {
     }
 
     @Shadow public abstract ItemStack getEntityItem();
-
     @Shadow private float cooking_progress;
-
     @Shadow public abstract void setEntityItemStack(ItemStack par1ItemStack);
 
     @Inject(method = "attackEntityFrom", at = @At(value = "INVOKE", target = "Lnet/minecraft/Damage;isFireDamage()Z", ordinal = 1), cancellable = true)
@@ -70,5 +69,13 @@ public abstract class EntityItemMixin extends Entity {
                 cir.setReturnValue(result.setEntityWasAffected());
             }
         }
+    }
+
+    @ModifyExpressionValue(method = "convertItem", at = @At(
+            value = "NEW",
+            target = "net/minecraft/ItemStack",
+            ordinal = 0))
+    private ItemStack setDamageInItem(ItemStack original) {
+        return original.setItemDamage(this.getEntityItem().getItemDamage());
     }
 }

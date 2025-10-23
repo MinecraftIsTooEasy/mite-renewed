@@ -5,8 +5,6 @@ import net.minecraft.*;
 import java.util.List;
 
 public class ItemRenewedBucket extends ItemBucket implements IDamageableItem {
-
-
     public ItemRenewedBucket(int id, Material material, Material contents) {
         super(id, material, contents);
         this.setMaxDamage(getDurabilityForMaterial(material));
