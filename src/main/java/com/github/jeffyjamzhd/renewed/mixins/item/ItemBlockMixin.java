@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public class ItemBlockMixin {
     @ModifyConstant(method = "getBurnTime", constant = @Constant(intValue = 800, ordinal = 0))
     public int nerfTorchTime(int constant) {
-        return 100;
+        return 400;
     }
 }
