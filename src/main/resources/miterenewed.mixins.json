@@ -9,6 +9,7 @@
     "PlayerControllerMPMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockBreakInfoMixin",
+    "block.BlockFurnaceSandstoneMixin",
     "block.BlockMixin",
     "block.BlockWebMixin",
     "compat.emi.EmiFoodRecipeMixin",
