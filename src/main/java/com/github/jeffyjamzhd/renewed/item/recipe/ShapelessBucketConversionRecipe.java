@@ -50,8 +50,8 @@ public class ShapelessBucketConversionRecipe extends ShapelessRecipes {
 
                     bucket = current;
                     if (bucket.getItemDamage() + 1 >= bucket.getMaxDamage()) {
-                        // Too damaged!
-                        return Optional.empty();
+                        // Too damaged, return stone instead
+                        return Optional.of(new ItemStack(Block.cobblestone));
                     }
                 }
             }
@@ -64,7 +64,12 @@ public class ShapelessBucketConversionRecipe extends ShapelessRecipes {
         Optional<ItemStack> bucket = getBucket(inv);
         if (bucket.isPresent()) {
             ItemStack bucketStack = bucket.get();
-            ItemStack outputStack = new ItemStack(this.emptyBucket).setItemDamage(bucketStack.getItemDamage() + 1);
+            ItemStack outputStack;
+            if (bucketStack.isBlock()) {
+                outputStack = bucketStack;
+            } else {
+                outputStack = new ItemStack(this.emptyBucket).setItemDamage(bucketStack.getItemDamage() + 1);
+            }
             return new CraftingResult(outputStack, this.getUnmodifiedDifficulty(), this.getSkillsets(), this);
         }
         return super.getCraftingResult(inv);
