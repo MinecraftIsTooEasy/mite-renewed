@@ -10,7 +10,11 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemBucketMilk.class)
-public class ItemBucketMilkMixin implements IDamageableItem {
+abstract class ItemBucketMilkMixin extends ItemVessel implements IDamageableItem {
+    public ItemBucketMilkMixin(int id, Material vessel_material, Material contents_material, int standard_volume, int max_stack_size_empty, int max_stack_size_full, String texture) {
+        super(id, vessel_material, contents_material, standard_volume, max_stack_size_empty, max_stack_size_full, texture);
+    }
+
     @Inject(method = "<init>", at = @At("TAIL"))
     private void setDamage(int id, Material material, CallbackInfo ci) {
         ((ItemBucketMilk)(Object)(this)).setMaxDamage(ItemRenewedBucket.getDurabilityForMaterial(material));
@@ -35,5 +39,10 @@ public class ItemBucketMilkMixin implements IDamageableItem {
     @Override
     public int getRepairCost() {
         return 0;
+    }
+
+    @Override
+    public boolean mr$usableInCrafting(ItemStack stack) {
+        return true;
     }
 }

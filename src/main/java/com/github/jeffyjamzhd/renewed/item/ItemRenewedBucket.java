@@ -240,6 +240,11 @@ public class ItemRenewedBucket extends ItemBucket implements IDamageableItem {
     }
 
     @Override
+    public boolean mr$usableInCrafting(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public int getRepairCost() {
         return 0;
     }

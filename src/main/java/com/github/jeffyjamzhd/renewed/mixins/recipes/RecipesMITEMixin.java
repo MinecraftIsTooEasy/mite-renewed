@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RecipesMITE.class)
@@ -48,5 +49,13 @@ public class RecipesMITEMixin {
     private static Object[] modChickenSoup(Object[] original) {
         original[0] = new ItemStack(RenewedItems.cooked_poultry, 1, Short.MAX_VALUE);
         return original;
+    }
+
+    /**
+     * Removes vanilla bucket conversion recipes
+     */
+    @Redirect(method = "addCraftingRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/CraftingManager;addShapelessRecipes([[Ljava/lang/Object;IZZ)V", ordinal = 2))
+    private static void noVanillaBucketConversion(
+            CraftingManager instance, Object[][] i, int line, boolean item, boolean constant_items) {
     }
 }

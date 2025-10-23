@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemQuern;
+import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessBucketConversionRecipe;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.*;
 import net.xiaoyu233.fml.reload.event.RecipeRegistryEvent;
@@ -193,6 +194,7 @@ public class RenewedRecipes {
 
         // Iterate and add knife -> sharp bone recipes
         for (Item item : Item.itemsList) {
+            // Cutting recipes
             if (item instanceof ItemDagger) {
                 // Get item material and factor
                 float difficulty = item.getLowestCraftingDifficultyToProduce();
@@ -279,6 +281,18 @@ public class RenewedRecipes {
                 registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.WHITE), manager, item, Item.bone)
                         .setDamage(25)
                         .setDifficulty(250F);
+            }
+
+            // Bucket output recipes
+            if (item instanceof ItemBucket bucket && bucket.contains(Material.stone)) {
+                ShapelessBucketConversionRecipe recipe =
+                        new ShapelessBucketConversionRecipe(bucket.getVesselMaterial());
+
+                if (bucket.getVesselMaterial() == Material.adamantium) {
+                    recipe = recipe.doesntDamageItem();
+                }
+
+                manager.getRecipeList().add(recipe);
             }
         }
     }

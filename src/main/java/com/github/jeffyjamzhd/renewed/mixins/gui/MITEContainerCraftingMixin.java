@@ -41,18 +41,20 @@ public abstract class MITEContainerCraftingMixin extends Container {
             // Reset crafting if tool changes
             if (prevTool.isPresent() && currTool.isPresent())
                 if (currTool.get().itemID != prevTool.get().itemID)
-                    resetCrafting();
+                    mr$resetCrafting();
 
 
             // Reset crafting if types change
             if ((currentSpecial && !prevSpecial) || (!currentSpecial && prevSpecial))
-                resetCrafting();
+                mr$resetCrafting();
 
         }
     }
 
+
+
     @Unique
-    private void resetCrafting() {
+    private void mr$resetCrafting() {
         MITEContainerCrafting instance = (MITEContainerCrafting) (Object) this;
         this.player.clearCrafting();
         this.getCraftingSlot().mr$setInitialItemStack(this.player, instance);

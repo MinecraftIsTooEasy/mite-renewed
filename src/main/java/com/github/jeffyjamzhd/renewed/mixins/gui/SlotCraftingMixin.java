@@ -2,6 +2,8 @@ package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.github.jeffyjamzhd.renewed.api.ISlotCrafting;
 import com.github.jeffyjamzhd.renewed.api.sound.CraftingSoundHandler;
+import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
+import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessBucketConversionRecipe;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -12,6 +14,8 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Arrays;
 
 @Mixin(value = SlotCrafting.class, priority = 1200)
 public abstract class SlotCraftingMixin implements ISlotCrafting {
@@ -45,7 +49,11 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/InventoryCrafting;hasDamagedItem()Z")
     )
     private boolean modifyExpressionToolCraft(boolean original) {
-        return original && !(this.crafting_result.recipe instanceof ShapelessToolRecipe);
+        return original &&
+                !(this.crafting_result.recipe instanceof ShapelessToolRecipe) &&
+                !(this.crafting_result.recipe instanceof ShapelessBucketConversionRecipe) &&
+                Arrays.stream(this.crafting_result.recipe.getComponents())
+                        .noneMatch(stack -> stack.getItem() instanceof ItemRenewedBucket);
     }
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
