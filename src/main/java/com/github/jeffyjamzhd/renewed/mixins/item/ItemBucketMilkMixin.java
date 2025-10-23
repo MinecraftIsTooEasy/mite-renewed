@@ -42,6 +42,26 @@ abstract class ItemBucketMilkMixin extends ItemVessel implements IDamageableItem
     }
 
     @Override
+    public boolean isRepairable() {
+        return false;
+    }
+
+    @Override
+    public Item getRepairItem() {
+        return null;
+    }
+
+    @Override
+    public Material getMaterialForRepairs() {
+        return null;
+    }
+
+    @Override
+    public boolean hasRepairCost() {
+        return false;
+    }
+
+    @Override
     public boolean mr$usableInCrafting(ItemStack stack) {
         return true;
     }
