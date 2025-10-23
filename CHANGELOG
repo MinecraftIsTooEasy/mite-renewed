@@ -1,6 +1,6 @@
 # 0.2.6 Changelog
 ## [General]
-+ Data driven music system overhaul. Additional details can be found in mod assets
++ Data driven music system overhaul. Additional details can be found in mod assets file ``assets/miterenewed/MUSIC.md``
 + Added 8 new songs from C418 that play under various conditions
 + Temporary config file system, allowing you to set music frequency
 + Most buckets now use a durability system instead of a random break chance system
