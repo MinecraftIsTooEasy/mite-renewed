@@ -13,6 +13,7 @@ import net.minecraft.client.main.Main;
 import paulscode.sound.SoundSystem;
 
 import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
@@ -212,6 +213,7 @@ public class RenewedMusicEngine
     public void fadeOutCurrentTrack() {
         if (this.isLoaded && this.isPlaying()) {
             this.setState(STATE_TRANSITION);
+            this.setDelay();
             this.transitionOutForced = true;
         }
     }
@@ -519,7 +521,7 @@ public class RenewedMusicEngine
         MiTERenewed.LOGGER.info("Loading music from music definition...");
 
         try (
-                BufferedInputStream stream = (BufferedInputStream) manager.getResource(MUSIC_DEF).getInputStream();
+                InputStream stream = manager.getResource(MUSIC_DEF).getInputStream();
                 Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)
         ){
             this.music = gson.fromJson(reader, dataType);

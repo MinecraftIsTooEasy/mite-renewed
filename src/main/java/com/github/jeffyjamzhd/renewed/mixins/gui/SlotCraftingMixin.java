@@ -49,6 +49,8 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/InventoryCrafting;hasDamagedItem()Z")
     )
     private boolean modifyExpressionToolCraft(boolean original) {
+        if (this.crafting_result.recipe == null)
+            return original;
         return original &&
                 !(this.crafting_result.recipe instanceof ShapelessToolRecipe) &&
                 !(this.crafting_result.recipe instanceof ShapelessBucketConversionRecipe) &&
