@@ -219,7 +219,7 @@ public class RenewedRecipes {
                         .setDamage(60).setDifficulty(600F).scaleDifficulty(fac);
 
                 // Register planks knife -> handpan
-                registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks), new ItemStack(Block.planks))
+                registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks, 1, Short.MAX_VALUE), new ItemStack(Block.planks, 1, Short.MAX_VALUE))
                         .setDamage(50).setDifficulty(600F).scaleDifficulty(fac);
 
                 // Meat cutting recipes

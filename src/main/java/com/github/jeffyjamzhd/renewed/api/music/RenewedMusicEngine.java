@@ -295,10 +295,17 @@ public class RenewedMusicEngine
         sortMusic(world, player);
 
         if (checkContainer.isPresent()) {
+            // If sorted music list is empty, no
+            // way the current track fits
+            if (this.sortedMusic.isEmpty()) {
+                return false;
+            }
+
             // If our value is lower than the current highest,
             // we must transition
             int check = checkContainer.get();
-            if (check < this.sortedMusic.lastKey()) {
+            int lastKey = this.sortedMusic.lastKey();
+            if (check < lastKey) {
                 return false;
             }
 
