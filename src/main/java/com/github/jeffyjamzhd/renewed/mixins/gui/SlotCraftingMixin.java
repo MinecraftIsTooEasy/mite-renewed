@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @Mixin(value = SlotCrafting.class, priority = 1200)
 public abstract class SlotCraftingMixin implements ISlotCrafting {
@@ -55,6 +56,7 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
                 !(this.crafting_result.recipe instanceof ShapelessToolRecipe) &&
                 !(this.crafting_result.recipe instanceof ShapelessBucketConversionRecipe) &&
                 Arrays.stream(this.crafting_result.recipe.getComponents())
+                        .filter(Objects::nonNull)
                         .noneMatch(stack -> stack.getItem() instanceof ItemRenewedBucket);
     }
 

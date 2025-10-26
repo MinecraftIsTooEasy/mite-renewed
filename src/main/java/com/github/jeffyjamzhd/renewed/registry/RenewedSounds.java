@@ -13,16 +13,6 @@ public class RenewedSounds {
     public static final ResourceLocation CRAFTING_WOOD = new ResourceLocation(RESOURCE_ID + "crafting.wood");
     public static final ResourceLocation CRAFTING_CHOP = new ResourceLocation(RESOURCE_ID + "crafting.chop");
 
-    public static final ResourceLocation MUSIC_CHRIS = new ResourceLocation(RESOURCE_ID + "renewed1");
-    public static final ResourceLocation MUSIC_ELEVEN = new ResourceLocation(RESOURCE_ID + "renewed2");
-    public static final ResourceLocation MUSIC_EXCUSE = new ResourceLocation(RESOURCE_ID + "renewed3");
-    public static final ResourceLocation MUSIC_FLAKE = new ResourceLocation(RESOURCE_ID + "renewed4");
-    public static final ResourceLocation MUSIC_PEANUTS = new ResourceLocation(RESOURCE_ID + "renewed5");
-    public static final ResourceLocation MUSIC_MOOG_CITY = new ResourceLocation(RESOURCE_ID + "renewed6");
-    public static final ResourceLocation MUSIC_MOOG_CITY_2 = new ResourceLocation(RESOURCE_ID + "renewed7");
-    public static final ResourceLocation MUSIC_EQUINOXE = new ResourceLocation(RESOURCE_ID + "renewed8");
-    public static final ResourceLocation MUSIC_CALM4 = new ResourceLocation(RESOURCE_ID + "magnetic");
-
     public static void register(SoundsRegisterEvent event) {
         LOGGER.info("Registering sounds!");
         event.registerSound(HANDPAN_SPLASH);
@@ -30,15 +20,5 @@ public class RenewedSounds {
         event.registerSound(CRAFTING_QUERN);
         event.registerSound(CRAFTING_WOOD);
         event.registerSound(CRAFTING_CHOP);
-
-//        event.registerMusic(MUSIC_EXCUSE);
-//        event.registerMusic(MUSIC_CHRIS);
-//        event.registerMusic(MUSIC_ELEVEN);
-//        event.registerMusic(MUSIC_FLAKE);
-//        event.registerMusic(MUSIC_PEANUTS);
-//        event.registerMusic(MUSIC_MOOG_CITY);
-//        event.registerMusic(MUSIC_MOOG_CITY_2);
-//        event.registerMusic(MUSIC_EQUINOXE);
-//        event.registerMusic(MUSIC_CALM4);
     }
 }

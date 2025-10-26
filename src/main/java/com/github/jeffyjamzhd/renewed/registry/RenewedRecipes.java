@@ -285,14 +285,8 @@ public class RenewedRecipes {
 
             // Bucket output recipes
             if (item instanceof ItemBucket bucket && bucket.contains(Material.stone)) {
-                ShapelessBucketConversionRecipe recipe =
-                        new ShapelessBucketConversionRecipe(bucket.getVesselMaterial());
-
-                if (bucket.getVesselMaterial() == Material.adamantium) {
-                    recipe = recipe.doesntDamageItem();
-                }
-
-                manager.getRecipeList().add(recipe);
+                manager.getRecipeList()
+                        .add(new ShapelessBucketConversionRecipe(bucket.getVesselMaterial()));
             }
         }
     }

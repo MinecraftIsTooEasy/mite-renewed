@@ -8,13 +8,13 @@ import static com.github.jeffyjamzhd.renewed.api.sound.CraftingSound.basicSound;
 import static com.github.jeffyjamzhd.renewed.api.sound.CraftingSound.metalSound;
 
 import com.github.jeffyjamzhd.renewed.api.event.listener.CraftingSoundRegisterListener;
+import com.github.jeffyjamzhd.renewed.item.ItemQuern;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedFood;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
-import net.minecraft.Block;
-import net.minecraft.Item;
-import net.minecraft.ItemFood;
-import net.minecraft.Material;
+import net.minecraft.*;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class RenewedCraftingSounds implements CraftingSoundRegisterListener {
@@ -23,11 +23,12 @@ public class RenewedCraftingSounds implements CraftingSoundRegisterListener {
 
     @Override
     public void register(CraftingSoundRegistry register) {
+        // Wood sounds
         register.registerSafe(CraftingSound.of(Material.wood, (output, recipe, world, player) -> {
             // Wood edge cases
             if (output.itemID == Block.workbench.blockID && output.getItemSubtype() < 5)
                 return;
-            if (output.getItem() instanceof ItemFood || output.getItem() instanceof ItemRenewedFood)
+            if (output.getItem() instanceof ItemVessel || output.getItem() instanceof ItemRenewedFood)
                 return;
 
             // Wood alternates
@@ -40,6 +41,21 @@ public class RenewedCraftingSounds implements CraftingSoundRegisterListener {
             else
                 world.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "crafting.wood", .5F, 1.1F - (rand.nextFloat() * .2F));
         }));
+
+        // Quern sounds
+        register.registerSafe(CraftingSound.of(Item.flour.itemID,
+                (output, recipe, world, player) ->
+                playSoundIfQuern(world, player, recipe)));
+        register.registerSafe(CraftingSound.of(RenewedItems.biomass.itemID,
+                (output, recipe, world, player) ->
+                        playSoundIfQuern(world, player, recipe)));
+        register.registerSafe(CraftingSound.of(Item.dyePowder.itemID,
+                (output, recipe, world, player) ->
+                playSoundIfQuern(world, player, recipe)));
+        register.registerSafe(CraftingSound.of(Item.sugar.itemID,
+                (output, recipe, world, player) ->
+                playSoundIfQuern(world, player, recipe)));
+
         register.registerSafe(CraftingSound.of(Material.meat, (output, recipe, world, player) -> {
             if (recipe instanceof ShapelessToolRecipe) {
                 world.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "crafting.chop", .5F, 1.2F - (rand.nextFloat() * .2F));
@@ -60,5 +76,17 @@ public class RenewedCraftingSounds implements CraftingSoundRegisterListener {
 
         for (Material metal : metals)
             register.registerSafe(CraftingSound.of(metal, metalSound(metal)));
+    }
+
+    private void playSoundIfQuern(World world, EntityPlayer player, IRecipe recipe) {
+        if (hasQuern(recipe)) {
+            world.playSoundAtEntity(player, MiTERenewed.RESOURCE_ID + "crafting.quern", .5F, 1.1F - (rand.nextFloat() * .2F));
+        }
+    }
+
+    private boolean hasQuern(IRecipe recipe) {
+        return Arrays.stream(recipe.getComponents())
+                .filter(Objects::nonNull)
+                .anyMatch(stack -> stack.getItem() instanceof ItemQuern);
     }
 }
