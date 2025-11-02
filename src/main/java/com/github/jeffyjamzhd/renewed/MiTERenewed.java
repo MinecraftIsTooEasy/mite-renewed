@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed;
 
 import com.github.jeffyjamzhd.renewed.handler.RenewedFurnaceHandler;
+import com.github.jeffyjamzhd.renewed.registry.RenewedItemProperties;
 import moddedmite.rustedironcore.api.event.Handlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;
@@ -45,6 +46,7 @@ public class MiTERenewed implements ModInitializer {
 
     private void registerHandlers() {
         Handlers.FurnaceUpdate.register(new RenewedFurnaceHandler());
+        Handlers.PropertiesRegistry.register(new RenewedItemProperties());
     }
 
     public static String getVersionString() {
