@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemQuern;
+import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessBucketConversionRecipe;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
 import net.minecraft.*;
@@ -284,7 +285,7 @@ public class RenewedRecipes {
             }
 
             // Bucket output recipes
-            if (item instanceof ItemBucket bucket && bucket.contains(Material.stone)) {
+            if (item instanceof ItemBucket bucket && bucket.contains(Material.stone) && bucket.getEmptyVessel() instanceof ItemRenewedBucket) {
                 manager.getRecipeList()
                         .add(new ShapelessBucketConversionRecipe(bucket.getVesselMaterial()));
             }
