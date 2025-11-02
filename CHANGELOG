@@ -1,3 +1,10 @@
+# Experimental
++ Increased stack size for ores (4 -> 8)
++ Increased stack size for glass (4 -> 8)
++ Increased stack size for bookshelves (4 -> 8)
++ Increased stack size for TNT (4 -> 8)
++ Increased stack size for wood slabs (8 -> 16)
+
 # 0.2.6.3 Changelog
 + Added unused quern crafting sounds
 + Partly broken items in the grid when attempting to craft something will no longer cause a crash
