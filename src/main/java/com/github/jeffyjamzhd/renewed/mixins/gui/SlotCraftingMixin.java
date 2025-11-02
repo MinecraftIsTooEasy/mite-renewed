@@ -75,6 +75,18 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
             CraftingSoundHandler.onCraft(stack, this.crafting_result.recipe, player.getWorld(), player);
     }
 
+    @Inject(method = "onPickupFromSlot", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/ItemStack;getItem()Lnet/minecraft/Item;",
+            ordinal = 3))
+    private void setDamageOnVesselItem(
+            EntityPlayer player, ItemStack stack, CallbackInfo ci,
+            @Local(ordinal = 1) ItemStack slotStack,
+            @Local(ordinal = 2) ItemStack newStack) {
+        newStack.setItemDamage(slotStack.getItemDamage());
+    }
+
+
     @Override
     public void mr$setInitialItemStack(EntityPlayer player, MITEContainerCrafting container) {
         setInitialItemStack(player, container);
