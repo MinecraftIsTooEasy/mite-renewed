@@ -104,6 +104,15 @@ public class RenewedItems {
         registerItem(registry, "handpan", "tool/handpan", handpan);
         registerItem(registry, "quern", "tool/quern", quern);
         registerItem(registry, "biomass", "biomass", biomass);
+
+        LOGGER.info("Modifying vanilla items!");
+        Item.copperNugget.setXPReward(2);
+        Item.silverNugget.setXPReward(3);
+        Item.ironNugget.setXPReward(2);
+        Item.goldNugget.setXPReward(4);
+        Item.ancientMetalNugget.setXPReward(4);
+        Item.mithrilNugget.setXPReward(8);
+        Item.adamantiumNugget.setXPReward(12);
     }
 
     /**
