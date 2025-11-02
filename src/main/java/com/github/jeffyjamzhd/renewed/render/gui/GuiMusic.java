@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.music.MusicMetadata;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.List;
 
@@ -66,7 +67,13 @@ public class GuiMusic extends Gui {
             if (!(anim < 0F) && !(anim > 1F)) {
                 GL11.glPushMatrix();
                 this.updateWindowScale();
+                RenderHelper.disableStandardItemLighting();
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glColor4f(1F, 1F, 1F, 1F);
+
                 GL11.glDepthMask(false);
                 double var3 = anim * (double) 2F;
                 if (var3 > 1F) {
@@ -84,18 +91,18 @@ public class GuiMusic extends Gui {
                 int var5 = 0;
                 int var6 = -(int) (var3 * 36F);
 
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                // Draw background
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_LIGHTING);
                 this.mc.getTextureManager().bindTexture(background);
+                this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
 
                 // Parse text
                 @SuppressWarnings("unchecked")
                 List<String> formattedTitle = this.mc.fontRenderer.listFormattedStringToWidth(this.trackName, 128);
-                this.drawTexturedModalRect(var5, var6, 96, 202, 160, 32);
+
 
                 // Draw
+                GL11.glEnable(GL11.GL_BLEND);
                 if (formattedTitle.size() > 1) {
                     double fadeFac = 1D - (Math.min(0.2D, Math.max(0, anim - 0.40D)) * 10D);
                     int fadeComp = (int) (250 * fadeFac) << 24;
@@ -112,11 +119,12 @@ public class GuiMusic extends Gui {
                 }
 
                 RenderHelper.enableGUIStandardItemLighting();
-                GL11.glEnable(32826);
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                GL11.glDisable(GL11.GL_BLEND);
                 GL11.glEnable(GL11.GL_COLOR_MATERIAL);
                 GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_BLEND);
                 this.itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), Item.recordCat.getItemStackForStatsIcon(), var5 + 8, var6 + 8);
+                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(true);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
