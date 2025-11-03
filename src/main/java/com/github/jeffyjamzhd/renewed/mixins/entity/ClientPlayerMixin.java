@@ -52,7 +52,7 @@ public abstract class ClientPlayerMixin extends EntityPlayer {
         float levelBonus = this.getLevelModifier(EnumLevelBonus.CRAFTING);
         float workbenchBonus = this.mr$getWorkbenchBonus();
         float value = (period / (1F + levelBonus + workbenchBonus + modifier));
-        return (int) Math.max(value, 1F);
+        return (int) Math.max(value, 2F);
     }
 
     @Unique
