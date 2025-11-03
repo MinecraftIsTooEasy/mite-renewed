@@ -51,7 +51,19 @@ public abstract class MITEContainerCraftingMixin extends Container {
         }
     }
 
+    @Inject(method = "onUpdate", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/EntityClientPlayerMP;hasFoodEnergy()Z",
+            ordinal = 1))
+    private void getActualCraftPeriod(CallbackInfo ci) {
+        if (this.current_crafting_result == null || this.getCraftingSlot().getStack() == null)
+            return;
 
+        ItemStack output = this.getCraftingSlot().getStack();
+        float adjusted = this.current_crafting_result.getQualityAdjustedDifficulty(output.getQuality());
+        EntityClientPlayerMP player = (EntityClientPlayerMP) this.player;
+        player.crafting_period = player.getCraftingPeriod(adjusted);
+    }
 
     @Unique
     private void mr$resetCrafting() {
