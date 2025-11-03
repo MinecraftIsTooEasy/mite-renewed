@@ -63,7 +63,8 @@
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
-    "render.model.ModelBipedMixin"
+    "render.model.ModelBipedMixin",
+    "entity.ClientPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
