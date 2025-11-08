@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EmiFoodRecipe.class)
 public class EmiFoodRecipeMixin {
-    @Mutable @Shadow @Final private int hunger;
-    @Mutable @Shadow @Final private int saturationModifier;
+    @Mutable @Shadow @Final private int nutrition;
+    @Mutable @Shadow @Final private int saturation;
     @Mutable @Shadow @Final private int phytonutrients;
     @Mutable @Shadow @Final private int protein;
     @Mutable @Shadow @Final private int sugar;
@@ -25,8 +25,8 @@ public class EmiFoodRecipeMixin {
     private void fixSubitemFood(ItemStack foodStack, CallbackInfo ci) {
         if (foodStack.getItem() instanceof ItemRenewedFood item) {
             int sub = foodStack.getItemSubtype();
-            this.hunger = item.getNutritionSubtype(sub);
-            this.saturationModifier = item.getSatiationSubtype(null, sub);
+            this.nutrition = item.getNutritionSubtype(sub);
+            this.saturation = item.getSatiationSubtype(null, sub);
             this.phytonutrients = item.getPhytonutrientsSubtype(sub) / 8000;
             this.protein = item.getProteinSubtype(sub) / 8000;
             this.sugar = item.getSugarSubtype(sub) / 8000;
