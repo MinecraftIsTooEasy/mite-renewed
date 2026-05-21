@@ -1,5 +1,5 @@
 plugins {
-    id 'fml-loom' version '0.1.local'
+    id 'fml-loom' version '0.1'
     id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "8.1.0"
 }
@@ -25,23 +25,35 @@ repositories {
         name = "MixinSquared"
         url = "https://maven.bawnorton.com/releases"
     }
+    maven {
+        name = "ModdedMITE"
+        url = "https://maven.limingzxc.top/repository/maven-public/"
+    }
 }
 
 configurations {
     implementation.extendsFrom shadow
+    fml
 }
 
-loom {
-    mergedMinecraftJar()
-    setFML(new File("libs\\fml-3.4.2.jar"))
-    accessWidenerPath = file("src\\main\\resources\\renewed.accesswidener")
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    mods {
-        "MiTE-Renewed" {
-            sourceSet sourceSets.main
-        }
-    }
+    implementation "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
+    implementation "com.github.MinecraftIsTooEasy:Gson:2.10.1"
 
+    fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+    implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+
+    shadow(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+
+    implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+    implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
+    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0"
+    implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
+    //implementation "com.github.MinecraftIsTooEasy:OhMyCommands:2.1"
+    //implementation fileTree(dir: "libs", include: "**.jar")
 }
 
 runClient{
@@ -53,24 +65,28 @@ runServer{
     dependsOn(jar)
 }
 
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.fmlMCPMappings()
-
-    shadow(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
-    implementation fileTree(dir: "libs", include: "**.jar")
-
-    implementation("it.unimi.dsi:fastutil:8.5.12")
-    implementation("com.google.code.gson:gson:2.11.0")
-    implementation files(loom.getFML().toPath())
-}
-
 shadowJar {
     configurations = [project.configurations.shadow]
     exclude("fabric.*")
     relocate("com.bawnorton.mixinsquared", "com.github.jeffyjamzhd.renewed.mixinsquared")
     mergeServiceFiles()
     archiveFileName = "${archives_base_name} [${version}].jar"
+}
+
+def fmlResolvedFile = configurations.fml.files.iterator().next()
+
+loom {
+    mergedMinecraftJar()
+    accessWidenerPath = file("src\\main\\resources\\renewed.accesswidener")
+    setFML(fmlResolvedFile)
+    dependencies.add("mappings", fmlMCPMappings())
+
+    mods {
+        "MiTE-Renewed" {
+            sourceSet sourceSets.main
+        }
+    }
+
 }
 
 processResources {
@@ -93,8 +109,13 @@ java {
 }
 
 jar {
-    enabled = false
     dependsOn(shadowJar)
+    enabled = false
+
+    inputs.property "archivesName", project.archives_base_name
+    from("LICENSE") {
+        rename { "${it}_${inputs.properties.archivesName}"}
+    }
 }
 
 sourcesJar {
