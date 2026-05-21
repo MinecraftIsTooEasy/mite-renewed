@@ -20,6 +20,8 @@ public class ItemMixin implements IItem {
 
     @Inject(method = "getBurnTime", at = @At("HEAD"), cancellable = true)
     private void getBurnTimeRenewed(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+        if (stack == null) return;
+
         if (stack.getItem() == Item.feather)
             cir.setReturnValue(50);
     }

@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ItemCoalMixin {
     @ModifyReturnValue(method = "getBurnTime", at = @At("RETURN"))
     private int getBurnTime(int original, @Local(argsOnly = true) ItemStack stack) {
+        if (stack == null) return original;
         if (stack.getItemSubtype() == 1) {
             return 800;
         }
