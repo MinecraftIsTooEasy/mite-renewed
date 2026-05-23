@@ -1,9 +1,11 @@
 package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.bawnorton.mixinsquared.TargetHandler;
+import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import com.llamalad7.mixinextras.sugar.Local;
+import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
 import moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.fabricmc.api.EnvType;
@@ -43,6 +45,21 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
     private void addButtons(CallbackInfo ci) {
         this.buttonList.add(this.buttonDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 188, 20, getNameOfDifficulty()));
         this.buttonList.add(this.buttonDifficultyConfig = new GuiButton(51, this.width / 2 + 84, this.height / 5 + 50, 20, 20, "C"));
+    }
+
+    @TargetHandler(
+            mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
+            name = "updateButtonVisibilityNAbility"
+    )
+    @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
+    private void updateDifficultyButtons(CallbackInfo ci) {
+        this.buttonDifficulty.drawButton = false;
+        this.buttonDifficultyConfig.drawButton = false;
+
+        if (((IGuiCreateWorld) this).bgs$getCurrentTab() == 100) {
+            this.buttonDifficulty.drawButton = true;
+            this.buttonDifficultyConfig.drawButton = true;
+        }
     }
 
     @Inject(method = "updateButtonText", at = @At("TAIL"))

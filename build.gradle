@@ -53,7 +53,7 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0"
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
     // implementation "com.github.MinecraftIsTooEasy:BetterGameSetting:1.3.0.1"
-    implementation files("libs\\BetterGameSetting-1.3.0.1.jar")
+    implementation files("libs\\[Dev]BetterGameSetting-1.3.0.1.jar")
 }
 
 runClient{
