@@ -3,7 +3,6 @@ package com.github.jeffyjamzhd.renewed.mixins.gui;
 import net.minecraft.GuiButton;
 import net.minecraft.GuiCreateWorld;
 import net.minecraft.GuiScreen;
-import net.minecraft.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,7 +11,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GuiCreateWorld.class)
+/**
+ * Unused
+ */
+@Mixin(value = GuiCreateWorld.class, priority = 500)
 abstract public class GuiCreateWorldMixin extends GuiScreen {
     @Shadow
     private boolean moreOptions;
@@ -38,9 +40,9 @@ abstract public class GuiCreateWorldMixin extends GuiScreen {
 
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiCreateWorld;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 7))
     private void drawDifficultyText(int par1, int par2, float par3, CallbackInfo ci) {
-        this.drawString(this.fontRenderer, "An uncompromising challenge, the world", this.width / 2 + 2, BUTTON_GM_Y + 24, 10526880);
-        this.drawString(this.fontRenderer, "is cruel and survival is a challenge.", this.width / 2 + 2, BUTTON_GM_Y + 36, 10526880);
-        this.drawString(this.fontRenderer, "This is MiTE's base difficulty.", this.width / 2 + 2, BUTTON_GM_Y + 48, 10526880);
+        this.drawString(this.fontRenderer, "The intended difficulty of MiTE.", this.width / 2 + 2, BUTTON_GM_Y + 24, 10526880);
+        this.drawString(this.fontRenderer, "A devious blend of survival and combat", this.width / 2 + 2, BUTTON_GM_Y + 36, 10526880);
+        this.drawString(this.fontRenderer, "challenges. Prepare to die!", this.width / 2 + 2, BUTTON_GM_Y + 48, 10526880);
     }
 
     // Modify gamemode button

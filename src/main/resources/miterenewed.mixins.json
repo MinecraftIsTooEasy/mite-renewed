@@ -26,7 +26,7 @@
     "entity.FoodStatsMixin",
     "entity.tile.TileEntityFurnaceMixin",
     "gui.GuiContainerMixin",
-    "gui.GuiCreateWorldMixin",
+    //"gui.GuiCreateWorldMixin",
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",
     "gui.SlotCraftingMixin",
@@ -51,6 +51,7 @@
   ],
   "client": [
     "NetClientHandlerMixin",
+    "gui.GuiCreateWorldBGSMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
