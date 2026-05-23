@@ -5,14 +5,28 @@ import net.minecraft.ResourceLocation;
 import java.util.HashMap;
 
 public class DifficultyProvider {
-    static final HashMap<Class<? extends DifficultyParameter<?>>, Object> defaults = new HashMap<>();
+    public static final HashMap<ResourceLocation, DifficultyParameter<?>> identifierToParam = new HashMap<>();
+    static final HashMap<DifficultyParameter<?>, Object> defaults = new HashMap<>();
 
-    public static <T> void setDefaultForParameter(Class<? extends DifficultyParameter<?>> param, T value) {
-        if (defaults.containsKey(param)) {
-            throw new IllegalArgumentException("Parameter %s already set.".formatted(param.toString()));
+    /**
+     * Registers provided difficulty parameter with a default value
+     */
+    public static <T> DifficultyParameter<T> registerParameter(DifficultyParameter<T> parameter, T defaultValue) {
+        if (identifierToParam.containsKey(parameter.id)) {
+            throw new IllegalArgumentException("Parameter %s has already been registered".formatted(parameter.toString()));
         }
 
-        defaults.put(param, value);
+        identifierToParam.put(parameter.id, parameter);
+        defaults.put(parameter, defaultValue);
+
+        return parameter;
+    }
+
+    public static DifficultyParameter<?> getParameter(ResourceLocation location) {
+        if (!identifierToParam.containsKey(location)) {
+            throw new IllegalArgumentException("Parameter %s is not registered".formatted(location.toString()));
+        }
+        return identifierToParam.get(location);
     }
 
     public static ConfigurationBuilder getBuilder(ResourceLocation id) {
@@ -24,8 +38,8 @@ public class DifficultyProvider {
     }
 
     public static class ConfigurationBuilder {
-        private ResourceLocation id;
-        private HashMap<Class<? extends DifficultyParameter<?>>, Object> params = new HashMap<>();
+        private final ResourceLocation id;
+        private final HashMap<ResourceLocation, Object> params = new HashMap<>();
 
         private ConfigurationBuilder(ResourceLocation id) {
             this.id = id;
@@ -36,9 +50,15 @@ public class DifficultyProvider {
             return this;
         }
 
-        public <T> ConfigurationBuilder withParam(Class<? extends DifficultyParameter<T>> param, T value) {
-            params.put(param, value);
+        public <T> ConfigurationBuilder withParam(ResourceLocation paramID, T value) {
+            if (!identifierToParam.containsKey(paramID)) {
+                throw new IllegalArgumentException("Parameter %s has not been registered".formatted(paramID.toString()));
+            }
+
+            params.put(paramID, value);
             return this;
         }
+
+
     }
 }
