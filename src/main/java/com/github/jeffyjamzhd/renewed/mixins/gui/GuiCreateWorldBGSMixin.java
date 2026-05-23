@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -10,10 +11,7 @@ import moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.GuiButton;
-import net.minecraft.GuiCreateWorld;
-import net.minecraft.GuiScreen;
-import net.minecraft.I18n;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -66,6 +64,11 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
     private void updateDifficultyButtonText(CallbackInfo ci) {
         if (this.buttonDifficulty != null)
             this.buttonDifficulty.displayString = getNameOfDifficulty();
+    }
+
+    @Inject(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldSettings;func_82750_a(Ljava/lang/String;)Lnet/minecraft/WorldSettings;"))
+    private void supplyDifficultyObject(GuiButton btn, CallbackInfo ci, @Local WorldSettings settings) {
+        ((IWorldSettings) settings).mr$setDifficulty(getSelectedDifficulty());
     }
 
     @Inject(method = "actionPerformed", at = @At("TAIL"))

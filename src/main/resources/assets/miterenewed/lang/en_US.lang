@@ -6,6 +6,8 @@ difficulty.miterenewed.legendary.name=Legendary
 difficulty.miterenewed.legendary.desc=Greater survival pressure, harder mechanics, and tougher mobs; only for the most skilled players!
 difficulty.miterenewed.hard.name=Hard
 difficulty.miterenewed.hard.desc=Less survival pressure and challenge, recommended for a more casual enjoyment of MiTE!
+difficulty.miterenewed.custom.name=Custom
+difficulty.miterenewed.custom.desc=A custom difficulty configuration!
 
 item.sharp_bone.name=Sharp Bone
 item.quern.name=Quern

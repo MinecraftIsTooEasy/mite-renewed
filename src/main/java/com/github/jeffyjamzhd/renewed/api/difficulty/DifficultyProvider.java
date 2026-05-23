@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.api.difficulty;
 
+import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import net.minecraft.ResourceLocation;
 
 import java.util.HashMap;
@@ -56,7 +57,9 @@ public class DifficultyProvider {
         }
 
         public Difficulty build() {
-            return new Difficulty(this.id, this.params);
+            Difficulty difficulty = new Difficulty(this.id, this.params);
+            RenewedDifficulties.LIST.add(difficulty);
+            return difficulty;
         }
 
     }

@@ -55,7 +55,8 @@
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
-    "render.model.ModelBipedMixin"
+    "render.model.ModelBipedMixin",
+    "world.WorldSettingsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
