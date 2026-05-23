@@ -20,7 +20,11 @@ public class Difficulty {
     }
 
     public String getLocalizedName() {
-        return I18n.getString("difficulty." + this.getTranslationKey() + ".name");
+        return I18n.getString("difficulty.%s.name".formatted(this.getTranslationKey()));
+    }
+
+    public String getLocalizedDescription() {
+        return I18n.getString("difficulty.%s.desc".formatted(this.getTranslationKey()));
     }
 
     public String getTranslationKey() {

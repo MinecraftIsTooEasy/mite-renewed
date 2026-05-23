@@ -12,13 +12,17 @@ import java.util.ArrayList;
 public class RenewedDifficulties {
     public static final ArrayList<Difficulty> LIST = new ArrayList<>();
 
+    public static Difficulty HARD;
+    public static Difficulty EXTREME;
+    public static Difficulty LEGENDARY;
+
     public static DifficultyParameter<Integer> MINIMUM_HEALTH;
     public static DifficultyParameter<Integer> MAXIMUM_HEALTH;
     public static DifficultyParameter<Integer> MINIMUM_HUNGER;
     public static DifficultyParameter<Integer> MAXIMUM_HUNGER;
 
     private static ResourceLocation loc(String str) {
-        return new ResourceLocation(MiTERenewed.RESOURCE_ID, str);
+        return new ResourceLocation(MiTERenewed.RESOURCE_ID + str);
     }
 
     public static void init() {}
@@ -28,5 +32,21 @@ public class RenewedDifficulties {
         MAXIMUM_HEALTH = DifficultyProvider.registerParameter(new DPInteger(loc( "PlayerMaximumHealth"), 1, 10), 10);
         MINIMUM_HUNGER = DifficultyProvider.registerParameter(new DPInteger(loc( "PlayerMinimumHunger"), 1, 10), 3);
         MAXIMUM_HUNGER = DifficultyProvider.registerParameter(new DPInteger(loc( "PlayerMaximumHunger"), 1, 10), 10);
+
+        EXTREME = DifficultyProvider.getBuilder(loc("extreme"))
+                .withBase(DifficultyProvider.defaults)
+                .build();
+
+        LEGENDARY = DifficultyProvider.getBuilder(loc("legendary"))
+                .withBase(DifficultyProvider.defaults)
+                .withParam(MAXIMUM_HEALTH, 8)
+                .withParam(MAXIMUM_HUNGER, 8)
+                .build();
+
+        HARD = DifficultyProvider.getBuilder(loc("hard"))
+                .withBase(DifficultyProvider.defaults)
+                .withParam(MINIMUM_HEALTH, 5)
+                .withParam(MINIMUM_HUNGER, 5)
+                .build();
     }
 }

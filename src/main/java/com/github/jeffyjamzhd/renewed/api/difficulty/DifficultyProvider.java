@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class DifficultyProvider {
     public static final HashMap<ResourceLocation, DifficultyParameter<?>> identifierToParam = new HashMap<>();
-    static final HashMap<DifficultyParameter<?>, Object> defaults = new HashMap<>();
+    public static final HashMap<DifficultyParameter<?>, Object> defaults = new HashMap<>();
 
     /**
      * Registers provided difficulty parameter with a default value
@@ -30,35 +30,34 @@ public class DifficultyProvider {
     }
 
     public static ConfigurationBuilder getBuilder(ResourceLocation id) {
-        if (defaults.isEmpty()) {
-            throw new IllegalStateException("No default parameters set!");
-        }
-
         return new ConfigurationBuilder(id);
     }
 
     public static class ConfigurationBuilder {
         private final ResourceLocation id;
-        private final HashMap<ResourceLocation, Object> params = new HashMap<>();
+        private HashMap<DifficultyParameter<?>, Object> params = new HashMap<>();
 
         private ConfigurationBuilder(ResourceLocation id) {
             this.id = id;
         }
 
-        public ConfigurationBuilder withBase() {
-            // Todo: fill this out
+        public ConfigurationBuilder withBase(HashMap<DifficultyParameter<?>, Object> base) {
+            this.params.putAll(base);
             return this;
         }
 
-        public <T> ConfigurationBuilder withParam(ResourceLocation paramID, T value) {
-            if (!identifierToParam.containsKey(paramID)) {
-                throw new IllegalArgumentException("Parameter %s has not been registered".formatted(paramID.toString()));
+        public <T> ConfigurationBuilder withParam(DifficultyParameter<?> param, T value) {
+            if (!defaults.containsKey(param)) {
+                throw new IllegalArgumentException("Parameter %s has not been registered".formatted(param.toString()));
             }
 
-            params.put(paramID, value);
+            params.put(param, value);
             return this;
         }
 
+        public Difficulty build() {
+            return new Difficulty(this.id, this.params);
+        }
 
     }
 }
