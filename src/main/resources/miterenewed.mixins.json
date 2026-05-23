@@ -26,7 +26,6 @@
     "entity.FoodStatsMixin",
     "entity.tile.TileEntityFurnaceMixin",
     "gui.GuiContainerMixin",
-    //"gui.GuiCreateWorldMixin",
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",
     "gui.SlotCraftingMixin",
@@ -47,6 +46,7 @@
     "sound.SoundManagerMixin",
     "world.WorldClientMixin",
     "world.WorldGenReedMixin",
+    "world.WorldInfoSharedMixin",
     "world.WorldMixin"
   ],
   "client": [
