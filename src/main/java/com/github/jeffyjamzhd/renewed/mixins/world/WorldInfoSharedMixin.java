@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.world;
 
+import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.IWorldInfoShared;
 import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
@@ -17,14 +18,21 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
     @Unique
     public Difficulty difficulty;
 
+    @Unique
     @Override
     public Difficulty mr$getDifficulty() {
         return this.difficulty;
     }
 
+    @Override
+    public void mr$setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     @Inject(method = "<init>(Lnet/minecraft/WorldSettings;Ljava/lang/String;)V", at = @At("TAIL"))
     private void setDifficultyFromSettings(WorldSettings world_settings, String level_name, CallbackInfo ci) {
         this.difficulty = ((IWorldSettings)world_settings).mr$getDifficulty();
+        MiTERenewed.LOGGER.info("Retrieved difficulty object");
     }
 
     @Inject(method = "<init>(Lnet/minecraft/NBTTagCompound;)V", at = @At("TAIL"))
@@ -32,22 +40,12 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
         if (tag.hasKey("RenewedDifficulty")) {
             NBTTagCompound difficultyTag = tag.getCompoundTag("RenewedDifficulty");
             this.difficulty = Difficulty.createFromTagCompound(difficultyTag);
+            MiTERenewed.LOGGER.info("Loaded difficulty object");
         }
     }
 
     @Inject(method = "updateTagCompound", at = @At("TAIL"))
     private void addDifficultyToTagCompound(NBTTagCompound worldTag, NBTTagCompound playerTag, CallbackInfo ci) {
-        NBTTagCompound difficultyTag = new NBTTagCompound();
-        NBTTagList parameterTagList = new NBTTagList();
-
-        worldTag.setCompoundTag("RenewedDifficulty", difficultyTag);
-        difficultyTag.setString("Preset", difficulty.id.toString());
-        difficultyTag.setTag("Parameters", parameterTagList);
-
-        for (DifficultyParameter<?> parameter : DifficultyProvider.identifierToParam.values()) {
-            NBTTagCompound parameterTag = new NBTTagCompound();
-            parameter.writeNBT(parameterTag, difficulty.getParamValue(parameter.id));
-            parameterTagList.appendTag(parameterTag);
-        }
+        worldTag.setCompoundTag("RenewedDifficulty", difficulty.asTagCompound());
     }
 }

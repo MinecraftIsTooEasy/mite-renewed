@@ -2,7 +2,7 @@ package com.github.jeffyjamzhd.renewed.api;
 
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 
-public interface IWorldInfoShared {
+public interface IWorldInfo {
     /**
      * @return World difficulty object
      */

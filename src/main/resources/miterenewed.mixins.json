@@ -46,12 +46,14 @@
     "sound.SoundManagerMixin",
     "world.WorldClientMixin",
     "world.WorldGenReedMixin",
+    "world.WorldInfoMixin",
     "world.WorldInfoSharedMixin",
     "world.WorldMixin"
   ],
   "client": [
     "NetClientHandlerMixin",
     "gui.GuiCreateWorldBGSMixin",
+    "gui.GuiOptionsMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",

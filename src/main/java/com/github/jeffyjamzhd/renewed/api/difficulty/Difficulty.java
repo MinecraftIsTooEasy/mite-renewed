@@ -46,6 +46,22 @@ public class Difficulty {
         return new Difficulty(CUSTOM, params);
     }
 
+    public NBTTagCompound asTagCompound() {
+        NBTTagCompound difficultyTag = new NBTTagCompound();
+        NBTTagList parameterTagList = new NBTTagList();
+
+        difficultyTag.setString("Preset", id.toString());
+        difficultyTag.setTag("Parameters", parameterTagList);
+
+        for (DifficultyParameter<?> parameter : DifficultyProvider.identifierToParam.values()) {
+            NBTTagCompound parameterTag = new NBTTagCompound();
+            parameter.writeNBT(parameterTag, getParamValue(parameter.id));
+            parameterTagList.appendTag(parameterTag);
+        }
+
+        return difficultyTag;
+    }
+
     public String getLocalizedName() {
         return I18n.getString("difficulty.%s.name".formatted(this.getTranslationKey()));
     }
