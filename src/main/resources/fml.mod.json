@@ -37,6 +37,7 @@
 			"net/minecraft/EntityPlayer": ["com/github/jeffyjamzhd/renewed/api/IEntityPlayer"],
 			"net/minecraft/FoodStats": ["com/github/jeffyjamzhd/renewed/api/IFoodStats"],
 			"net/minecraft/FurnaceRecipes": ["com/github/jeffyjamzhd/renewed/api/IFurnaceRecipes"],
+			"net/minecraft/World": ["com/github/jeffyjamzhd/renewed/api/IWorld"],
 			"net/minecraft/WorldInfo": ["com/github/jeffyjamzhd/renewed/api/IWorldInfo"],
 			"net/minecraft/WorldInfoShared": ["com/github/jeffyjamzhd/renewed/api/IWorldInfoShared"],
 			"net/minecraft/WorldSettings": ["com/github/jeffyjamzhd/renewed/api/IWorldSettings"]

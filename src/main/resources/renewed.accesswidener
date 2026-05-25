@@ -5,3 +5,5 @@ accessible method net/minecraft/EntityLivestock addWater (F)V
 accessible method net/minecraft/EntityCow getMilk ()I
 accessible method net/minecraft/EntityCow setMilk (I)V
 accessible field net/minecraft/ItemVessel standard_volume I
+accessible field net/minecraft/GuiButton width I
+accessible field net/minecraft/GuiButton height I
