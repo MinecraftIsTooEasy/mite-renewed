@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
+import com.github.jeffyjamzhd.renewed.render.gui.GuiCustomizeWorldDifficulty;
 import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
 import moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin;
@@ -80,6 +81,10 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
                     this.difficultyIndice = 0;
                 }
                 this.updateButtonText();
+                break;
+
+            case 51:
+                this.mc.displayGuiScreen(new GuiCustomizeWorldDifficulty(this, getSelectedDifficulty()));
         }
     }
 

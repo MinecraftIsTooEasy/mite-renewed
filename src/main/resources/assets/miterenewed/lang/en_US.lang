@@ -1,4 +1,7 @@
 difficulty.prefix=Difficulty:
+difficulty.customize=Customize Difficulty
+difficulty.enabled=Enabled
+difficulty.disabled=Disabled
 
 difficulty.miterenewed.extreme.name=Extreme
 difficulty.miterenewed.extreme.desc=The intended MiTE experience. Difficult survival and combat challenges await you!
@@ -8,6 +11,33 @@ difficulty.miterenewed.hard.name=Hard
 difficulty.miterenewed.hard.desc=Less survival pressure and challenge, recommended for a more casual enjoyment of MiTE!
 difficulty.miterenewed.custom.name=Custom
 difficulty.miterenewed.custom.desc=A custom difficulty configuration!
+
+difficulty.parameter.PlayerMinimumHealth.name=Minimum Health
+difficulty.parameter.PlayerMinimumHealth.desc=The mimimum amount of heart pips players can have.
+difficulty.parameter.PlayerMaximumHealth.name=Maximum Health
+difficulty.parameter.PlayerMaximumHealth.desc=The maximum amount of heart pips players can have.
+difficulty.parameter.PlayerMinimumHunger.name=Minimum Hunger
+difficulty.parameter.PlayerMinimumHunger.desc=The mimimum amount of hunger pips players can have.
+difficulty.parameter.PlayerMaximumHunger.name=Maximum Hunger
+difficulty.parameter.PlayerMaximumHunger.desc=The maximum amount of hunger pips players can have.
+difficulty.parameter.MiningFactor.name=Mining Speed
+difficulty.parameter.MiningFactor.desc=How fast players are able to break blocks.
+difficulty.parameter.PlayerDamageFactor.name=Player Damage
+difficulty.parameter.PlayerDamageFactor.desc=How much damage players inflict onto other creatures.
+difficulty.parameter.MobDamageFactor.name=Mob Damage
+difficulty.parameter.MobDamageFactor.desc=How much damage mobs inflict onto other creatures.
+difficulty.parameter.FallDamageFactor.name=Fall Damage
+difficulty.parameter.FallDamageFactor.desc=How much fall damage is applied to all creatures.
+difficulty.parameter.NonSolidLeaves.name=Non-solid Leaves
+difficulty.parameter.NonSolidLeaves.desc=When enabled, all creatures are able to move through leaf blocks. Any creature within a leaf block will be slowed down. Leaf blocks will still break falls.
+difficulty.parameter.ClimbableVines.name=Climbable Vines
+difficulty.parameter.ClimbableVines.desc=When disabled, vines can only be used for descent.
+difficulty.parameter.AnimalsAlwaysDropLoot.name=Force Animal Loot
+difficulty.parameter.AnimalsAlwaysDropLoot.desc=When enabled, animals will leave their intended loot no matter what caused their death.
+difficulty.parameter.DirtCavesIn.name=Dirt Cave-ins
+difficulty.parameter.DirtCavesIn.desc=When enabled, dirt will loosen when mining adjacent blocks, forming a chain reaction.
+difficulty.parameter.CanDisturbGround.name=Unstable Ground
+difficulty.parameter.CanDisturbGround.desc=When enabled, stepping on unstable ground (floating gravity blocks) will cause all connected floating blocks to cave-in.
 
 item.sharp_bone.name=Sharp Bone
 item.quern.name=Quern

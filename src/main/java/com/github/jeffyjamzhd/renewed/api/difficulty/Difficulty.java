@@ -76,6 +76,10 @@ public class Difficulty {
 
     public <T> T getParamValue(ResourceLocation location) {
         DifficultyParameter<?> parameter = DifficultyProvider.getParameter(location);
+        return (T) getParamValue(parameter);
+    }
+
+    public <T> T getParamValue(DifficultyParameter<T> parameter) {
         var val = Optional.ofNullable((T) this.params.get(parameter));
         return val.orElseGet(() -> (T) DifficultyProvider.defaults.get(parameter));
     }

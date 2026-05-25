@@ -1,9 +1,8 @@
 package com.github.jeffyjamzhd.renewed.api.difficulty;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import net.minecraft.I18n;
-import net.minecraft.NBTTagCompound;
-import net.minecraft.ResourceLocation;
+import com.github.jeffyjamzhd.renewed.render.gui.GuiStepSlider;
+import net.minecraft.*;
 
 public abstract class DifficultyParameter<T> {
     public ResourceLocation id;
@@ -12,10 +11,13 @@ public abstract class DifficultyParameter<T> {
         this.id = id;
     }
 
-    abstract public T sanitizeValue(T value);
-    abstract public String getValueString(T value);
     abstract public void writeNBT(NBTTagCompound tag, T value);
     abstract public T readNBT(NBTTagCompound tag);
+
+    abstract public T sanitizeValue(T value);
+
+    abstract public GuiButton getFieldButton(T value, int id, int x, int y);
+    abstract public String getValueString(T value);
 
     public String getNameKey() {
         return "difficulty.parameter.%s.name".formatted(id.getResourcePath());
@@ -108,6 +110,11 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
+        public GuiButton getFieldButton(Integer value, int id, int x, int y) {
+            return new GuiButton(id, x, y, 100, 20, getValueString(value));
+        }
+
+        @Override
         public String getValueString(Integer value) {
             return "%d".formatted(value);
         }
@@ -129,6 +136,11 @@ public abstract class DifficultyParameter<T> {
         public DPIntegerEnum(ResourceLocation id, int range) {
             super(id);
             this.range = range - 1;
+        }
+
+        @Override
+        public GuiButton getFieldButton(Integer value, int id, int x, int y) {
+            return new GuiButton(id, x, y, 100, 20, getValueString(value));
         }
 
         @Override
@@ -172,6 +184,11 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
+        public GuiButton getFieldButton(Boolean value, int id, int x, int y) {
+            return new GuiButton(id, x, y, 100, 20, getValueString(value));
+        }
+
+        @Override
         public Boolean sanitizeValue(Boolean value) {
             return value;
         }
@@ -189,6 +206,48 @@ public abstract class DifficultyParameter<T> {
         @Override
         public Boolean readNBT(NBTTagCompound tag) {
             return tag.getBoolean(id.toString());
+        }
+    }
+
+    public static class DPFloatPercent extends DifficultyParameter<Float> {
+        final public float min;
+        final public float max;
+        final public float step;
+
+        public DPFloatPercent(ResourceLocation id, float min, float max) {
+            this(id, min, max, 0.5F);
+        }
+
+        public DPFloatPercent(ResourceLocation id, float min, float max, float step) {
+            super(id);
+            this.min = min;
+            this.max = max;
+            this.step = step;
+        }
+
+        @Override
+        public GuiButton getFieldButton(Float value, int id, int x, int y) {
+            return new GuiStepSlider(id, x, y, value, this.step);
+        }
+
+        @Override
+        public Float sanitizeValue(Float value) {
+            return 0f;
+        }
+
+        @Override
+        public String getValueString(Float value) {
+            return "";
+        }
+
+        @Override
+        public void writeNBT(NBTTagCompound tag, Float value) {
+
+        }
+
+        @Override
+        public Float readNBT(NBTTagCompound tag) {
+            return 0f;
         }
     }
 
