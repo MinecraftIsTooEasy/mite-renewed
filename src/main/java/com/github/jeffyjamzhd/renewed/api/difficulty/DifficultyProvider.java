@@ -3,11 +3,14 @@ package com.github.jeffyjamzhd.renewed.api.difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import net.minecraft.ResourceLocation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DifficultyProvider {
     public static final HashMap<ResourceLocation, DifficultyParameter<?>> identifierToParam = new HashMap<>();
     public static final HashMap<DifficultyParameter<?>, Object> defaults = new HashMap<>();
+    public static final ArrayList<DifficultyParameter<?>> orderedList = new ArrayList<>();
 
     /**
      * Registers provided difficulty parameter with a default value
@@ -19,6 +22,7 @@ public class DifficultyProvider {
 
         identifierToParam.put(parameter.id, parameter);
         defaults.put(parameter, defaultValue);
+        orderedList.add(parameter);
 
         return parameter;
     }
@@ -28,6 +32,12 @@ public class DifficultyProvider {
             throw new IllegalArgumentException("Parameter %s is not registered".formatted(location.toString()));
         }
         return identifierToParam.get(location);
+    }
+
+    public static List<DifficultyParameter<?>> getParametersForCategory(DifficultyParameter.Category category) {
+        return orderedList.stream()
+                .filter(difficultyParameter -> difficultyParameter.category == category)
+                .toList();
     }
 
     public static ConfigurationBuilder getBuilder(ResourceLocation id) {

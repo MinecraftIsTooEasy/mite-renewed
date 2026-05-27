@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter.*;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyProvider;
+import com.github.jeffyjamzhd.renewed.api.difficulty.gui.FieldSuffix;
 import net.minecraft.ResourceLocation;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> MAXIMUM_HEALTH;
     public static DifficultyParameter<Integer> MINIMUM_HUNGER;
     public static DifficultyParameter<Integer> MAXIMUM_HUNGER;
+    public static DifficultyParameter<Integer> LEVELS_NEEDED_FOR_STAT_UP;
     public static DifficultyParameter<Float> MINING_FACTOR;
     public static DifficultyParameter<Float> PLAYER_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> MOB_DAMAGE_FACTOR;
@@ -29,9 +31,14 @@ public class RenewedDifficulties {
 
     public static DifficultyParameter<Boolean> NON_SOLID_LEAVES;
     public static DifficultyParameter<Boolean> CLIMBABLE_VINES;
-    public static DifficultyParameter<Boolean> ANIMALS_ALWAYS_DROP_LOOT;
-    public static DifficultyParameter<Boolean> DIRT_CAVES_IN;
     public static DifficultyParameter<Boolean> CAN_DISTURB_GROUND;
+
+    public static DifficultyParameter<Integer> DAY_MINUTE_LENGTH;
+    public static DifficultyParameter<Integer> NIGHT_MINUTE_LENGTH;
+    public static DifficultyParameter<Integer> WEATHER_GRACE_PERIOD;
+    public static DifficultyParameter<Integer> ANIMAL_SICKNESS_BEHAVIOR;
+    public static DifficultyParameter<Integer> CROP_SICKNESS_BEHAVIOR;
+    public static DifficultyParameter<Boolean> ANIMALS_ALWAYS_DROP_LOOT;
 
     private static ResourceLocation loc(String str) {
         return new ResourceLocation(MiTERenewed.RESOURCE_ID + str);
@@ -40,20 +47,26 @@ public class RenewedDifficulties {
     public static void init() {}
 
     static {
-        MINIMUM_HEALTH = registerParameter(new DPInteger(loc( "PlayerMinimumHealth"), 1, 10), 3);
-        MAXIMUM_HEALTH = registerParameter(new DPInteger(loc( "PlayerMaximumHealth"), 1, 10), 10);
-        MINIMUM_HUNGER = registerParameter(new DPInteger(loc( "PlayerMinimumHunger"), 1, 10), 3);
-        MAXIMUM_HUNGER = registerParameter(new DPInteger(loc( "PlayerMaximumHunger"), 1, 10), 10);
-        MINING_FACTOR = registerParameter(new DPFloatPercent(loc("MiningFactor"), .5F, 4F, .25F), 1F);
-        PLAYER_DAMAGE_FACTOR = registerParameter(new DPFloatPercent(loc("PlayerDamageFactor"), .25F, 4F, .25F), 1F);
-        MOB_DAMAGE_FACTOR = registerParameter(new DPFloatPercent(loc("MobDamageFactor"), .25F, 4F, .25F), 1F);
-        FALL_DAMAGE_FACTOR = registerParameter(new DPFloatPercent(loc("FallDamageFactor"), .25F, 4F, .25F), 1F);
+        MINIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHealth"), Category.GENERAL, 1, 20), 3);
+        MINIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHunger"), Category.GENERAL, 1, 20), 3);
+        MAXIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHealth"), Category.GENERAL, 1, 20), 10);
+        MAXIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHunger"), Category.GENERAL, 1, 20), 10);
+        LEVELS_NEEDED_FOR_STAT_UP   = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.GENERAL, FieldSuffix.LEVELS, 1, 10, 1), 5);
 
-        NON_SOLID_LEAVES = registerParameter(new DPBoolean(loc("NonSolidLeaves")), false);
-        CLIMBABLE_VINES = registerParameter(new DPBoolean(loc("ClimbableVines")), true);
-        ANIMALS_ALWAYS_DROP_LOOT = registerParameter(new DPBoolean(loc("AnimalsAlwaysDropLoot")), false);
-        DIRT_CAVES_IN = registerParameter(new DPBoolean(loc("DirtCavesIn")), true);
-        CAN_DISTURB_GROUND = registerParameter(new DPBoolean(loc("CanDisturbGround")), true);
+        MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);
+        PLAYER_DAMAGE_FACTOR        = registerParameter(new DPFloatSlider(loc("PlayerDamageFactor"), Category.INTERACTION, .25F, 4F, .25F), 1F);
+        MOB_DAMAGE_FACTOR           = registerParameter(new DPFloatSlider(loc("MobDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
+        FALL_DAMAGE_FACTOR          = registerParameter(new DPFloatSlider(loc("FallDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
+        CAN_DISTURB_GROUND          = registerParameter(new DPBoolean(loc("CanDisturbGround"), Category.INTERACTION), true);
+        NON_SOLID_LEAVES            = registerParameter(new DPBoolean(loc("NonSolidLeaves"), Category.INTERACTION), false);
+        CLIMBABLE_VINES             = registerParameter(new DPBoolean(loc("ClimbableVines"), Category.INTERACTION), true);
+
+        DAY_MINUTE_LENGTH           = registerParameter(new DPIntegerSlider(loc("DayMinuteLength"), Category.GAME_MECHANICS, FieldSuffix.MINUTES, 5, 30, 5), 10);
+        NIGHT_MINUTE_LENGTH         = registerParameter(new DPIntegerSlider(loc("NightMinuteLength"), Category.GAME_MECHANICS, FieldSuffix.MINUTES, 5, 30, 5), 10);
+        WEATHER_GRACE_PERIOD        = registerParameter(new DPIntegerSlider(loc("WeatherGracePeriod"), Category.GAME_MECHANICS, FieldSuffix.DAYS, 0, 16, 1), 8);
+        ANIMAL_SICKNESS_BEHAVIOR    = registerParameter(new DPIntegerEnum(loc("AnimalSicknessBehavior"), Category.GAME_MECHANICS, 3), 1);
+        ANIMALS_ALWAYS_DROP_LOOT    = registerParameter(new DPBoolean(loc("AnimalsAlwaysDropLoot"), Category.GAME_MECHANICS), false);
+        CROP_SICKNESS_BEHAVIOR      = registerParameter(new DPIntegerEnum(loc("CropSicknessBehavior"), Category.GAME_MECHANICS, 3), 1);
 
         EXTREME = DifficultyProvider.getBuilder(loc("extreme"))
                 .withBase(DifficultyProvider.defaults)
@@ -63,6 +76,7 @@ public class RenewedDifficulties {
                 .withBase(DifficultyProvider.defaults)
                 .withParam(MAXIMUM_HEALTH, 8)
                 .withParam(MAXIMUM_HUNGER, 8)
+                .withParam(LEVELS_NEEDED_FOR_STAT_UP, 7)
                 .withParam(MINING_FACTOR, 0.75F)
                 .withParam(MOB_DAMAGE_FACTOR, 1.5F)
                 .withParam(NON_SOLID_LEAVES, true)
@@ -74,6 +88,8 @@ public class RenewedDifficulties {
                 .withParam(MINIMUM_HEALTH, 5)
                 .withParam(MINIMUM_HUNGER, 5)
                 .withParam(MINING_FACTOR, 2F)
+                .withParam(ANIMALS_ALWAYS_DROP_LOOT, true)
+                .withParam(CAN_DISTURB_GROUND, false)
                 .build();
     }
 }

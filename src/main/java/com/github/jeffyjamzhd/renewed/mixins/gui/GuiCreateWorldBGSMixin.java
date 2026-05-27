@@ -1,14 +1,13 @@
 package com.github.jeffyjamzhd.renewed.mixins.gui;
 
 import com.bawnorton.mixinsquared.TargetHandler;
-import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
+import com.github.jeffyjamzhd.renewed.render.gui.GuiConfigureButton;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiCustomizeWorldDifficulty;
 import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
-import moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,16 +24,18 @@ import java.util.Map;
 
 @Mixin(value = GuiCreateWorld.class, priority = 1500)
 @Environment(EnvType.CLIENT)
-abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
+abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.github.jeffyjamzhd.renewed.api.IGuiCreateWorld {
     @Shadow
     protected abstract void updateButtonText();
 
     @Unique
     private GuiButton buttonDifficulty;
     @Unique
-    private GuiButton buttonDifficultyConfig;
+    private GuiConfigureButton buttonDifficultyConfig;
     @Unique
     private int difficultyIndice;
+    @Unique
+    private Difficulty customDifficulty;
 
     @TargetHandler(
             mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
@@ -43,7 +44,7 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
     private void addButtons(CallbackInfo ci) {
         this.buttonList.add(this.buttonDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 188, 20, getNameOfDifficulty()));
-        this.buttonList.add(this.buttonDifficultyConfig = new GuiButton(51, this.width / 2 + 84, this.height / 5 + 50, 20, 20, "C"));
+        this.buttonList.add(this.buttonDifficultyConfig = new GuiConfigureButton(51, this.width / 2 + 84, this.height / 5 + 50));
     }
 
     @TargetHandler(
@@ -76,15 +77,14 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
     private void onActionPerformed(GuiButton btn, CallbackInfo ci) {
         switch (btn.id) {
             case 50: // Difficulty button
-                this.difficultyIndice++;
-                if (this.difficultyIndice > RenewedDifficulties.LIST.size() - 1) {
-                    this.difficultyIndice = 0;
-                }
+                this.difficultyIndice = (this.difficultyIndice + 1) % RenewedDifficulties.LIST.size();
                 this.updateButtonText();
+                this.customDifficulty = null;
+
                 break;
 
-            case 51:
-                this.mc.displayGuiScreen(new GuiCustomizeWorldDifficulty(this, getSelectedDifficulty()));
+            case 51: // Difficulty configuration button
+                this.mc.displayGuiScreen(new GuiCustomizeWorldDifficulty(this, this.difficultyIndice));
         }
     }
 
@@ -120,9 +120,16 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen {
 
     // Unique methods
 
+
+    @Override
+    public void mr$assignCustomDifficulty(Difficulty difficulty) {
+        this.customDifficulty = difficulty;
+        this.updateButtonText();
+    }
+
     @Unique
     private Difficulty getSelectedDifficulty() {
-        return RenewedDifficulties.LIST.get(difficultyIndice);
+        return this.customDifficulty != null ? this.customDifficulty : RenewedDifficulties.LIST.get(difficultyIndice);
     }
 
     @Unique

@@ -1,38 +1,40 @@
 package com.github.jeffyjamzhd.renewed.api.difficulty;
 
-import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.render.gui.GuiStepSlider;
+import com.github.jeffyjamzhd.renewed.api.difficulty.gui.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.*;
 
+import java.util.Arrays;
+
 public abstract class DifficultyParameter<T> {
+    public Category category;
     public ResourceLocation id;
 
-    public DifficultyParameter(ResourceLocation id) {
+    public DifficultyParameter(ResourceLocation id, Category category) {
         this.id = id;
+        this.category = category;
     }
 
     abstract public void writeNBT(NBTTagCompound tag, T value);
     abstract public T readNBT(NBTTagCompound tag);
 
-    abstract public T sanitizeValue(T value);
+    @Environment(EnvType.CLIENT)
+    abstract public IParameterField<T> getField(T value, int id, int x, int y);
 
-    abstract public GuiButton getFieldButton(T value, int id, int x, int y);
-    abstract public String getValueString(T value);
+    abstract public T sanitizeValue(T value);
 
     public String getNameKey() {
         return "difficulty.parameter.%s.name".formatted(id.getResourcePath());
     }
-
     public String getName() {
         return I18n.getString(getNameKey());
     }
-
-    public String getDescriptionKey() {
+    public String getDescriptionKey(T value) {
         return "difficulty.parameter.%s.desc".formatted(id.getResourcePath());
     }
-
-    public String getDescription() {
-        return I18n.getString(getDescriptionKey());
+    public String getDescription(T value) {
+        return I18n.getString(getDescriptionKey(value));
     }
 
     @Override
@@ -98,8 +100,8 @@ public abstract class DifficultyParameter<T> {
         public final int minimum;
         public final int maximum;
 
-        public DPInteger(ResourceLocation id, int min, int max) {
-            super(id);
+        public DPInteger(ResourceLocation id, Category category, int min, int max) {
+            super(id, category);
             this.minimum = min;
             this.maximum = max;
         }
@@ -110,13 +112,8 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public GuiButton getFieldButton(Integer value, int id, int x, int y) {
-            return new GuiButton(id, x, y, 100, 20, getValueString(value));
-        }
-
-        @Override
-        public String getValueString(Integer value) {
-            return "%d".formatted(value);
+        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
+            return new GuiFieldSlider<>(value, 1);
         }
 
         @Override
@@ -133,14 +130,18 @@ public abstract class DifficultyParameter<T> {
     public static class DPIntegerEnum extends DifficultyParameter<Integer> {
         public final int range;
 
-        public DPIntegerEnum(ResourceLocation id, int range) {
-            super(id);
-            this.range = range - 1;
+        public DPIntegerEnum(ResourceLocation id, Category category, int range) {
+            super(id, category);
+            this.range = range;
         }
 
         @Override
-        public GuiButton getFieldButton(Integer value, int id, int x, int y) {
-            return new GuiButton(id, x, y, 100, 20, getValueString(value));
+        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
+            String[] strings = new String[this.range];
+            for (int i = 0; i < range; i++) {
+                strings[i] = getNameKey() + ".%d".formatted(i);
+            }
+            return new GuiFieldEnumButton(strings);
         }
 
         @Override
@@ -149,21 +150,14 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public String getValueString(Integer value) {
-            return super.getName() + ".%d".formatted(value);
-        }
+        public String getDescription(Integer value) {
+            StringBuilder desc = new StringBuilder(super.getDescription(value));
+            desc.append(' ');
 
-        @Override
-        public String getDescription() {
-            StringBuilder desc = new StringBuilder(super.getDescription() + "\n\n");
-            for (int i = 0; i <= range; i++) {
-                String elementDescKey = super.getDescriptionKey() + ".%d".formatted(i);
-                String elementDesc = I18n.getString(elementDescKey);
-                String elementNameKey = super.getNameKey() + ".%d".formatted(i);
-                String elementName = I18n.getString(elementNameKey);
+            String elementDescKey = super.getDescriptionKey(value) + ".%d".formatted(value);
+            String elementDesc = I18n.getString(elementDescKey);
+            desc.append(elementDesc);
 
-                desc.append("%s - %s".formatted(elementName, elementDesc));
-            }
             return desc.toString();
         }
 
@@ -179,23 +173,18 @@ public abstract class DifficultyParameter<T> {
     }
 
     public static class DPBoolean extends DifficultyParameter<Boolean> {
-        public DPBoolean(ResourceLocation id) {
-            super(id);
+        public DPBoolean(ResourceLocation id, Category category) {
+            super(id, category);
         }
 
         @Override
-        public GuiButton getFieldButton(Boolean value, int id, int x, int y) {
-            return new GuiButton(id, x, y, 100, 20, getValueString(value));
+        public IParameterField<Boolean> getField(Boolean value, int id, int x, int y) {
+            return new GuiFieldBooleanButton(value);
         }
 
         @Override
         public Boolean sanitizeValue(Boolean value) {
             return value;
-        }
-
-        @Override
-        public String getValueString(Boolean value) {
-            return I18n.getString(value ? "difficulty.enabled" : "difficulty.disabled");
         }
 
         @Override
@@ -209,46 +198,111 @@ public abstract class DifficultyParameter<T> {
         }
     }
 
-    public static class DPFloatPercent extends DifficultyParameter<Float> {
-        final public float min;
-        final public float max;
-        final public float step;
+    public static class DPFloatSlider extends DifficultyParameter<Float> {
+        public final float min;
+        public final float max;
+        public final float step;
+        private FieldSuffix suffix;
 
-        public DPFloatPercent(ResourceLocation id, float min, float max) {
-            this(id, min, max, 0.5F);
+        public DPFloatSlider(ResourceLocation id, Category category, float min, float max) {
+            this(id, category, min, max, 0.5F);
         }
 
-        public DPFloatPercent(ResourceLocation id, float min, float max, float step) {
-            super(id);
+        public DPFloatSlider(ResourceLocation id, Category category, float min, float max, float step) {
+            super(id, category);
             this.min = min;
             this.max = max;
             this.step = step;
         }
 
+        public DPFloatSlider(ResourceLocation id, Category category, FieldSuffix suffix, float min, float max, float step) {
+            this(id, category, min, max, step);
+            this.suffix = suffix;
+        }
+
         @Override
-        public GuiButton getFieldButton(Float value, int id, int x, int y) {
-            return new GuiStepSlider(id, x, y, value, this.step);
+        public IParameterField<Float> getField(Float value, int id, int x, int y) {
+            GuiFieldSlider<Float> slider = new GuiFieldSlider<>(value, this.step);
+            slider.setRange(this.min, this.max);
+            slider.setSuffix(this.suffix);
+            return slider;
         }
 
         @Override
         public Float sanitizeValue(Float value) {
-            return 0f;
-        }
-
-        @Override
-        public String getValueString(Float value) {
-            return "";
+            return value;
         }
 
         @Override
         public void writeNBT(NBTTagCompound tag, Float value) {
-
+            tag.setFloat(id.toString(), value);
         }
 
         @Override
         public Float readNBT(NBTTagCompound tag) {
-            return 0f;
+            return tag.getFloat(id.toString());
         }
     }
 
+    public static class DPIntegerSlider extends DifficultyParameter<Integer> {
+        public final int min;
+        public final int max;
+        public final int step;
+        private FieldSuffix suffix;
+
+        public DPIntegerSlider(ResourceLocation id, Category category, int min, int max) {
+            this(id, category, min, max, 1);
+        }
+
+        public DPIntegerSlider(ResourceLocation id, Category category, int min, int max, int step) {
+            super(id, category);
+            this.min = min;
+            this.max = max;
+            this.step = step;
+        }
+
+        public DPIntegerSlider(ResourceLocation id, Category category, FieldSuffix suffix, int min, int max, int step) {
+            this(id, category, min, max, step);
+            this.suffix = suffix;
+        }
+
+        @Override
+        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
+            GuiFieldSlider<Integer> slider = new GuiFieldSlider<>(value, this.step);
+            slider.setRange(this.min, this.max);
+            slider.setSuffix(this.suffix);
+            return slider;
+        }
+
+        @Override
+        public Integer sanitizeValue(Integer value) {
+            return value;
+        }
+
+        @Override
+        public void writeNBT(NBTTagCompound tag, Integer value) {
+            tag.setInteger(id.toString(), value);
+        }
+
+        @Override
+        public Integer readNBT(NBTTagCompound tag) {
+            return tag.getInteger(id.toString());
+        }
+    }
+
+    public enum Category {
+        GENERAL("general"),
+        INTERACTION("interaction"),
+        GAME_MECHANICS("game_mechanics");
+
+        private final String name;
+
+        Category(String name) {
+            this.name = "difficulty.category.%s".formatted(name);
+        }
+
+        public String getName() {
+            return I18n.getString(this.name);
+        }
+    }
 }

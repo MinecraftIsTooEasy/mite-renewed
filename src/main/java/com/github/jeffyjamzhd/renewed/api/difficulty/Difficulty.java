@@ -36,30 +36,33 @@ public class Difficulty {
         // If we're not, we will construct the custom difficulty from
         // saved parameters
         HashMap<DifficultyParameter<?>, Object> params = new HashMap<>(DifficultyProvider.defaults);
-        NBTTagList list = tag.getTagList("Parameters");
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTBase tagAt = list.tagAt(i);
-            ResourceLocation parameterID = new ResourceLocation(tagAt.getName());
-            DifficultyParameter<?> parameter = DifficultyProvider.identifierToParam.get(parameterID);
-            params.put(parameter, parameter.readNBT((NBTTagCompound) tagAt));
+        NBTTagCompound nbtParameters = tag.getCompoundTag("Parameters");
+        for (DifficultyParameter<?> parameter : DifficultyProvider.orderedList) {
+            if (nbtParameters.hasKey(parameter.id.toString())) {
+                params.put(parameter, parameter.readNBT(nbtParameters));
+            } else {
+                params.put(parameter, DifficultyProvider.defaults.get(parameter));
+            }
         }
         return new Difficulty(CUSTOM, params);
     }
 
     public NBTTagCompound asTagCompound() {
         NBTTagCompound difficultyTag = new NBTTagCompound();
-        NBTTagList parameterTagList = new NBTTagList();
+        NBTTagCompound parameterTag = new NBTTagCompound();
 
         difficultyTag.setString("Preset", id.toString());
-        difficultyTag.setTag("Parameters", parameterTagList);
+        difficultyTag.setCompoundTag("Parameters", parameterTag);
 
         for (DifficultyParameter<?> parameter : DifficultyProvider.identifierToParam.values()) {
-            NBTTagCompound parameterTag = new NBTTagCompound();
             parameter.writeNBT(parameterTag, getParamValue(parameter.id));
-            parameterTagList.appendTag(parameterTag);
         }
 
         return difficultyTag;
+    }
+
+    public Difficulty cloneAsCustom() {
+        return new Difficulty(CUSTOM, this.params);
     }
 
     public String getLocalizedName() {
@@ -91,5 +94,13 @@ public class Difficulty {
 
         this.params.put(parameter, value);
         return this;
+    }
+
+    public <T> void setParamValue(DifficultyParameter<T> parameter, T value) {
+        if (!this.params.containsKey(parameter)) {
+            throw new IllegalArgumentException("Difficulty parameter " + parameter.toString() + " does not exist!");
+        }
+
+        this.params.put(parameter, value);
     }
 }
