@@ -5,8 +5,6 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
-    "MinecraftMixin",
-    "PlayerControllerMPMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockBreakInfoMixin",
     "block.BlockFurnaceSandstoneMixin",
@@ -20,6 +18,10 @@
     "compat.rustedironcore.RenderPlayerRICMixin",
     "compat.rustedironcore.TickListenerMixin",
     "compat.rustedironcore.TileEntityFurnaceRICMixin",
+    "core.AnvilSaveConverterMixin",
+    "core.MinecraftMixin",
+    "core.PlayerControllerMPMixin",
+    "core.SaveFormatComparatorMixin",
     "entity.EntityChickenMixin",
     "entity.EntityItemMixin",
     "entity.EntityPlayerMixin",
@@ -51,9 +53,10 @@
     "world.WorldMixin"
   ],
   "client": [
-    "NetClientHandlerMixin",
     "gui.GuiCreateWorldBGSMixin",
     "gui.GuiOptionsMixin",
+    "gui.GuiWorldSlotMixin",
+    "packet.NetClientHandlerMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",

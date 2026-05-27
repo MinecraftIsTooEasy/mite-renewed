@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.packet;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.api.EnvType;

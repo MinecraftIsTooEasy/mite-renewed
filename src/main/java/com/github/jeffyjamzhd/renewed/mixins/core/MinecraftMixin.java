@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.core;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
