@@ -7,3 +7,4 @@ accessible method net/minecraft/EntityCow setMilk (I)V
 accessible field net/minecraft/ItemVessel standard_volume I
 accessible field net/minecraft/GuiButton width I
 accessible field net/minecraft/GuiButton height I
+accessible class net/minecraft/GuiWorldSlot

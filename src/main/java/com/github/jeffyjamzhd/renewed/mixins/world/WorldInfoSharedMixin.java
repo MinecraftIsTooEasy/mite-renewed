@@ -6,6 +6,7 @@ import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyProvider;
+import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,7 +33,6 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
     @Inject(method = "<init>(Lnet/minecraft/WorldSettings;Ljava/lang/String;)V", at = @At("TAIL"))
     private void setDifficultyFromSettings(WorldSettings world_settings, String level_name, CallbackInfo ci) {
         this.difficulty = ((IWorldSettings)world_settings).mr$getDifficulty();
-        MiTERenewed.LOGGER.info("Retrieved difficulty object");
     }
 
     @Inject(method = "<init>(Lnet/minecraft/NBTTagCompound;)V", at = @At("TAIL"))
@@ -40,7 +40,9 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
         if (tag.hasKey("RenewedDifficulty")) {
             NBTTagCompound difficultyTag = tag.getCompoundTag("RenewedDifficulty");
             this.difficulty = Difficulty.createFromTagCompound(difficultyTag);
-            MiTERenewed.LOGGER.info("Loaded difficulty object");
+        } else {
+            // Assign the default if none exists (legacy world)
+            this.difficulty = RenewedDifficulties.EXTREME;
         }
     }
 
