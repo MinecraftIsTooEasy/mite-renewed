@@ -43,10 +43,11 @@ public abstract class FoodStatsMixin implements IFoodStats {
         }
 
         float level = this.player.getExperienceLevel();
+        int levelsPer = difficulty.getParamValue(RenewedDifficulties.LEVELS_NEEDED_FOR_STAT_UP);
         int minimum = difficulty.getParamValue(RenewedDifficulties.MINIMUM_HUNGER) * 2;
         int maximum = difficulty.getParamValue(RenewedDifficulties.MAXIMUM_HUNGER) * 2;
 
-        int lower = (int) Math.min(minimum + level / 5 * 2, maximum);
+        int lower = (int) Math.min(minimum + level / levelsPer * 2, maximum);
         int value = (int) Math.max(lower, minimum);
         cir.setReturnValue(value);
     }

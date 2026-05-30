@@ -68,10 +68,11 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
         }
 
         int experienceLevel = this.getExperienceLevel();
+        int levelsPer = difficulty.getParamValue(RenewedDifficulties.LEVELS_NEEDED_FOR_STAT_UP);
         int minimum = difficulty.getParamValue(RenewedDifficulties.MINIMUM_HEALTH) * 2;
         int maximum = difficulty.getParamValue(RenewedDifficulties.MAXIMUM_HEALTH) * 2;
 
-        float upper = Math.min(minimum + experienceLevel / 5 * 2, maximum);
+        float upper = Math.min(minimum + experienceLevel / levelsPer * 2, maximum);
         float value = Math.max(upper, minimum);
         cir.setReturnValue(value);
     }
