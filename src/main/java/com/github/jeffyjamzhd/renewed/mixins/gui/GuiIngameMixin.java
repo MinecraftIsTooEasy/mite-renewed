@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.GuiIngame;
+import net.minecraft.MathHelper;
 import net.minecraft.Minecraft;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,5 +60,16 @@ public class GuiIngameMixin {
             ))
     private int wrapHungerHorizontal(int _x, @Local(ordinal = 13) int iteration, @Local(ordinal = 6) int right) {
         return right - (iteration % 10) * 8 - 9;
+    }
+
+    @ModifyArg(method = "func_110327_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiIngame;drawTexturedModalRect(IIIIII)V"), index = 1,
+            slice = @Slice(
+                    from = @At(value = "INVOKE", target = "Lnet/minecraft/Profiler;endStartSection(Ljava/lang/String;)V", ordinal = 3),
+                    to = @At(value = "INVOKE", target = "Lnet/minecraft/Profiler;endSection()V")
+            ))
+    private int setAirHeightBasedOnFoodHeight(int _y, @Local(ordinal = 7) int bottom) {
+        int nutrition = MathHelper.ceiling_float_int((float) (this.mc.thePlayer.getNutritionLimit() / 2) / 10F);
+        int processed = Math.max(10 - (nutrition - 2), 3);
+        return bottom - (nutrition - 1) * processed - 10;
     }
 }
