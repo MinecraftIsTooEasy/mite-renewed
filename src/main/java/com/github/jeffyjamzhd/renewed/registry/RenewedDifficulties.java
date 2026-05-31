@@ -62,7 +62,7 @@ public class RenewedDifficulties {
         LEVELS_NEEDED_FOR_STAT_UP   = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.GENERAL, FieldSuffix.LEVELS, 1, 10, 1), 5);
 
         MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);
-        PLAYER_DAMAGE_FACTOR        = registerParameter(new DPFloatSlider(loc("PlayerDamageFactor"), Category.INTERACTION, .25F, 4F, .25F), 1F);
+        PLAYER_DAMAGE_FACTOR        = registerParameter(new DPFloatSlider(loc("PlayerDamageFactor"), Category.INTERACTION, .25F, 2F, .25F), 1F);
         MOB_DAMAGE_FACTOR           = registerParameter(new DPFloatSlider(loc("MobDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
         FALL_DAMAGE_FACTOR          = registerParameter(new DPFloatSlider(loc("FallDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
         CAN_DISTURB_GROUND          = registerParameter(new DPBoolean(loc("CanDisturbGround"), Category.INTERACTION), true);
@@ -87,6 +87,7 @@ public class RenewedDifficulties {
                 .withParam(LEVELS_NEEDED_FOR_STAT_UP, 7)
                 .withParam(MINING_FACTOR, 0.75F)
                 .withParam(MOB_DAMAGE_FACTOR, 1.5F)
+                .withParam(WEATHER_GRACE_PERIOD, 0)
                 .withParam(NON_SOLID_LEAVES, true)
                 .withParam(CLIMBABLE_VINES, false)
                 .build();
