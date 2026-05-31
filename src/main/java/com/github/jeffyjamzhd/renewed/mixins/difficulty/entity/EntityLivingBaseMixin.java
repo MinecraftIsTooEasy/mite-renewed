@@ -19,7 +19,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
     @ModifyExpressionValue(method = "onDeath", at = @At(value = "FIELD", target = "Lnet/minecraft/EntityLivingBase;has_taken_massive_fall_damage:Z", opcode = Opcodes.GETFIELD))
     private boolean forceDropsOnFallDamage(boolean original) {
         Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
-        boolean dropLoot = difficulty.getParamValue(RenewedDifficulties.ANIMALS_ALWAYS_DROP_LOOT);
+        boolean dropLoot = difficulty.getParamValue(RenewedDifficulties.ENTITIES_DROP_LOOT_ALWAYS);
         return !dropLoot && original;
     }
 }

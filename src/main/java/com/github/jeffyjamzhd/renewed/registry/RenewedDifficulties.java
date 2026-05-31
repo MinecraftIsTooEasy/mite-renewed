@@ -38,7 +38,7 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> WEATHER_GRACE_PERIOD;
     public static DifficultyParameter<Integer> ANIMAL_SICKNESS_BEHAVIOR;
     public static DifficultyParameter<Integer> CROP_SICKNESS_BEHAVIOR;
-    public static DifficultyParameter<Boolean> ANIMALS_ALWAYS_DROP_LOOT;
+    public static DifficultyParameter<Boolean> ENTITIES_DROP_LOOT_ALWAYS;
 
     public static final int ANIMAL_SICKNESS_DISABLED = 0;
     public static final int ANIMAL_SICKNESS_ORIGINAL = 1;
@@ -73,7 +73,7 @@ public class RenewedDifficulties {
         NIGHT_MINUTE_LENGTH         = registerParameter(new DPIntegerSlider(loc("NightMinuteLength"), Category.GAME_MECHANICS, FieldSuffix.MINUTES, 5, 30, 5), 10);
         WEATHER_GRACE_PERIOD        = registerParameter(new DPIntegerSlider(loc("WeatherGracePeriod"), Category.GAME_MECHANICS, FieldSuffix.DAYS, 0, 16, 1), 8);
         ANIMAL_SICKNESS_BEHAVIOR    = registerParameter(new DPIntegerEnum(loc("AnimalSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
-        ANIMALS_ALWAYS_DROP_LOOT    = registerParameter(new DPBoolean(loc("AnimalsAlwaysDropLoot"), Category.GAME_MECHANICS), false);
+        ENTITIES_DROP_LOOT_ALWAYS   = registerParameter(new DPBoolean(loc("EntitiesDropLootAlways"), Category.GAME_MECHANICS), false);
         CROP_SICKNESS_BEHAVIOR      = registerParameter(new DPIntegerEnum(loc("CropSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
 
         EXTREME = DifficultyProvider.getBuilder(loc("extreme"))
@@ -85,8 +85,8 @@ public class RenewedDifficulties {
                 .withParam(MAXIMUM_HEALTH, 8)
                 .withParam(MAXIMUM_HUNGER, 8)
                 .withParam(LEVELS_NEEDED_FOR_STAT_UP, 7)
-                .withParam(MINING_FACTOR, 0.75F)
                 .withParam(MOB_DAMAGE_FACTOR, 1.5F)
+                .withParam(PLAYER_DAMAGE_FACTOR, .75F)
                 .withParam(WEATHER_GRACE_PERIOD, 0)
                 .withParam(NON_SOLID_LEAVES, true)
                 .withParam(CLIMBABLE_VINES, false)
@@ -96,8 +96,10 @@ public class RenewedDifficulties {
                 .withBase(DifficultyProvider.defaults)
                 .withParam(MINIMUM_HEALTH, 5)
                 .withParam(MINIMUM_HUNGER, 5)
-                .withParam(MINING_FACTOR, 2F)
-                .withParam(ANIMALS_ALWAYS_DROP_LOOT, true)
+                .withParam(MINING_FACTOR, 1.5F)
+                .withParam(MOB_DAMAGE_FACTOR, .75F)
+                .withParam(WEATHER_GRACE_PERIOD, 16)
+                .withParam(ENTITIES_DROP_LOOT_ALWAYS, true)
                 .withParam(CAN_DISTURB_GROUND, false)
                 .build();
     }
