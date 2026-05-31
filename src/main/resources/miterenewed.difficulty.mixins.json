@@ -8,9 +8,12 @@
     "block.BlockCropsMixin",
     "entity.EntityLivestockMixin",
     "entity.EntityPlayerMixin",
-    "entity.FoodStatsMixin"
+    "entity.FoodStatsMixin",
+    "server.Packet1LoginMixin",
+    "server.ServerConfigurationManagerMixin"
   ],
   "client": [
+    "NetClientHandlerMixin",
     "gui.GuiIngameMixin"
   ],
   "injectors": {

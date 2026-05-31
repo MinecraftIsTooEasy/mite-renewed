@@ -65,6 +65,11 @@ public class Difficulty {
         return new Difficulty(CUSTOM, this.params);
     }
 
+    public static Optional<Difficulty> getFromWorld(World world) {
+        Difficulty difficulty = world.mr$getDifficulty();
+        return Optional.ofNullable(difficulty);
+    }
+
     public String getLocalizedName() {
         return I18n.getString("difficulty.%s.name".formatted(this.getTranslationKey()));
     }
