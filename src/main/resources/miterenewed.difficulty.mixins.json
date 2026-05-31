@@ -7,8 +7,12 @@
   "mixins": [
     "block.BlockCropsMixin",
     "entity.EntityLivestockMixin",
+    "entity.EntityLivingBaseMixin",
+    "entity.EntityMobMixin",
     "entity.EntityPlayerMixin",
+    "entity.EntitySkeletonMixin",
     "entity.FoodStatsMixin",
+    "item.ItemBowMixin",
     "server.Packet1LoginMixin",
     "server.ServerConfigurationManagerMixin"
   ],
