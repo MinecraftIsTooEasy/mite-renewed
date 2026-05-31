@@ -44,6 +44,10 @@ public class RenewedDifficulties {
     public static final int ANIMAL_SICKNESS_ORIGINAL = 1;
     public static final int ANIMAL_SICKNESS_RENEWED = 2;
 
+    public static final int CROP_SICKNESS_DISABLED = 0;
+    public static final int CROP_SICKNESS_ORIGINAL = 1;
+    public static final int CROP_SICKNESS_RENEWED = 2;
+
     private static ResourceLocation loc(String str) {
         return new ResourceLocation(MiTERenewed.RESOURCE_ID + str);
     }
@@ -68,9 +72,9 @@ public class RenewedDifficulties {
         DAY_MINUTE_LENGTH           = registerParameter(new DPIntegerSlider(loc("DayMinuteLength"), Category.GAME_MECHANICS, FieldSuffix.MINUTES, 5, 30, 5), 10);
         NIGHT_MINUTE_LENGTH         = registerParameter(new DPIntegerSlider(loc("NightMinuteLength"), Category.GAME_MECHANICS, FieldSuffix.MINUTES, 5, 30, 5), 10);
         WEATHER_GRACE_PERIOD        = registerParameter(new DPIntegerSlider(loc("WeatherGracePeriod"), Category.GAME_MECHANICS, FieldSuffix.DAYS, 0, 16, 1), 8);
-        ANIMAL_SICKNESS_BEHAVIOR    = registerParameter(new DPIntegerEnum(loc("AnimalSicknessBehavior"), Category.GAME_MECHANICS, 3), 1);
+        ANIMAL_SICKNESS_BEHAVIOR    = registerParameter(new DPIntegerEnum(loc("AnimalSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
         ANIMALS_ALWAYS_DROP_LOOT    = registerParameter(new DPBoolean(loc("AnimalsAlwaysDropLoot"), Category.GAME_MECHANICS), false);
-        CROP_SICKNESS_BEHAVIOR      = registerParameter(new DPIntegerEnum(loc("CropSicknessBehavior"), Category.GAME_MECHANICS, 3), 1);
+        CROP_SICKNESS_BEHAVIOR      = registerParameter(new DPIntegerEnum(loc("CropSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
 
         EXTREME = DifficultyProvider.getBuilder(loc("extreme"))
                 .withBase(DifficultyProvider.defaults)
