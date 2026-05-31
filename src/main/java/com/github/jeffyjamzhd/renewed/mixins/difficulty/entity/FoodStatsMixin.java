@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.general.entity;
+package com.github.jeffyjamzhd.renewed.mixins.difficulty.entity;
 
 import com.github.jeffyjamzhd.renewed.api.IFoodStats;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;

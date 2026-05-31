@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.general.gui;
+package com.github.jeffyjamzhd.renewed.mixins.difficulty.gui;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;

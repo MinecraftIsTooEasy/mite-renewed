@@ -5,8 +5,13 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
+    "block.BlockCropsMixin",
+    "entity.EntityLivestockMixin",
+    "entity.EntityPlayerMixin",
+    "entity.FoodStatsMixin"
   ],
   "client": [
+    "gui.GuiIngameMixin"
   ],
   "injectors": {
     "defaultRequire": 1

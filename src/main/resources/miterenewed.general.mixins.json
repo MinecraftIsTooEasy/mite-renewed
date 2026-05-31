@@ -24,9 +24,7 @@
     "core.SaveFormatComparatorMixin",
     "entity.EntityChickenMixin",
     "entity.EntityItemMixin",
-    "entity.EntityLivestockMixin",
     "entity.EntityPlayerMixin",
-    "entity.FoodStatsMixin",
     "entity.tile.TileEntityFurnaceMixin",
     "gui.GuiContainerMixin",
     "gui.GuiMainMenuMixin",
@@ -55,7 +53,6 @@
   ],
   "client": [
     "gui.GuiCreateWorldBGSMixin",
-    "gui.GuiIngameMixin",
     "gui.GuiOptionsMixin",
     "gui.GuiWorldSlotMixin",
     "packet.NetClientHandlerMixin",

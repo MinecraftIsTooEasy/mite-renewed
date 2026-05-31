@@ -25,11 +25,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
     @Shadow public abstract void playSound(String par1Str, float par2, float par3);
     @Shadow protected int itemInUseCount;
     @Shadow public abstract void stopUsingItem();
-
     @Shadow protected FoodStats foodStats;
-
-    @Shadow
-    public abstract int getExperienceLevel();
 
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityPlayer;updateItemUse(Lnet/minecraft/ItemStack;I)V", shift = At.Shift.BY, by = 2))
     protected void addUpdateForHandpan(CallbackInfo ci, @Local(name = "var1") ItemStack stack) {
@@ -59,35 +55,6 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
             }
         }
     }
-
-    @Inject(method = "getHealthLimit()F", at = @At("HEAD"), cancellable = true)
-    private void getHealthLimit(CallbackInfoReturnable<Float> cir) {
-        Difficulty difficulty = this.getWorld().mr$getDifficulty();
-        if (difficulty == null) {
-            return;
-        }
-
-        int experienceLevel = this.getExperienceLevel();
-        int levelsPer = difficulty.getParamValue(RenewedDifficulties.LEVELS_NEEDED_FOR_STAT_UP);
-        int minimum = difficulty.getParamValue(RenewedDifficulties.MINIMUM_HEALTH) * 2;
-        int maximum = difficulty.getParamValue(RenewedDifficulties.MAXIMUM_HEALTH) * 2;
-
-        float upper = Math.min(minimum + experienceLevel / levelsPer * 2, maximum);
-        float value = Math.max(upper, minimum);
-        cir.setReturnValue(value);
-    }
-
-    @ModifyReturnValue(method = "getDamageVsBlock", at = @At("RETURN"))
-    public float miningSpeedFactor(float original) {
-        Difficulty difficulty = this.getWorld().mr$getDifficulty();
-        if (difficulty == null) {
-            return original;
-        }
-
-        float factor = difficulty.getParamValue(RenewedDifficulties.MINING_FACTOR);
-        return original * factor;
-    }
-
 
     @ModifyConstant(method = "updateItemUse", constant = @Constant(intValue = 0, ordinal = 1))
     int modifyData(int constant, @Local(argsOnly = true) ItemStack stack) {
