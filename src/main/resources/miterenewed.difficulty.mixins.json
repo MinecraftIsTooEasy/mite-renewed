@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.github.jeffyjamzhd.renewed.mixins.difficulty",
+  "compatibilityLevel": "JAVA_17",
+  "target": "DEFAULT",
+  "minVersion": "0.8.3",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,6 +1,6 @@
 package com.github.jeffyjamzhd.renewed.item.recipe;
 
-import com.github.jeffyjamzhd.renewed.mixins.accessor.ShapelessRecipesAccessor;
+import com.github.jeffyjamzhd.renewed.mixins.general.accessor.ShapelessRecipesAccessor;
 import net.minecraft.*;
 
 import java.util.List;

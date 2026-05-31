@@ -40,6 +40,10 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> CROP_SICKNESS_BEHAVIOR;
     public static DifficultyParameter<Boolean> ANIMALS_ALWAYS_DROP_LOOT;
 
+    public static final int ANIMAL_SICKNESS_DISABLED = 0;
+    public static final int ANIMAL_SICKNESS_ORIGINAL = 1;
+    public static final int ANIMAL_SICKNESS_RENEWED = 2;
+
     private static ResourceLocation loc(String str) {
         return new ResourceLocation(MiTERenewed.RESOURCE_ID + str);
     }

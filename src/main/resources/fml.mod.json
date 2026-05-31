@@ -23,7 +23,9 @@
 		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"]
 	},
 	"mixins": [
-		"miterenewed.mixins.json"
+		"miterenewed.base.mixins.json",
+		"miterenewed.general.mixins.json",
+		"miterenewed.difficulty.mixins.json"
 	],
 	"accessWidener": "renewed.accesswidener",
 	"custom": {
