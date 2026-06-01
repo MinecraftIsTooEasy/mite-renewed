@@ -8,6 +8,7 @@
     "block.BlockCropsMixin",
     "block.BlockFallingMixin",
     "block.BlockLeavesBaseMixin",
+    "block.BlockUnderminableMixin",
     "entity.EntityFallingSandMixin",
     "entity.EntityLivestockMixin",
     "entity.EntityLivingBaseMixin",
