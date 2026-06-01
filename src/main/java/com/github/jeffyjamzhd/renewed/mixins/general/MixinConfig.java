@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins;
+package com.github.jeffyjamzhd.renewed.mixins.general;
 
 import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;

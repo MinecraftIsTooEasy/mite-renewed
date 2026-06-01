@@ -45,7 +45,8 @@
 			"net/minecraft/WorldInfoShared": ["com/github/jeffyjamzhd/renewed/api/IWorldInfoShared"],
 			"net/minecraft/WorldSettings": ["com/github/jeffyjamzhd/renewed/api/IWorldSettings"],
 			"net/minecraft/SaveFormatComparator": ["com/github/jeffyjamzhd/renewed/api/ISaveFormatComparator"],
-			"net/minecraft/Packet1Login" : ["com/github/jeffyjamzhd/renewed/api/IPacket1Login"]
+			"net/minecraft/Packet1Login" : ["com/github/jeffyjamzhd/renewed/api/IPacket1Login"],
+			"net/minecraft/EntityLivingBase" : ["com/github/jeffyjamzhd/renewed/api/IEntityLivingBase"]
 		}
 	}
 }
