@@ -39,7 +39,6 @@ public abstract class WorldClientMixin extends World {
                     return;
                 }
                 this.tickBuffer += 1L;
-                //instance.setTotalWorldTime(worldTime + ticks);
             }
         } else {
             int nightMinutes = difficulty.getParamValue(RenewedDifficulties.NIGHT_MINUTE_LENGTH);
@@ -54,7 +53,6 @@ public abstract class WorldClientMixin extends World {
                     return;
                 }
                 this.tickBuffer += 1L;
-                //instance.setTotalWorldTime(worldTime + ticks);
             }
         }
     }
