@@ -18,11 +18,13 @@
     "entity.FoodStatsMixin",
     "item.ItemBowMixin",
     "server.Packet1LoginMixin",
-    "server.ServerConfigurationManagerMixin"
+    "server.ServerConfigurationManagerMixin",
+    "world.WorldMixin"
   ],
   "client": [
     "NetClientHandlerMixin",
-    "gui.GuiIngameMixin"
+    "gui.GuiIngameMixin",
+    "world.WorldClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
