@@ -74,6 +74,12 @@ difficulty.parameter.CropSicknessBehavior.name.2=Renewed
 difficulty.parameter.CropSicknessBehavior.desc.0=crops will never become sick.
 difficulty.parameter.CropSicknessBehavior.desc.1=sick crops slowly spread disease to other crops, and will eventually die.
 difficulty.parameter.CropSicknessBehavior.desc.2=sick crops scatter disease in a radius when they are harvested sick, or when they die.
+difficulty.parameter.ChickenBreedingItem.name=Chicken Breeding Item
+difficulty.parameter.ChickenBreedingItem.desc=What breeding item chickens use;
+difficulty.parameter.ChickenBreedingItem.name.0=Seeds
+difficulty.parameter.ChickenBreedingItem.name.1=Worms
+difficulty.parameter.ChickenBreedingItem.desc.0=chickens will breed using seeds.
+difficulty.parameter.ChickenBreedingItem.desc.1=chickens will breed using worms.
 
 item.sharp_bone.name=Sharp Bone
 item.quern.name=Quern

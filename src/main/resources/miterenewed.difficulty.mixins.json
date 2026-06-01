@@ -5,10 +5,12 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
+    "ai.EntityAITemptMixin",
     "block.BlockCropsMixin",
     "block.BlockFallingMixin",
     "block.BlockLeavesBaseMixin",
     "block.BlockUnderminableMixin",
+    "entity.EntityChickenMixin",
     "entity.EntityFallingSandMixin",
     "entity.EntityLivestockMixin",
     "entity.EntityLivingBaseMixin",

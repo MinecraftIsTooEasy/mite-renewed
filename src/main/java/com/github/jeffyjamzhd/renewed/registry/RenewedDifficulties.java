@@ -39,6 +39,7 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> ANIMAL_SICKNESS_BEHAVIOR;
     public static DifficultyParameter<Integer> CROP_SICKNESS_BEHAVIOR;
     public static DifficultyParameter<Boolean> ENTITIES_DROP_LOOT_ALWAYS;
+    public static DifficultyParameter<Integer> CHICKEN_BREEDING_ITEM;
 
     public static final int ANIMAL_SICKNESS_DISABLED = 0;
     public static final int ANIMAL_SICKNESS_ORIGINAL = 1;
@@ -47,6 +48,9 @@ public class RenewedDifficulties {
     public static final int CROP_SICKNESS_DISABLED = 0;
     public static final int CROP_SICKNESS_ORIGINAL = 1;
     public static final int CROP_SICKNESS_RENEWED = 2;
+
+    public static final int CHICKEN_USE_SEED = 0;
+    public static final int CHICKEN_USE_WORM = 1;
 
     private static ResourceLocation loc(String str) {
         return new ResourceLocation(MiTERenewed.RESOURCE_ID + str);
@@ -74,6 +78,7 @@ public class RenewedDifficulties {
         WEATHER_GRACE_PERIOD        = registerParameter(new DPIntegerSlider(loc("WeatherGracePeriod"), Category.GAME_MECHANICS, FieldSuffix.DAYS, 0, 16, 1), 8);
         ANIMAL_SICKNESS_BEHAVIOR    = registerParameter(new DPIntegerEnum(loc("AnimalSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
         ENTITIES_DROP_LOOT_ALWAYS   = registerParameter(new DPBoolean(loc("EntitiesDropLootAlways"), Category.GAME_MECHANICS), false);
+        CHICKEN_BREEDING_ITEM       = registerParameter(new DPIntegerEnum(loc("ChickenBreedingItem"), Category.GAME_MECHANICS, 2), 1);
         CROP_SICKNESS_BEHAVIOR      = registerParameter(new DPIntegerEnum(loc("CropSicknessBehavior"), Category.GAME_MECHANICS, 2), 1);
 
         EXTREME = DifficultyProvider.getBuilder(loc("extreme"))
@@ -100,6 +105,7 @@ public class RenewedDifficulties {
                 .withParam(MOB_DAMAGE_FACTOR, .75F)
                 .withParam(WEATHER_GRACE_PERIOD, 16)
                 .withParam(ENTITIES_DROP_LOOT_ALWAYS, true)
+                .withParam(CHICKEN_BREEDING_ITEM, 0)
                 .withParam(CAN_DISTURB_GROUND, false)
                 .build();
     }
