@@ -6,8 +6,12 @@
   "minVersion": "0.8.3",
   "mixins": [
     "block.BlockCropsMixin",
+    "block.BlockFallingMixin",
+    "block.BlockLeavesBaseMixin",
+    "entity.EntityFallingSandMixin",
     "entity.EntityLivestockMixin",
     "entity.EntityLivingBaseMixin",
+    "entity.EntityMixin",
     "entity.EntityMobMixin",
     "entity.EntityPlayerMixin",
     "entity.EntitySkeletonMixin",
