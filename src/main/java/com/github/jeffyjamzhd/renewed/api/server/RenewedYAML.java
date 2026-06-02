@@ -46,42 +46,6 @@ public class RenewedYAML {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> void generateDefault() {
-        Config config = new Config();
-        HashMap<String, ParameterNamespace> namespaces = new HashMap<>();
-
-        for (DifficultyParameter<?> parameter : DifficultyProvider.orderedList) {
-            ResourceLocation id = parameter.id;
-            ParameterNamespace parameterNamespace;
-
-            if (!namespaces.containsKey(id.getResourceDomain())) {
-                parameterNamespace = new ParameterNamespace();
-                parameterNamespace.namespace = id.getResourceDomain();
-                namespaces.put(id.getResourceDomain(), parameterNamespace);
-            } else {
-                parameterNamespace = namespaces.get(id.getResourceDomain());
-            }
-
-            Parameter<T> paramSerialized = new Parameter<>();
-            T value = (T) DifficultyProvider.defaults.get(parameter);
-            paramSerialized.key = parameter.id.getResourcePath();
-            paramSerialized.value = value;
-            paramSerialized.comment = languageParser.translate(parameter.getDescriptionKey(null));
-            parameterNamespace.parameters.add(paramSerialized);
-        }
-
-        config.namespaces = new ArrayList<>(namespaces.values());
-
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(HEADER_INFO.formatted(MiTERenewed.getVersionString()));
-            yaml.dump(config, writer);
-            logger.logInfo("[MiTE-Renewed] Generating default MiTE-Renewed server config");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
     public <T> Difficulty loadFromYaml() {
         if (!file.exists()) {
             generateDefault();
@@ -130,6 +94,43 @@ public class RenewedYAML {
     }
 
     @SuppressWarnings("unchecked")
+    private <T> void generateDefault() {
+        Config config = new Config();
+        HashMap<String, ParameterNamespace> namespaces = new HashMap<>();
+
+        for (DifficultyParameter<?> parameter : DifficultyProvider.orderedList) {
+            ResourceLocation id = parameter.id;
+            ParameterNamespace parameterNamespace;
+
+            if (!namespaces.containsKey(id.getResourceDomain())) {
+                parameterNamespace = new ParameterNamespace();
+                parameterNamespace.namespace = id.getResourceDomain();
+                namespaces.put(id.getResourceDomain(), parameterNamespace);
+            } else {
+                parameterNamespace = namespaces.get(id.getResourceDomain());
+            }
+
+            Parameter<T> paramSerialized = new Parameter<>();
+            T value = (T) DifficultyProvider.defaults.get(parameter);
+            paramSerialized.key = parameter.id.getResourcePath();
+            paramSerialized.value = value;
+            paramSerialized.comment = languageParser.translate(parameter.getDescriptionKey(null));
+            parameterNamespace.parameters.add(paramSerialized);
+        }
+
+        config.namespaces = new ArrayList<>(namespaces.values());
+
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(HEADER_INFO.formatted(MiTERenewed.getVersionString()));
+            yaml.dump(config, writer);
+            logger.logInfo("[MiTE-Renewed] Generating default MiTE-Renewed server config");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
     private <T> void attemptToParseValue(Difficulty difficulty, DifficultyParameter<T> parameter, Object value) {
         try {
             T castedValue = null;
@@ -143,7 +144,6 @@ public class RenewedYAML {
                 else if (typeClass == Float.class) castedValue = (T) Float.valueOf(num.floatValue());
                 else if (typeClass == Long.class) castedValue = (T) Long.valueOf(num.longValue());
             }
-            // Booleans and Strings map 1:1 automatically
             else {
                 castedValue = (T) value;
             }
@@ -154,9 +154,6 @@ public class RenewedYAML {
         } catch (ClassCastException e) {
             logger.logWarning("[MiTE-Renewed] Invalid value type for parameter " + parameter.id + ". Using default.");
         }
-    }
-
-    private void saveYaml() {
     }
 
     private static class Config {
