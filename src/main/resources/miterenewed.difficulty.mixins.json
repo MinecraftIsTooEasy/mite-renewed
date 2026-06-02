@@ -21,6 +21,7 @@
     "entity.FoodStatsMixin",
     "item.ItemBowMixin",
     "server.Packet1LoginMixin",
+    "server.Packet9RespawnMixin",
     "server.ServerConfigurationManagerMixin",
     "world.WorldMixin"
   ],

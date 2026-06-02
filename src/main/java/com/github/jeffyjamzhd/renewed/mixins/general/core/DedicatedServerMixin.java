@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.DedicatedServer;
 import net.minecraft.ILogAgent;
+import net.minecraft.WorldServer;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +35,15 @@ public abstract class DedicatedServerMixin extends MinecraftServer {
     private void createRenewedYAML(CallbackInfoReturnable<Boolean> cir) {
         this.renewedYAML = new RenewedYAML(new File("renewed.yaml"), this.getLogAgent());
         Difficulty difficulty = this.renewedYAML.loadFromYaml();
-        ((IWorldInfo)this.getEntityWorld().getWorldInfo()).mr$setDifficulty(difficulty);
+        assignDifficultyToWorlds(difficulty);
+    }
+
+    @Unique
+    private void assignDifficultyToWorlds(Difficulty difficulty) {
+        for (WorldServer server : this.worldServers) {
+            if (server == null) continue;
+            IWorldInfo info = (IWorldInfo) server.getWorldInfo();
+            info.mr$setDifficulty(difficulty);
+        }
     }
 }

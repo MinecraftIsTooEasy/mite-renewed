@@ -1,14 +1,12 @@
 package com.github.jeffyjamzhd.renewed.mixins.difficulty;
 
 import com.github.jeffyjamzhd.renewed.api.IPacket1Login;
+import com.github.jeffyjamzhd.renewed.api.IPacket9Respawn;
 import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.NetClientHandler;
-import net.minecraft.NetHandler;
-import net.minecraft.Packet1Login;
-import net.minecraft.WorldClient;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,6 +22,12 @@ public abstract class NetClientHandlerMixin extends NetHandler {
     @Inject(method = "handleLogin", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;loadWorld(Lnet/minecraft/WorldClient;)V"))
     private void assignDifficulty(Packet1Login packet, CallbackInfo ci) {
         Difficulty difficulty = ((IPacket1Login) packet).mr$getDifficulty();
+        ((IWorldInfo) this.worldClient.getWorldInfo()).mr$setDifficulty(difficulty);
+    }
+
+    @Inject(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;loadWorld(Lnet/minecraft/WorldClient;)V"))
+    private void assignDifficultyOnRespawn(Packet9Respawn respawn, CallbackInfo ci) {
+        Difficulty difficulty = ((IPacket9Respawn) respawn).mr$getDifficulty();
         ((IWorldInfo) this.worldClient.getWorldInfo()).mr$setDifficulty(difficulty);
     }
 }

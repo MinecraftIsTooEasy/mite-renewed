@@ -55,6 +55,7 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
     // implementation "com.github.MinecraftIsTooEasy:BetterGameSetting:1.3.0.1"
     implementation files("libs\\[Dev]BetterGameSetting-1.3.0.1.jar")
+    implementation files("libs\\OhMyCommands-2.1.jar")
 }
 
 runClient{
