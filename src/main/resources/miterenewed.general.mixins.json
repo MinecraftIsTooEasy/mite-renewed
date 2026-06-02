@@ -1,10 +1,12 @@
 {
   "required": true,
-  "package": "com.github.jeffyjamzhd.renewed.mixins.general",
+  "package": "com.github.jeffyjamzhd.renewed.mixins",
   "compatibilityLevel": "JAVA_17",
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
+    "MinecraftMixin",
+    "PlayerControllerMPMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockBookshelfMixin",
     "block.BlockBreakInfoMixin",
@@ -26,11 +28,6 @@
     "compat.rustedironcore.TickListenerMixin",
     "compat.rustedironcore.TileEntityFurnaceRICMixin",
     "entity.EntityBoneLordMixin",
-    "core.AnvilSaveConverterMixin",
-    "core.MinecraftMixin",
-    "core.MinecraftServerMixin",
-    "core.PlayerControllerMPMixin",
-    "core.SaveFormatComparatorMixin",
     "entity.EntityChickenMixin",
     "entity.EntityHangingMixin",
     "entity.EntityItemMixin",
@@ -59,17 +56,10 @@
     "sound.SoundManagerMixin",
     "world.WorldClientMixin",
     "world.WorldGenReedMixin",
-    "world.WorldInfoMixin",
-    "world.WorldInfoSharedMixin",
-    "world.WorldMixin",
-    "world.WorldSettingsMixin"
+    "world.WorldMixin"
   ],
   "client": [
-    "entity.EntityLivingBaseMixin",
-    "gui.GuiCreateWorldBGSMixin",
-    "gui.GuiOptionsMixin",
-    "gui.GuiWorldSlotMixin",
-    "packet.NetClientHandlerMixin",
+    "NetClientHandlerMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
@@ -79,8 +69,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig",
-  "server": [
-    "core.DedicatedServerMixin"
-  ]
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.MixinConfig"
 }
