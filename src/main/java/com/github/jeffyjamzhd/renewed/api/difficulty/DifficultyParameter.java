@@ -74,6 +74,10 @@ public abstract class DifficultyParameter<T> {
 
         @Override
         public String getDescription(Integer value) {
+            if (value == null) {
+                return super.getDescription(null);
+            }
+
             StringBuilder desc = new StringBuilder(super.getDescription(value));
             desc.append(' ');
 
