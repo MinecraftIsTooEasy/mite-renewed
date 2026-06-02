@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.render;
+package com.github.jeffyjamzhd.renewed.mixins.general.render;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

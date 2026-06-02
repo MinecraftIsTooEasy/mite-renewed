@@ -1,4 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.entity;
+package com.github.jeffyjamzhd.renewed.mixins.general.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.Block;

@@ -1,5 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.block;
-
+package com.github.jeffyjamzhd.renewed.mixins.general.block;
 import net.minecraft.Block;
 import net.minecraft.BlockBookshelf;
 import net.minecraft.BlockConstants;

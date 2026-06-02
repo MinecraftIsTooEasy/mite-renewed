@@ -1,12 +1,10 @@
 {
   "required": true,
-  "package": "com.github.jeffyjamzhd.renewed.mixins",
+  "package": "com.github.jeffyjamzhd.renewed.mixins.general",
   "compatibilityLevel": "JAVA_17",
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
-    "MinecraftMixin",
-    "PlayerControllerMPMixin",
     "accessor.ShapelessRecipesAccessor",
     "block.BlockBookshelfMixin",
     "block.BlockBreakInfoMixin",
@@ -27,13 +25,17 @@
     "compat.rustedironcore.RenderPlayerRICMixin",
     "compat.rustedironcore.TickListenerMixin",
     "compat.rustedironcore.TileEntityFurnaceRICMixin",
+    "core.AnvilSaveConverterMixin",
+    "core.MinecraftMixin",
+    "core.MinecraftServerMixin",
+    "core.PlayerControllerMPMixin",
+    "core.SaveFormatComparatorMixin",
     "entity.EntityBoneLordMixin",
     "entity.EntityChickenMixin",
     "entity.EntityHangingMixin",
     "entity.EntityItemMixin",
     "entity.EntityPlayerMixin",
     "entity.EntityRevenantMixin",
-    "entity.FoodStatsMixin",
     "entity.tile.TileEntityFurnaceMixin",
     "gui.GuiContainerMixin",
     "gui.GuiMainMenuMixin",
@@ -56,18 +58,30 @@
     "sound.SoundManagerMixin",
     "world.WorldClientMixin",
     "world.WorldGenReedMixin",
-    "world.WorldMixin"
+    "world.WorldInfoMixin",
+    "world.WorldInfoSharedMixin",
+    "world.WorldMixin",
+    "world.WorldSettingsMixin"
   ],
   "client": [
-    "NetClientHandlerMixin",
+    "entity.ClientPlayerMixin",
+    "entity.EntityLivingBaseMixin",
+    "gui.GuiCreateWorldBGSMixin",
+    "gui.GuiOptionsMixin",
+    "gui.GuiWorldSlotMixin",
+    "packet.NetClientHandlerMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
-    "render.model.ModelBipedMixin",
-    "entity.ClientPlayerMixin"
+    "render.RenderShadowMixin",
+    "render.RenderWightMixin",
+    "render.model.ModelBipedMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.github.jeffyjamzhd.renewed.mixins.MixinConfig"
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig",
+  "server": [
+    "core.DedicatedServerMixin"
+  ]
 }

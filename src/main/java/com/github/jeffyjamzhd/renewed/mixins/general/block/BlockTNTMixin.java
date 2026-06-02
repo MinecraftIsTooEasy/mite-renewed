@@ -1,5 +1,4 @@
-package com.github.jeffyjamzhd.renewed.mixins.block;
-
+package com.github.jeffyjamzhd.renewed.mixins.general.block;
 import net.minecraft.BlockConstants;
 import net.minecraft.BlockFalling;
 import net.minecraft.BlockTNT;
