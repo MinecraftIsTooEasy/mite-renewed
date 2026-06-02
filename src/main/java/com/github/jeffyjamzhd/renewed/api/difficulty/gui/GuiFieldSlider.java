@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed.api.difficulty.gui;
 
+import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
+import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import net.minecraft.GuiButton;
 import net.minecraft.I18n;
 import net.minecraft.Minecraft;
@@ -10,6 +12,9 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
     private FieldSuffix suffix;
     private float min = 0F;
     private float max = 1F;
+
+    public Difficulty difficulty;
+    public DifficultyParameter<T> parameter;
     public T value;
 
     public boolean dragging = false;
@@ -69,18 +74,9 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void setValue(T value) {
-        this.value = value;
+        this.value = parameter.sanitizeValue(difficulty, value);
         if (value instanceof Integer) {
-            if (this.value.intValue() < min) {
-                this.value = (T) Integer.valueOf((int) min);
-            }
-
-            if (this.value.intValue() > max) {
-                this.value = (T) Integer.valueOf((int) max);
-            }
-
             if (this.value.intValue() > 0) {
                 this.displayString = "%d".formatted(this.value.intValue());
 
@@ -91,14 +87,6 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
                 this.displayString = I18n.getString("difficulty.disabled");
             }
         } else {
-            if (this.value.floatValue() < min) {
-                this.value = (T) Float.valueOf(min);
-            }
-
-            if (this.value.floatValue() > max) {
-                this.value = (T) Float.valueOf(max);
-            }
-
             this.displayString = "%d%%".formatted((int)(this.value.floatValue() * 100F));
 
             if (this.suffix != null) {

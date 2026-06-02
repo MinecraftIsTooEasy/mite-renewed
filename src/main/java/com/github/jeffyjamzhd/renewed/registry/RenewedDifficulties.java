@@ -59,10 +59,14 @@ public class RenewedDifficulties {
     public static void init() {}
 
     static {
-        MINIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHealth"), Category.GENERAL, 1, 20), 3);
-        MINIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHunger"), Category.GENERAL, 1, 20), 3);
-        MAXIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHealth"), Category.GENERAL, 1, 20), 10);
-        MAXIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHunger"), Category.GENERAL, 1, 20), 10);
+        MINIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHealth"), Category.GENERAL, 1, 20), 3)
+                .withSanitizer((difficulty, value) -> Math.min(value, difficulty.getParamValue(MAXIMUM_HEALTH)));
+        MINIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMinimumHunger"), Category.GENERAL, 1, 20), 3)
+                .withSanitizer((difficulty, value) -> Math.min(value, difficulty.getParamValue(MAXIMUM_HUNGER)));
+        MAXIMUM_HEALTH              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHealth"), Category.GENERAL, 1, 20), 10)
+                .withSanitizer((difficulty, value) -> Math.max(value, difficulty.getParamValue(MINIMUM_HEALTH)));
+        MAXIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHunger"), Category.GENERAL, 1, 20), 10)
+                .withSanitizer((difficulty, value) -> Math.max(value, difficulty.getParamValue(MINIMUM_HUNGER)));
         LEVELS_NEEDED_FOR_STAT_UP   = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.GENERAL, FieldSuffix.LEVELS, 1, 10, 1), 5);
 
         MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);

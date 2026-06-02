@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed.api.difficulty.gui;
 
+import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
+import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import net.minecraft.GuiButton;
 import net.minecraft.I18n;
 import net.minecraft.Minecraft;
@@ -8,9 +10,14 @@ public class GuiFieldEnumButton extends GuiButton implements IParameterField<Int
     private final String[] strings;
     private int value = 0;
 
-    public GuiFieldEnumButton(String[] strings) {
+    public Difficulty difficulty;
+    public DifficultyParameter<Integer> parameter;
+
+    public GuiFieldEnumButton(String[] strings, Difficulty difficulty, DifficultyParameter<Integer> param) {
         super(0, 0, 0, 100, 20, "");
         this.strings = strings;
+        this.difficulty = difficulty;
+        this.parameter = param;
     }
 
     @Override
@@ -31,7 +38,7 @@ public class GuiFieldEnumButton extends GuiButton implements IParameterField<Int
 
     @Override
     public void setValue(Integer value) {
-        this.value = value % strings.length;
+        this.value = parameter.sanitizeValue(difficulty, value);
         this.displayString = I18n.getString(strings[this.value]);
     }
 

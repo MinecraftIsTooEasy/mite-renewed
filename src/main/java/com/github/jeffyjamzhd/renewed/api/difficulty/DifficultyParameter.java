@@ -5,24 +5,28 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.*;
 
-import java.util.Arrays;
-
 public abstract class DifficultyParameter<T> {
     public Category category;
     public ResourceLocation id;
+    public DifficultyParameterSanitizer<T> sanitizer = (difficulty, value) -> value;
 
     public DifficultyParameter(ResourceLocation id, Category category) {
         this.id = id;
         this.category = category;
     }
 
+    public DifficultyParameter<T> withSanitizer(DifficultyParameterSanitizer<T> sanitizer) {
+        this.sanitizer = sanitizer;
+        return this;
+    }
+
     abstract public void writeNBT(NBTTagCompound tag, T value);
     abstract public T readNBT(NBTTagCompound tag);
 
     @Environment(EnvType.CLIENT)
-    abstract public IParameterField<T> getField(T value, int id, int x, int y);
+    abstract public IParameterField<T> getField(T value, Difficulty difficulty);
 
-    abstract public T sanitizeValue(T value);
+    abstract public T sanitizeValue(Difficulty difficulty, T value);
 
     public String getNameKey() {
         return "difficulty.parameter.%s.name".formatted(id.getResourcePath());
@@ -42,89 +46,7 @@ public abstract class DifficultyParameter<T> {
         return this.getClass().getSimpleName();
     }
 
-    /*
-            Player interaction
-     */
-
-//    public static class PlayerDamageFactor extends DifficultyParameter<Float> {
-//    }
-//    public static class MobDamageFactor extends DifficultyParameter<Float> {}
-//    public static class BlockHarvestMultiplier extends DifficultyParameter<Float> {}
-//    public static class LevelsPerPip extends DifficultyParameter<Integer> {}
-//    public static class PlayerMinimumHearts extends DifficultyParameter<Integer> {}
-//    public static class PlayerMaximumHearts extends DifficultyParameter<Integer> {}
-//    public static class PlayerMinimumHunger extends DifficultyParameter<Integer> {}
-//    public static class PlayerMaximumHunger extends DifficultyParameter<Integer> {}
-//
-//    static {
-//        DifficultyProvider.setDefaultForParameter(PlayerDamageFactor.class, 1F);
-//        DifficultyProvider.setDefaultForParameter(MobDamageFactor.class, 1F);
-//        DifficultyProvider.setDefaultForParameter(BlockHarvestMultiplier.class, 1F);
-//        DifficultyProvider.setDefaultForParameter(LevelsPerPip.class, 5);
-//        DifficultyProvider.setDefaultForParameter(PlayerMinimumHearts.class, 3);
-//        DifficultyProvider.setDefaultForParameter(PlayerMaximumHearts.class, 10);
-//        DifficultyProvider.setDefaultForParameter(PlayerMinimumHunger.class, 3);
-//        DifficultyProvider.setDefaultForParameter(PlayerMaximumHunger.class, 10);
-//    }
-
-    /*
-            World
-     */
-
-//    public static class DayMinuteLength extends DifficultyParameter<Integer> {}
-//    public static class NightMinuteLength extends DifficultyParameter<Integer> {}
-//    public static class PassThroughLeaves extends DifficultyParameter<Boolean> {}
-//    public static class ClimbableVines extends DifficultyParameter<Boolean> {}
-//    public static class DirtHasGravity extends DifficultyParameter<Boolean> {}
-//    public static class AnimalSickness extends DifficultyParameter<Boolean> {}
-//    public static class CropSickness extends DifficultyParameter<Boolean> {}
-//    public static class SensitiveGravityBlocks extends DifficultyParameter<Boolean> {}
-//    public static class CropGrowthBaseChance extends DifficultyParameter<Float> {}
-//
-//    static {
-//        DifficultyProvider.setDefaultForParameter(PassThroughLeaves.class, false);
-//        DifficultyProvider.setDefaultForParameter(ClimbableVines.class, true);
-//        DifficultyProvider.setDefaultForParameter(DirtHasGravity.class, true);
-//        DifficultyProvider.setDefaultForParameter(SensitiveGravityBlocks.class, true);
-//        DifficultyProvider.setDefaultForParameter(AnimalSickness.class, true);
-//        DifficultyProvider.setDefaultForParameter(CropSickness.class, true);
-//        DifficultyProvider.setDefaultForParameter(CropGrowthBaseChance.class, 0F);
-//        DifficultyProvider.setDefaultForParameter(DayMinuteLength.class, 10);
-//        DifficultyProvider.setDefaultForParameter(NightMinuteLength.class, 10);
-//    }
-
     public static void init() {
-    }
-
-    public static class DPInteger extends DifficultyParameter<Integer> {
-        public final int minimum;
-        public final int maximum;
-
-        public DPInteger(ResourceLocation id, Category category, int min, int max) {
-            super(id, category);
-            this.minimum = min;
-            this.maximum = max;
-        }
-
-        @Override
-        public Integer sanitizeValue(Integer value) {
-            return Math.min(Math.max(value, minimum), maximum);
-        }
-
-        @Override
-        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
-            return new GuiFieldSlider<>(value, 1);
-        }
-
-        @Override
-        public void writeNBT(NBTTagCompound tag, Integer value) {
-            tag.setInteger(id.toString(), value);
-        }
-
-        @Override
-        public Integer readNBT(NBTTagCompound tag) {
-            return tag.getInteger(id.toString());
-        }
     }
 
     public static class DPIntegerEnum extends DifficultyParameter<Integer> {
@@ -136,17 +58,18 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
+        public IParameterField<Integer> getField(Integer value, Difficulty difficulty) {
             String[] strings = new String[this.range];
             for (int i = 0; i < range; i++) {
                 strings[i] = getNameKey() + ".%d".formatted(i);
             }
-            return new GuiFieldEnumButton(strings);
+            return new GuiFieldEnumButton(strings, difficulty, this);
         }
 
         @Override
-        public Integer sanitizeValue(Integer value) {
-            return Math.min(Math.max(0, value), range);
+        public Integer sanitizeValue(Difficulty difficulty, Integer value) {
+            int result = sanitizer.sanitize(difficulty, value);
+            return result % range;
         }
 
         @Override
@@ -178,13 +101,13 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public IParameterField<Boolean> getField(Boolean value, int id, int x, int y) {
-            return new GuiFieldBooleanButton(value);
+        public IParameterField<Boolean> getField(Boolean value, Difficulty difficulty) {
+            return new GuiFieldBooleanButton(value, difficulty, this);
         }
 
         @Override
-        public Boolean sanitizeValue(Boolean value) {
-            return value;
+        public Boolean sanitizeValue(Difficulty difficulty, Boolean value) {
+            return sanitizer.sanitize(difficulty, value);
         }
 
         @Override
@@ -221,16 +144,21 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public IParameterField<Float> getField(Float value, int id, int x, int y) {
+        public IParameterField<Float> getField(Float value, Difficulty difficulty) {
             GuiFieldSlider<Float> slider = new GuiFieldSlider<>(value, this.step);
             slider.setRange(this.min, this.max);
             slider.setSuffix(this.suffix);
+            slider.difficulty = difficulty;
+            slider.parameter = this;
             return slider;
         }
 
         @Override
-        public Float sanitizeValue(Float value) {
-            return value;
+        public Float sanitizeValue(Difficulty difficulty, Float value) {
+            float result = sanitizer.sanitize(difficulty, value);
+            result = Math.min(Math.max(result, min), max);
+            result = Math.round(result / this.step) * this.step;
+            return result;
         }
 
         @Override
@@ -267,16 +195,21 @@ public abstract class DifficultyParameter<T> {
         }
 
         @Override
-        public IParameterField<Integer> getField(Integer value, int id, int x, int y) {
+        public IParameterField<Integer> getField(Integer value, Difficulty difficulty) {
             GuiFieldSlider<Integer> slider = new GuiFieldSlider<>(value, this.step);
             slider.setRange(this.min, this.max);
             slider.setSuffix(this.suffix);
+            slider.difficulty = difficulty;
+            slider.parameter = this;
             return slider;
         }
 
         @Override
-        public Integer sanitizeValue(Integer value) {
-            return value;
+        public Integer sanitizeValue(Difficulty difficulty, Integer value) {
+            int result = sanitizer.sanitize(difficulty, value);
+            result = Math.min(Math.max(result, min), max);
+            result = Math.round((float) result / this.step) * this.step;
+            return result;
         }
 
         @Override

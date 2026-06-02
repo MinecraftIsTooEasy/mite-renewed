@@ -215,7 +215,7 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         }
     }
 
-    public class ParameterEntry<T> implements GuiListExtended.IGuiListEntry {
+    public static class ParameterEntry<T> implements GuiListExtended.IGuiListEntry {
         private final Minecraft mc;
         private final DifficultyParameter<T> parameter;
         private final Difficulty difficulty;
@@ -227,7 +227,7 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
             this.parameter = parameter;
 
             T value = difficulty.getParamValue(parameter);
-            this.field = this.parameter.getField(value, 0, 0, 0);
+            this.field = this.parameter.getField(value, this.difficulty);
             this.field.setValue(value);
         }
 
@@ -266,7 +266,7 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         }
     }
 
-    public class CategoryEntry implements GuiListExtended.IGuiListEntry {
+    public static class CategoryEntry implements GuiListExtended.IGuiListEntry {
         private final Minecraft mc;
         private final DifficultyParameter.Category category;
 

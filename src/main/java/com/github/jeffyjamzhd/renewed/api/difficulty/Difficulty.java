@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import net.minecraft.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 
 public class Difficulty {
