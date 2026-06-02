@@ -4,7 +4,8 @@
 	"version": "${version}",
 	"depends": {
 		"fishmodloader": ">=3.4.2",
-		"rusted_iron_core": ">=1.4.0"
+		"rusted_iron_core": ">=1.4.0",
+		"better_game_setting": ">=1.3.0.1"
 	},
 	"suggests": {
 		"emi": ">=1.1.23",
@@ -22,7 +23,9 @@
 		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"]
 	},
 	"mixins": [
-		"miterenewed.mixins.json"
+		"miterenewed.base.mixins.json",
+		"miterenewed.general.mixins.json",
+		"miterenewed.difficulty.mixins.json"
 	],
 	"accessWidener": "renewed.accesswidener",
 	"custom": {
@@ -35,7 +38,16 @@
 			"net/minecraft/SlotCrafting": ["com/github/jeffyjamzhd/renewed/api/ISlotCrafting"],
 			"net/minecraft/EntityPlayer": ["com/github/jeffyjamzhd/renewed/api/IEntityPlayer"],
 			"net/minecraft/FoodStats": ["com/github/jeffyjamzhd/renewed/api/IFoodStats"],
-			"net/minecraft/FurnaceRecipes": ["com/github/jeffyjamzhd/renewed/api/IFurnaceRecipes"]
+			"net/minecraft/FurnaceRecipes": ["com/github/jeffyjamzhd/renewed/api/IFurnaceRecipes"],
+			"net/minecraft/GuiCreateWorld": ["com/github/jeffyjamzhd/renewed/api/IGuiCreateWorld"],
+			"net/minecraft/World": ["com/github/jeffyjamzhd/renewed/api/IWorld"],
+			"net/minecraft/WorldInfo": ["com/github/jeffyjamzhd/renewed/api/IWorldInfo"],
+			"net/minecraft/WorldInfoShared": ["com/github/jeffyjamzhd/renewed/api/IWorldInfoShared"],
+			"net/minecraft/WorldSettings": ["com/github/jeffyjamzhd/renewed/api/IWorldSettings"],
+			"net/minecraft/SaveFormatComparator": ["com/github/jeffyjamzhd/renewed/api/ISaveFormatComparator"],
+			"net/minecraft/Packet1Login" : ["com/github/jeffyjamzhd/renewed/api/IPacket1Login"],
+			"net/minecraft/Packet9Respawn" : ["com/github/jeffyjamzhd/renewed/api/IPacket9Respawn"],
+			"net/minecraft/EntityLivingBase" : ["com/github/jeffyjamzhd/renewed/api/IEntityLivingBase"]
 		}
 	}
 }

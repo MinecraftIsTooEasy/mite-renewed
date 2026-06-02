@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed;
 
 import com.github.jeffyjamzhd.renewed.registry.RenewedBlocks;
+import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import huix.glacier.api.entrypoint.IGameRegistry;
 import huix.glacier.api.registry.MinecraftRegistry;
 
@@ -11,5 +12,6 @@ public class RenewedGameRegistry implements IGameRegistry {
     @Override
     public void onGameRegistry() {
         RenewedBlocks.register(registry);
+        RenewedDifficulties.init();
     }
 }

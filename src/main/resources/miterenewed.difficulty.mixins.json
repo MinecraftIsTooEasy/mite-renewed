@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "com.github.jeffyjamzhd.renewed.mixins.difficulty",
+  "compatibilityLevel": "JAVA_17",
+  "target": "DEFAULT",
+  "minVersion": "0.8.3",
+  "mixins": [
+    "ai.EntityAITemptMixin",
+    "block.BlockCropsMixin",
+    "block.BlockFallingMixin",
+    "block.BlockLeavesBaseMixin",
+    "block.BlockUnderminableMixin",
+    "entity.EntityChickenMixin",
+    "entity.EntityFallingSandMixin",
+    "entity.EntityLivestockMixin",
+    "entity.EntityLivingBaseMixin",
+    "entity.EntityMixin",
+    "entity.EntityMobMixin",
+    "entity.EntityPlayerMixin",
+    "entity.EntitySkeletonMixin",
+    "entity.FoodStatsMixin",
+    "item.ItemBowMixin",
+    "server.Packet1LoginMixin",
+    "server.Packet9RespawnMixin",
+    "server.ServerConfigurationManagerMixin",
+    "world.WorldMixin"
+  ],
+  "client": [
+    "NetClientHandlerMixin",
+    "gui.GuiIngameMixin",
+    "world.WorldClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,54 @@
+package com.github.jeffyjamzhd.renewed.mixins.difficulty.server;
+
+import com.github.jeffyjamzhd.renewed.api.IPacket1Login;
+import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
+import com.github.jeffyjamzhd.renewed.util.NBTSizeCalculator;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.minecraft.NBTTagCompound;
+import net.minecraft.Packet1Login;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
+@Mixin(Packet1Login.class)
+public class Packet1LoginMixin implements IPacket1Login {
+    @Unique
+    NBTTagCompound difficulty;
+
+    @Inject(method = "readPacketData", at = @At("TAIL"))
+    private void readDifficultyData(DataInput input, CallbackInfo ci) {
+        try {
+            this.difficulty = (NBTTagCompound) NBTTagCompound.readNamedTag(input);
+        } catch (IOException e) {
+        }
+    }
+
+    @Inject(method = "writePacketData", at = @At("TAIL"))
+    private void writeDifficultyData(DataOutput output, CallbackInfo ci) {
+        try {
+            NBTTagCompound.writeNamedTag(this.difficulty, output);
+        } catch (IOException e) {
+        }
+    }
+
+    @ModifyReturnValue(method = "getPacketSize", at = @At("RETURN"))
+    private int adjustPacketSize(int original) {
+        return original + (int) NBTSizeCalculator.getCompoundByteSize(this.difficulty);
+    }
+
+    @Override
+    public void mr$setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty.asTagCompound();
+    }
+
+    @Override
+    public Difficulty mr$getDifficulty() {
+        return Difficulty.createFromTagCompound(this.difficulty);
+    }
+}
