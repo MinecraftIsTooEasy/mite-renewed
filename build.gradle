@@ -47,6 +47,7 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
 
     shadow(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+    shadow(implementation "org.yaml:snakeyaml:2.6")
 
     implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
