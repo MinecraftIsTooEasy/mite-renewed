@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(WorldSettings.class)
-@Environment(EnvType.CLIENT)
 public class WorldSettingsMixin implements IWorldSettings {
     @Unique
     private Difficulty difficulty;

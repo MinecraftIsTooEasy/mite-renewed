@@ -20,6 +20,7 @@
     "compat.rustedironcore.TileEntityFurnaceRICMixin",
     "core.AnvilSaveConverterMixin",
     "core.MinecraftMixin",
+    "core.MinecraftServerMixin",
     "core.PlayerControllerMPMixin",
     "core.SaveFormatComparatorMixin",
     "entity.EntityChickenMixin",
@@ -49,7 +50,8 @@
     "world.WorldGenReedMixin",
     "world.WorldInfoMixin",
     "world.WorldInfoSharedMixin",
-    "world.WorldMixin"
+    "world.WorldMixin",
+    "world.WorldSettingsMixin"
   ],
   "client": [
     "entity.EntityLivingBaseMixin",
@@ -60,11 +62,13 @@
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderPlayerMixin",
-    "render.model.ModelBipedMixin",
-    "world.WorldSettingsMixin"
+    "render.model.ModelBipedMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig"
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig",
+  "server": [
+    "core.DedicatedServerMixin"
+  ]
 }
