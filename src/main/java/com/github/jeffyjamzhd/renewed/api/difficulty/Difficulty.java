@@ -62,8 +62,9 @@ public class Difficulty {
         return difficultyTag;
     }
 
+    @SuppressWarnings("unchecked")
     public Difficulty cloneAsCustom() {
-        return new Difficulty(CUSTOM, this.params);
+        return new Difficulty(CUSTOM, (HashMap<DifficultyParameter<?>, Object>) this.params.clone());
     }
 
     public static Optional<Difficulty> getFromWorld(World world) {

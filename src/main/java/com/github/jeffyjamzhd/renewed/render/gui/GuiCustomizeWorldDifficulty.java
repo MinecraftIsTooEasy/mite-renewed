@@ -11,6 +11,7 @@ import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,6 +31,12 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         this.difficultyIndice = difficultyIndice;
     }
 
+    public GuiCustomizeWorldDifficulty(GuiScreen parent, Difficulty difficulty) {
+        this.parentScreen = parent;
+        this.difficultyIndice = 0;
+        this.difficulty = difficulty;
+    }
+
     @Override
     public void initGui() {
         this.screenTitle = I18n.getString("difficulty.customize");
@@ -39,7 +46,11 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         this.buttonList.add(this.btnDifficulty = new GuiButton(102, 16, 16, 100, 20, ""));
 
         Difficulty base = RenewedDifficulties.LIST.get(difficultyIndice);
-        this.difficulty = base.cloneAsCustom();
+        if (this.difficulty == null) {
+            this.difficulty = base.cloneAsCustom();
+        } else {
+            this.difficulty = difficulty.cloneAsCustom();
+        }
         this.btnDifficulty.displayString = base.getLocalizedName();
 
         this.list = new GuiDifficultyParameterList(this);
@@ -61,7 +72,7 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
             ((IGuiCreateWorld)this.parentScreen).mr$assignCustomDifficulty(this.difficulty);
         }
 
-        this.mc.displayGuiScreen(this.parentScreen);
+        cancelPressed();
     }
 
     private void cancelPressed() {

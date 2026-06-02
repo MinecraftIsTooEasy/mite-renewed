@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.gui;
 
 import com.bawnorton.mixinsquared.TargetHandler;
+import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
 import com.github.jeffyjamzhd.renewed.api.IWorldSettings;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
@@ -20,12 +21,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
+
 @Mixin(value = GuiCreateWorld.class, priority = 1500)
 @Environment(EnvType.CLIENT)
 abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.github.jeffyjamzhd.renewed.api.IGuiCreateWorld {
     @Shadow
     protected abstract void updateButtonText();
-
     @Unique
     private GuiButton buttonDifficulty;
     @Unique
@@ -82,7 +84,15 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
                 break;
 
             case 51: // Difficulty configuration button
-                this.mc.displayGuiScreen(new GuiCustomizeWorldDifficulty(this, this.difficultyIndice));
+                GuiCustomizeWorldDifficulty newScreen;
+
+                if (this.customDifficulty != null) {
+                    newScreen = new GuiCustomizeWorldDifficulty(this, this.customDifficulty);
+                } else {
+                    newScreen = new GuiCustomizeWorldDifficulty(this, this.difficultyIndice);
+                }
+
+                this.mc.displayGuiScreen(newScreen);
         }
     }
 
@@ -114,6 +124,11 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
         if (button.id == 50) {
             ScreenUtil.getInstance().drawTooltip(getTooltipOfDifficulty(), mouseX, mouseY);
         }
+    }
+
+    @Inject(method = "func_82286_a", at = @At("TAIL"))
+    private void assignDifficulty(WorldInfo info, CallbackInfo ci) {
+        this.customDifficulty = ((IWorldInfo) info).mr$getDifficulty();
     }
 
     // Unique methods
