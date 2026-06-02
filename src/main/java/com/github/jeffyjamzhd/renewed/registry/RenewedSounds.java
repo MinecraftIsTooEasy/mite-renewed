@@ -12,6 +12,7 @@ public class RenewedSounds {
     public static final ResourceLocation CRAFTING_QUERN = new ResourceLocation(RESOURCE_ID + "crafting.quern");
     public static final ResourceLocation CRAFTING_WOOD = new ResourceLocation(RESOURCE_ID + "crafting.wood");
     public static final ResourceLocation CRAFTING_CHOP = new ResourceLocation(RESOURCE_ID + "crafting.chop");
+    public static final ResourceLocation DEATH_POOF = new ResourceLocation(RESOURCE_ID + "random.poof");
 
     public static void register(SoundsRegisterEvent event) {
         LOGGER.info("Registering sounds!");
@@ -20,5 +21,6 @@ public class RenewedSounds {
         event.registerSound(CRAFTING_QUERN);
         event.registerSound(CRAFTING_WOOD);
         event.registerSound(CRAFTING_CHOP);
+        event.registerSound(DEATH_POOF);
     }
 }

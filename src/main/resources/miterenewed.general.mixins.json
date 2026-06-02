@@ -52,6 +52,7 @@
     "world.WorldMixin"
   ],
   "client": [
+    "entity.EntityLivingBaseMixin",
     "gui.GuiCreateWorldBGSMixin",
     "gui.GuiOptionsMixin",
     "gui.GuiWorldSlotMixin",
