@@ -4,9 +4,30 @@
 + Added two new difficulty presets: Hard and Legendary.
 + Added a difficulty customizer; tweak many different game parameters
 
+## [Hard Mode]
+An easier version of MiTE.
++ Starts with 5 hearts and hunger as minimum
++ Mining speed is increased by 50%
++ Mobs do 25% less damage to the player
++ Animals/Mobs will always drop their loot no matter the cause of death
++ Weather events do not occur until after the 16th day in a world
++ Cave-ins can no longer be caused by walking on unstable ground
+
+## [Legendary Mode]
+A more brutal version of MiTE.
++ Leaf blocks are non solid, gravity blocks break them
++ Vines can no longer be climbed, only used for descent
++ You earn a new heart and hunger pip per 7 levels (normally 5)
++ Your hearts and hunger cap out at 8
++ Mobs deal 50% more damage
++ The player deals 25% less damage
++ There is no weather grace period
+
 ## [General]
 + Workbenches now scale crafting speed based on tier, with huge increases in mithril and especially adamantium
++ Chickens now use worms as their breeding item; previously it was way too easy to scale up chicken farms
 + Revenants and Bone Lords sounds have been pitched down, for better audio indication of their presence
++ Weather events do not occur for 8 days when starting a world
 + Item frames and signs can now be placed on chests
 + Added an additional sound for when mobs "poof"
 + Tweaked how the ingame display is rendered; bottom elements are raised slightly towards the center
