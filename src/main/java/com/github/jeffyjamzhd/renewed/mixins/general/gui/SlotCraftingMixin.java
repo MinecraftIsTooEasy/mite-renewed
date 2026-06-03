@@ -71,7 +71,7 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
 
     @Inject(method = "onPickupFromSlot", at = @At("HEAD"))
     private void soundHook(EntityPlayer player, ItemStack stack, CallbackInfo ci) {
-        if (player.onServer())
+        if (player.onServer() && this.crafting_result != null)
             CraftingSoundHandler.onCraft(stack, this.crafting_result.recipe, player.getWorld(), player);
     }
 
