@@ -1,8 +1,15 @@
-# Experimental
+# 0.2.7 Changelog
+## [Difficulty]
++ Added a brand new difficulty system
++ Added two new difficulty presets: Hard and Legendary.
++ Added a difficulty customizer; tweak many different game parameters
+
 ## [General]
 + Workbenches now scale crafting speed based on tier, with huge increases in mithril and especially adamantium
 + Revenants and Bone Lords sounds have been pitched down, for better audio indication of their presence
 + Item frames and signs can now be placed on chests
++ Added an additional sound for when mobs "poof"
++ Tweaked how the ingame display is rendered; bottom elements are raised slightly towards the center
 + Fixed music display rendering leak, should no longer flicker when enchanted gear is in the inventory
 + Fixed buckets crashing when using other mods that add buckets (e.g. ITF)
 + Fixed buckets restoring themselves when making cheese and bowls of water
