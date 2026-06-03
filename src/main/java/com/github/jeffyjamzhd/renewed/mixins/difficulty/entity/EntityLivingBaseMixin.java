@@ -32,9 +32,17 @@ public abstract class EntityLivingBaseMixin extends Entity implements IEntityLiv
 
     @ModifyExpressionValue(method = "moveEntityWithHeading", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityLivingBase;isOnLadder()Z", ordinal = 1))
     private boolean blockVineClimbing(boolean original) {
-        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
-        boolean shouldClimb = difficulty.getParamValue(RenewedDifficulties.CLIMBABLE_VINES);
-        return shouldClimb && original;
+        int x = MathHelper.floor_double(this.posX);
+        int y = MathHelper.floor_double(this.boundingBox.minY);
+        int z = MathHelper.floor_double(this.posZ);
+        int block = this.worldObj.getBlockId(x, y, z);
+
+        if (block == Block.vine.blockID) {
+            Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
+            boolean shouldClimb = difficulty.getParamValue(RenewedDifficulties.CLIMBABLE_VINES);
+            return shouldClimb && original;
+        }
+        return original;
     }
 
     @Inject(method = "onEntityUpdate", at = @At(value = "HEAD"))
