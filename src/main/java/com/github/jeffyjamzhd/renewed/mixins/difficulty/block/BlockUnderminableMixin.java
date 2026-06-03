@@ -30,6 +30,6 @@ public class BlockUnderminableMixin {
     @Unique
     private boolean cantDisturb(World world) {
         Difficulty difficulty = Difficulty.getFromWorld(world).orElseThrow();
-        return difficulty.getParamValue(RenewedDifficulties.CAN_DISTURB_GROUND);
+        return !difficulty.getParamValue(RenewedDifficulties.CAN_DISTURB_GROUND);
     }
 }
