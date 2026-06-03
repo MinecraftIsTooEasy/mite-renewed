@@ -67,6 +67,7 @@
     "entity.ClientPlayerMixin",
     "entity.EntityLivingBaseMixin",
     "gui.GuiCreateWorldBGSMixin",
+    "gui.GuiIngameMixin",
     "gui.GuiOptionsMixin",
     "gui.GuiWorldSlotMixin",
     "packet.NetClientHandlerMixin",
