@@ -33,12 +33,11 @@ public abstract class WorldClientMixin extends World {
             if (dayFactor < 1F) {
                 instance.setTotalWorldTime(worldTime + (int)(1L / dayFactor));
             } else {
+                this.tickBuffer += 1L;
                 if (this.tickBuffer >= dayFactor) {
                     this.tickBuffer -= dayFactor;
                     instance.setTotalWorldTime(worldTime + 1L);
-                    return;
                 }
-                this.tickBuffer += 1L;
             }
         } else {
             int nightMinutes = difficulty.getParamValue(RenewedDifficulties.NIGHT_MINUTE_LENGTH);
@@ -47,12 +46,11 @@ public abstract class WorldClientMixin extends World {
             if (nightFactor < 1F) {
                 instance.setTotalWorldTime(worldTime + (int)(1L / nightFactor));
             } else {
+                this.tickBuffer += 1L;
                 if (this.tickBuffer >= nightFactor) {
                     this.tickBuffer -= nightFactor;
                     instance.setTotalWorldTime(worldTime + 1L);
-                    return;
                 }
-                this.tickBuffer += 1L;
             }
         }
     }

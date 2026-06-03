@@ -1,3 +1,6 @@
+# 0.2.7.1 Changelog
++ Fixed time adjustment method extending day and night time
+
 # 0.2.7 Changelog
 ## [Difficulty]
 + Added a brand new difficulty system
