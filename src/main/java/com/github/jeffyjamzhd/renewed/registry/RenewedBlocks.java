@@ -4,9 +4,11 @@ import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.block.BlockCrate;
 import com.github.jeffyjamzhd.renewed.block.BlockRootingSugarCane;
 import com.github.jeffyjamzhd.renewed.block.BlockSugarCane;
+import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import huix.glacier.api.registry.MinecraftRegistry;
 import net.minecraft.Block;
 import net.minecraft.Material;
+import net.xiaoyu233.fml.reload.event.TileEntityRegisterEvent;
 import net.xiaoyu233.fml.reload.utils.IdUtil;
 
 public class RenewedBlocks {
@@ -32,6 +34,10 @@ public class RenewedBlocks {
         registry.registerBlock(crateAncientMetal,   "");
         registry.registerBlock(crateMithril,        "");
         registry.registerBlock(crateAdamantium,     "");
+    }
+
+    public static void registerTileEntities(TileEntityRegisterEvent event) {
+        event.register(TileEntityCrate.class, MiTERenewed.RESOURCE_ID + "Crate");
     }
 
     private static int next() {

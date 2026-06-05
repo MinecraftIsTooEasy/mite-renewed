@@ -37,6 +37,15 @@ public class EventListen extends Handlers {
     }
 
     @Subscribe
+    public void onTileEntityRegister(TileEntityRegisterEvent event) {
+        RenewedBlocks.registerTileEntities(event);
+    }
+
+    @Subscribe
+    public void onTileEntityRendererRegister(TileEntityRendererRegisterEvent event) {
+    }
+
+    @Subscribe
     public void onSoundsRegister(SoundsRegisterEvent event) {
         RenewedSounds.register(event);
     }
