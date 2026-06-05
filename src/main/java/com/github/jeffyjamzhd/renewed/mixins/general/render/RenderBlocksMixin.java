@@ -1,17 +1,23 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.render;
 
+import com.github.jeffyjamzhd.renewed.block.BlockCrate;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.*;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderBlocks.class)
 public abstract class RenderBlocksMixin {
     @Shadow public abstract Icon getBlockIcon(Block par1Block, IBlockAccess par2IBlockAccess, int par3, int par4, int par5, int par6);
+    @Shadow public abstract boolean renderStandardBlock(Block par1Block, int par2, int par3, int par4);
+    @Shadow public abstract void setOverrideBlockTexture(Icon par1Icon);
+    @Shadow public abstract void clearOverrideBlockTexture();
 
     @Shadow public IBlockAccess blockAccess;
     @Shadow private double[] x;
@@ -20,6 +26,30 @@ public abstract class RenderBlocksMixin {
     @Shadow private double[] u;
     @Shadow private double[] v;
     @Shadow private Icon overrideBlockTexture;
+
+    @Shadow
+    public abstract void setRenderBoundsForStandardFormBlock();
+
+    @Shadow
+    public abstract void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract void renderFaceYPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract void renderFaceZPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract void renderFaceXPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
+
+    @Shadow
+    public abstract Icon getBlockIconFromSideAndMetadata(Block par1Block, int par2, int par3);
 
     @Inject(method = "renderCrossedSquares", at = @At(
             value = "INVOKE",
@@ -36,6 +66,69 @@ public abstract class RenderBlocksMixin {
             int metadata = blockAccess.getBlockMetadata(x, y, z);
             mr$drawCrossedSquares(block, metadata, icon, dX, dY, dZ, 1.0F);
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "renderBlockByRenderType", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
+    private void renderCrateBlock(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
+        if (block instanceof BlockCrate crate) {
+            boolean rendered = this.renderStandardBlock(crate, x, y, z);
+            if (!rendered) return;
+
+            this.setOverrideBlockTexture(crate.crateFrame);
+            rendered = this.renderStandardBlock(block, x, y, z);
+            this.clearOverrideBlockTexture();
+
+            cir.setReturnValue(rendered);
+        }
+    }
+
+    @Inject(method = "renderBlockAsItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/Block;isAlwaysStandardFormCube()Z", ordinal = 0), cancellable = true)
+    private void renderCrateBlockAsItem(Block block, int meta, float par3, CallbackInfo ci) {
+        if (block instanceof BlockCrate crate) {
+            Tessellator tessellator = Tessellator.instance;
+            crate.setBlockBoundsForItemRender(meta);
+            this.setRenderBoundsForStandardFormBlock();
+
+            GL11.glRotatef(90F, 0F, 1.0F, 0F);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            
+            for (int pass = 0; pass < 2; pass++) {
+                if (pass == 1) {
+                    this.setOverrideBlockTexture(crate.crateFrame);
+                }
+
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(0F, -1.0F, 0F);
+                this.renderFaceYNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 0, meta));
+                tessellator.draw();
+
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(0F, 1.0F, 0F);
+                this.renderFaceYPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 1, meta));
+                tessellator.draw();
+
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(0F, 0F, -1.0F);
+                this.renderFaceZNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 2, meta));
+                tessellator.draw();
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(0F, 0F, 1.0F);
+                this.renderFaceZPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 3, meta));
+                tessellator.draw();
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(-1.0F, 0F, 0F);
+                this.renderFaceXNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 4, meta));
+                tessellator.draw();
+                tessellator.startDrawingQuads();
+                tessellator.setNormal(1.0F, 0F, 0F);
+                this.renderFaceXPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 5, meta));
+                tessellator.draw();
+            }
+
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            this.clearOverrideBlockTexture();
+            ci.cancel();
         }
     }
 
