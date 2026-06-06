@@ -82,11 +82,10 @@ public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
             GL11.glTranslatef(0F, 0F, 0.01F);
             mc.fontRenderer.drawString(countStr,
                     9 - mc.fontRenderer.getStringWidth(countStr), 1, 16777215);
-
-            GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
         }
 
+        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }
 }

@@ -11,7 +11,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     public short heldItemCount;
 
     public TileEntityCrate() {
-        this.storageCapacity = -1;
+        this.storageCapacity = 0;
     }
 
     public TileEntityCrate(BlockCrate crate) {
@@ -54,7 +54,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
         return new ItemStack(heldItemID, Math.min(heldItemCount, stackLimit), heldItemMeta);
     }
 
-    private ItemStack extractStack(int amount) {
+    public ItemStack extractStack(int amount) {
         ItemStack stack = createStackFromData();
         if (stack != null) {
             this.onInventoryChanged();
@@ -99,7 +99,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     }
 
     public int getStorageCapacity() {
-        if (this.storageCapacity == -1) {
+        if (this.storageCapacity == 0) {
             if (!this.hasWorldObj() || !(this.getBlockType() instanceof BlockCrate)) {
                 return this.storageCapacity = 0;
             }
@@ -116,11 +116,15 @@ public class TileEntityCrate extends TileEntity implements IInventory {
         this.heldItemMeta = 0;
     }
 
-    private boolean canExtract() {
+    public boolean isFull() {
+        return this.heldItemCount == this.storageCapacity;
+    }
+
+    public boolean canExtract() {
         return this.heldItemCount > 0 && this.heldItemID != 0;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return this.heldItemCount == 0 && this.heldItemID == 0;
     }
 
