@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.block.entity;
 
 import com.github.jeffyjamzhd.renewed.block.BlockCrate;
+import com.github.jeffyjamzhd.renewed.handler.RenewedTileEntityData;
 import net.minecraft.*;
 
 public class TileEntityCrate extends TileEntity implements IInventory {
@@ -10,7 +11,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     public short heldItemCount;
 
     public TileEntityCrate() {
-        this.storageCapacity = 0;
+        this.storageCapacity = -1;
     }
 
     public TileEntityCrate(BlockCrate crate) {
@@ -20,17 +21,24 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setShort("HeldItemID", this.heldItemID);
-        tag.setShort("HeldItemMeta", this.heldItemMeta);
-        tag.setShort("HeldItemCount", this.heldItemCount);
+        tag.setInteger("HeldItemID", this.heldItemID);
+        tag.setInteger("HeldItemMeta", this.heldItemMeta);
+        tag.setInteger("HeldItemCount", this.heldItemCount);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        this.heldItemID = tag.getShort("HeldItemID");
-        this.heldItemMeta = tag.getShort("HeldItemMeta");
-        this.heldItemCount = tag.getShort("HeldItemCount");
+        this.heldItemID = (short) tag.getInteger("HeldItemID");
+        this.heldItemMeta = (short) tag.getInteger("HeldItemMeta");
+        this.heldItemCount = (short) tag.getInteger("HeldItemCount");
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        this.writeToNBT(nbt);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, RenewedTileEntityData.CRATE_PACKET_ID, nbt);
     }
 
     // Unique methods
@@ -55,6 +63,11 @@ public class TileEntityCrate extends TileEntity implements IInventory {
                 return stack;
             }
 
+            // Sync the extraction to the client
+            this.onInventoryChanged();
+            if (this.worldObj != null) {
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            }
             return stack.splitStack(amount);
         }
         return null;
@@ -75,12 +88,19 @@ public class TileEntityCrate extends TileEntity implements IInventory {
             stack = null;
         }
         this.heldItemCount += toTake;
+
+        // Tell the chunk data changed, and tell the world to sync to clients
+        this.onInventoryChanged();
+        if (this.worldObj != null) {
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
+
         return stack;
     }
 
     public int getStorageCapacity() {
         if (this.storageCapacity == -1) {
-            if (!this.hasWorldObj() || !(this.getBlockType() instanceof BlockChest)) {
+            if (!this.hasWorldObj() || !(this.getBlockType() instanceof BlockCrate)) {
                 return this.storageCapacity = 0;
             }
 

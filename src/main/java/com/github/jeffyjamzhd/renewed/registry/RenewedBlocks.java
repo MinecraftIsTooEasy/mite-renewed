@@ -6,6 +6,7 @@ import com.github.jeffyjamzhd.renewed.block.BlockRootingSugarCane;
 import com.github.jeffyjamzhd.renewed.block.BlockSugarCane;
 import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import huix.glacier.api.registry.MinecraftRegistry;
+import moddedmite.rustedironcore.api.util.IdUtilExtra;
 import net.minecraft.Block;
 import net.minecraft.Material;
 import net.xiaoyu233.fml.reload.event.TileEntityRegisterEvent;

@@ -3,11 +3,17 @@ package com.github.jeffyjamzhd.renewed;
 import com.github.jeffyjamzhd.renewed.api.event.CraftingSoundRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.event.HandpanRegisterEvent;
 import com.github.jeffyjamzhd.renewed.api.event.MusicConditionRegisterEvent;
+import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import com.github.jeffyjamzhd.renewed.command.CommandTransform;
+import com.github.jeffyjamzhd.renewed.handler.RenewedTileEntityData;
 import com.github.jeffyjamzhd.renewed.registry.*;
+import com.github.jeffyjamzhd.renewed.render.tile.TileEntityCrateRenderer;
 import com.google.common.eventbus.Subscribe;
 import moddedmite.rustedironcore.api.event.Handlers;
+import moddedmite.rustedironcore.api.event.events.TileEntityDataTypeRegisterEvent;
 import net.xiaoyu233.fml.reload.event.*;
+
+import java.util.function.Consumer;
 
 public class EventListen extends Handlers {
 
@@ -28,6 +34,7 @@ public class EventListen extends Handlers {
 
     @Subscribe
     public void onEntityRegister(EntityRegisterEvent event) {
+        TileEntityData.register(new RenewedTileEntityData());
         RenewedEntity.register(event);
     }
 
@@ -43,6 +50,7 @@ public class EventListen extends Handlers {
 
     @Subscribe
     public void onTileEntityRendererRegister(TileEntityRendererRegisterEvent event) {
+        event.register(TileEntityCrate.class, new TileEntityCrateRenderer());
     }
 
     @Subscribe
@@ -65,6 +73,7 @@ public class EventListen extends Handlers {
 
     public static void register() {
         EntityTracker.register(new RenewedTracker());
+
         CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
         HandpanRegisterEvent.register(new RenewedHandpanRecipes());
         MusicConditionRegisterEvent.register(new RenewedMusicConditions());
