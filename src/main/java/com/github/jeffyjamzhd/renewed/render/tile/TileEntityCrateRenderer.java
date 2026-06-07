@@ -3,9 +3,58 @@ package com.github.jeffyjamzhd.renewed.render.tile;
 import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
-    private final RenderItem customRenderItem = new RenderItem();
+    private final RenderItem customRenderItem = new RenderItem() {
+        @Override
+        public void renderItemAndEffectIntoGUI(FontRenderer fontRenderer, TextureManager textureManager, ItemStack stack, int x, int y) {
+            if (stack == null) {
+                return;
+            }
+            Tessellator var8 = Tessellator.instance;
+            float var16 = 0.0625F;
+
+            this.renderItemIntoGUI(fontRenderer, textureManager, stack, x, y);
+            if (stack.hasEffect()) {
+                GL11.glDepthFunc(GL11.GL_EQUAL);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDepthMask(false);
+                textureManager.bindTexture(RES_ITEM_GLINT);
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glColor4f(.5F * .76F, 0.25F * .76F, 0.8F * .76F, 1.0F);
+                renderGlint(x, y, 16, 16);
+                GL11.glDepthMask(true);
+                GL11.glDisable(GL11.GL_BLEND);
+                GL11.glDisable(GL11.GL_ALPHA_TEST);
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glDepthFunc(GL11.GL_LEQUAL);
+            }
+        }
+
+        private void renderGlint(int x, int y, int w, int h)
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                GL14.glBlendFuncSeparate(772, 1, 0, 0);
+                float uScale = 0.00390625F;
+                float vScale = 0.00390625F;
+                float u = (Minecraft.getSystemTime() % (3000 + i * 1873)) / (3000.0F + i * 1873) * 256.0F;
+                float v = 0.0F;
+
+                float hScale = (i < 1) ? 4.0F : -1.0F;
+
+                Tessellator tessellator = Tessellator.instance;
+                tessellator.startDrawingQuads();
+                tessellator.addVertexWithUV(x + 0, y + h, 0, (u + (float)h * hScale) * uScale, (v + (float)h) * vScale);
+                tessellator.addVertexWithUV(x + w, y + h, 0, (u + (float)w + (float)h * hScale) * uScale, (v + (float)h) * vScale);
+                tessellator.addVertexWithUV(x + w, y + 0, 0, (u + (float)w) * uScale, (v + 0.0F) * vScale);
+                tessellator.addVertexWithUV(x + 0, y + 0, 0, (u + 0.0F) * uScale, (v + 0.0F) * vScale);
+                tessellator.draw();
+            }
+        }
+    };
 
     public TileEntityCrateRenderer() {
         this.customRenderItem.setRenderManager(RenderManager.instance);
@@ -60,7 +109,7 @@ public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
             GL11.glScalef(1F, 1F, 0.001F);
         }
 
-        this.customRenderItem.renderItemIntoGUI(
+        this.customRenderItem.renderItemAndEffectIntoGUI(
                 mc.fontRenderer, mc.getTextureManager(), displayStack, -8, -8);
 
         GL11.glPopMatrix();

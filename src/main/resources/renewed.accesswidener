@@ -18,3 +18,4 @@ accessible method net/minecraft/EnumDirection isDown ()Z
 accessible method net/minecraft/EnumDirection isUpOrDown ()Z
 accessible method net/minecraft/EnumDirection isNorthOrSouth ()Z
 accessible method net/minecraft/EnumDirection isEastOrWest ()Z
+accessible field net/minecraft/RenderItem RES_ITEM_GLINT Lnet/minecraft/ResourceLocation;

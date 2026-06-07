@@ -118,6 +118,17 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
     }
 
     @Override
+    public void breakBlock(World world, int x, int y, int z, int block_id, int metadata) {
+        TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
+        if (te == null) {
+            super.breakBlock(world, x, y, z, block_id, metadata);
+            return;
+        }
+
+
+    }
+
+    @Override
     public boolean mr$useExtendedAPI() {
         // Required for server side block clicking
         return true;
