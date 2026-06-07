@@ -10,6 +10,7 @@ import net.minecraft.*;
 public class BlockCrate extends BlockDirectionalWithTileEntity {
     public BlockCrate(int id, Material material) {
         super(id, material, new BlockConstants());
+        setCreativeTab(CreativeTabs.tabDecorations);
     }
 
     @Override

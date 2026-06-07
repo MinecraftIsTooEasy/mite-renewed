@@ -56,11 +56,12 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 
     public ItemStack extractStack(int amount) {
         ItemStack stack = createStackFromData();
-        if (stack != null) {
+        if (stack != null && !isEmpty()) {
             this.onInventoryChanged();
 
-            if (stack.stackSize <= amount) {
-                return stack;
+            this.heldItemCount = (short) Math.max(0, this.heldItemCount - amount);
+            if (this.heldItemCount == 0) {
+                ensureEmpty();
             }
 
             // Sync the extraction to the client
@@ -68,6 +69,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
             if (this.worldObj != null) {
                 this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             }
+
             return stack.splitStack(amount);
         }
         return null;
@@ -132,7 +134,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return this.getStorageCapacity();
+        return 1;
     }
 
     @Override
@@ -157,7 +159,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return this.getStorageCapacity();
     }
 
     @Override
@@ -198,4 +200,5 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     public void destroyInventory() {
         ensureEmpty();
     }
+
 }
