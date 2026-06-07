@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.block;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
+import com.github.jeffyjamzhd.renewed.entity.EntityItemBulk;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -125,7 +126,24 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
             return;
         }
 
+        if (te.isEmpty()) {
+            super.breakBlock(world, x, y, z, block_id, metadata);
+            return;
+        }
 
+        int itemId = te.heldItemID;
+        int itemMeta = te.heldItemMeta;
+        int count = te.heldItemCount;
+        ItemStack stack = new ItemStack(itemId, count, itemMeta);
+
+        EntityItemBulk entity = new EntityItemBulk(world, x + .5F, y + .5F, z + .5F);
+        entity.setEntityItemStack(stack);
+        entity.motionX = world.rand.nextGaussian() * .05F;
+        entity.motionY = world.rand.nextGaussian() * .05F + .2F;
+        entity.motionZ = world.rand.nextGaussian() * .05F;
+
+        world.spawnEntityInWorld(entity);
+        super.breakBlock(world, x, y, z, block_id, metadata);
     }
 
     @Override
