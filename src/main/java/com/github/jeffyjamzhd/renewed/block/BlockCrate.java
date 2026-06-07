@@ -88,16 +88,22 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
 
         TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
 
+        // Block extraction if empty
+        if (te.isEmpty()) {
+            return false;
+        }
+
         // Extract one item
         if (player.onServer()) {
             // Do not extract if inventory full
-            if (player.inventory.getFirstEmptyStack() == -1) {
+            if (getFirstCompatibleInventorySlot(player.inventory, te.createStackFromData()) == -1) {
                 player.addChatMessage("Inventory is full, cannot take any more items.");
                 return false;
             }
 
             ItemStack extract = te.extractStack();
-            if (extract != null && player.inventory.addItemStackToInventory(extract)) {
+            if (extract != null) {
+                player.inventory.addItemStackToInventory(extract);
                 if (extract.stackSize > 0) {
                     te.insertStack(extract);
                 }
@@ -161,6 +167,21 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
         boolean openFront = world.isAirOrPassableBlock(direction.getNeighborX(x), direction.getNeighborY(y), direction.getNeighborZ(z), false);
         boolean touchingFront = direction.equals(face.getNormal());
         return openFront && touchingFront;
+    }
+
+    public int getFirstCompatibleInventorySlot(IInventory inventory, ItemStack stack) {
+        int size = inventory.getSizeInventory();
+        for (int i = 0; i < 36; i++) {
+            ItemStack stackAt = inventory.getStackInSlot(i);
+
+            if (stackAt == null) return i;
+
+            boolean sameID = stack.itemID == stackAt.itemID;
+            boolean sameMeta = stack.getItemSubtype() == stackAt.getItemSubtype();
+            boolean canStack = stackAt.stackSize < stackAt.getMaxStackSize();
+            if (sameID && sameMeta && canStack) return i;
+        }
+        return -1;
     }
 
     public int getCapacity() {

@@ -43,7 +43,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
 
     // Unique methods
 
-    private ItemStack createStackFromData() {
+    public ItemStack createStackFromData() {
         if (!canExtract()) {
             return null;
         }
@@ -59,7 +59,9 @@ public class TileEntityCrate extends TileEntity implements IInventory {
         if (stack != null && !isEmpty()) {
             this.onInventoryChanged();
 
-            this.heldItemCount = (short) Math.max(0, this.heldItemCount - amount);
+            amount = Math.min(this.heldItemCount, amount);
+            this.heldItemCount -= (short) amount;
+
             if (this.heldItemCount == 0) {
                 ensureEmpty();
             }
@@ -124,7 +126,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     }
 
     public boolean isFull() {
-        return this.heldItemCount == this.storageCapacity;
+        return this.heldItemCount == this.getStorageCapacity();
     }
 
     public boolean canExtract() {
