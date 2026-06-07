@@ -123,7 +123,7 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     }
 
     public boolean canExtract() {
-        return this.heldItemCount > 0 && this.heldItemID != 0;
+        return !isEmpty();
     }
 
     public boolean isEmpty() {
