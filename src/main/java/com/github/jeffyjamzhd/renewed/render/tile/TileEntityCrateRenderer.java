@@ -30,7 +30,7 @@ public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
         int meta = tile.getBlockMetadata();
         EnumDirection facing = tile.getBlockType().getDirectionFacing(meta);
         float rotation = 0.0F;
-        float offset = 0.51F;
+        float offset = 0.475F;
 
         switch (facing) {
             case NORTH: rotation = 180.0F; GL11.glTranslatef( 0F,  0F, -offset); break;

@@ -11,6 +11,7 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
     public BlockCrate(int id, Material material) {
         super(id, material, new BlockConstants());
         setCreativeTab(CreativeTabs.tabDecorations);
+        setHardness(1.6F);
     }
 
     @Override
@@ -106,6 +107,11 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
 
     @Override
     public boolean canBeReplacedBy(int metadata, Block other_block, int other_block_metadata) {
+        return false;
+    }
+
+    @Override
+    public boolean isStandardFormCube(boolean[] is_standard_form_cube, int metadata) {
         return false;
     }
 
