@@ -1,3 +1,4 @@
+
 difficulty.prefix=Difficulty:
 difficulty.customize=Customize Difficulty
 difficulty.enabled=Enabled
@@ -133,3 +134,10 @@ tag.wildcard.Cooked Lambchop.1173=Cooked Mutton
 tag.wildcard.Handpan (Empty).4262=Handpans
 
 tile.sandstoneFurnace.name=Sandstone Furnace
+tile.crateCopper.name=Copper Crate
+tile.crateSilver.name=Silver Crate
+tile.crateGold.name=Golden Crate
+tile.crateIron.name=Iron Crate
+tile.crateAncientMetal.name=Ancient Metal Crate
+tile.crateMithril.name=Mithril Crate
+tile.crateAdamantium.name=Adamantium Crate

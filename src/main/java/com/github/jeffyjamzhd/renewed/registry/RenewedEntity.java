@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
 import net.xiaoyu233.fml.reload.event.EntityRegisterEvent;
 import net.xiaoyu233.fml.reload.utils.IdUtil;

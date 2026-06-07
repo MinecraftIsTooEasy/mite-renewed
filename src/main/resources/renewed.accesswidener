@@ -9,3 +9,13 @@ accessible field net/minecraft/ItemVessel standard_volume I
 accessible class net/minecraft/GuiWorldSlot
 accessible field net/minecraft/GuiButton width I
 accessible field net/minecraft/GuiButton height I
+accessible method net/minecraft/EnumDirection isNorth ()Z
+accessible method net/minecraft/EnumDirection isSouth ()Z
+accessible method net/minecraft/EnumDirection isWest ()Z
+accessible method net/minecraft/EnumDirection isEast ()Z
+accessible method net/minecraft/EnumDirection isUp ()Z
+accessible method net/minecraft/EnumDirection isDown ()Z
+accessible method net/minecraft/EnumDirection isUpOrDown ()Z
+accessible method net/minecraft/EnumDirection isNorthOrSouth ()Z
+accessible method net/minecraft/EnumDirection isEastOrWest ()Z
+accessible field net/minecraft/RenderItem RES_ITEM_GLINT Lnet/minecraft/ResourceLocation;

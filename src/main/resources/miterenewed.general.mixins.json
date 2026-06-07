@@ -37,6 +37,7 @@
     "entity.EntityPlayerMixin",
     "entity.EntityRevenantMixin",
     "entity.tile.TileEntityFurnaceMixin",
+    "entity.tile.TileEntityHopperMixin",
     "gui.GuiContainerMixin",
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",

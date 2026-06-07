@@ -1,11 +1,10 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.core;
 
+import com.github.jeffyjamzhd.renewed.network.C2SBlockHit;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.ItemStack;
-import net.minecraft.Minecraft;
-import net.minecraft.PlayerControllerMP;
-import net.minecraft.SoundManager;
+import moddedmite.rustedironcore.network.Network;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,6 +21,18 @@ public class PlayerControllerMPMixin {
     public boolean aumExtraCondition(
             boolean original, @Local(argsOnly = true) ItemStack stack) {
         return original || (stack != null && stack.getItem().mr$isAutoUse(stack));
+    }
+
+    @Redirect(method = "clickBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/Block;onBlockClicked(Lnet/minecraft/World;IIILnet/minecraft/EntityPlayer;)V"))
+    private void extendedBlockMethod(Block instance, World world, int x, int y, int z, EntityPlayer player, @Local(argsOnly = true) EnumFace face) {
+        if (!instance.mr$useExtendedAPI()) {
+            instance.onBlockClicked(world, x, y, z, player);
+            return;
+        }
+
+        if (instance.mr$onBlockClicked(world, face, x, y, z, player)) {
+            Network.sendToServer(new C2SBlockHit(x, y, z, face));
+        }
     }
 
     @Redirect(method = "updateController", at = @At(
