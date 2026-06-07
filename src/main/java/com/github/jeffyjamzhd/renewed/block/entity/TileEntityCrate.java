@@ -75,6 +75,11 @@ public class TileEntityCrate extends TileEntity implements IInventory {
         return null;
     }
 
+    public ItemStack extractStack() {
+        int stackLimit = Item.itemsList[heldItemID].getItemStackLimit(this.heldItemMeta, 0);
+        return this.extractStack(stackLimit);
+    }
+
     public ItemStack insertStack(ItemStack stack) {
         if (!isItemValidForSlot(0, stack)) {
             return stack;

@@ -22,13 +22,13 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     EnumFace face, float offset_x, float offset_y, float offset_z) {
-        if (!canAccess(world, x, y, z)) {
-            world.playSoundAtBlock(x, y, z, "imported.random.chest_locked", 0.2F);
-            return true;
+        if (!canInteract(world, face, x, y, z)) {
+            return false;
         }
 
         TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
 
+        // Block insertion if full
         if (te.isFull()) {
             return false;
         }
@@ -37,8 +37,13 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
             // Insert held stack
             if (player.onServer()) {
                 ItemStack stack = player.getHeldItemStack();
-                player.setHeldItemStack(te.insertStack(stack));
-                playInsertSfx(world, x, y, z);
+                ItemStack result = te.insertStack(stack);
+
+                if (!stack.equals(result)) {
+                    player.setHeldItemStack(result);
+                    playInsertSfx(world, x, y, z);
+                    return true;
+                }
             }
 
             return true;
@@ -76,8 +81,40 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
     }
 
     @Override
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-        super.onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
+    public boolean mr$onBlockClicked(World world, EnumFace face, int x, int y, int z, EntityPlayer player) {
+        if (!canInteract(world, face, x, y, z)) {
+            return false;
+        }
+
+        TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
+
+        // Extract one item
+        if (player.onServer()) {
+            // Do not extract if inventory full
+            if (player.inventory.getFirstEmptyStack() == -1) {
+                player.addChatMessage("Inventory is full, cannot take any more items.");
+                return false;
+            }
+
+            ItemStack extract = te.extractStack();
+            if (extract != null && player.inventory.addItemStackToInventory(extract)) {
+                if (extract.stackSize > 0) {
+                    te.insertStack(extract);
+                }
+
+                playExtractSfx(world, x, y, z);
+                player.inventoryContainer.detectAndSendChanges();
+            }
+
+            return true;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean mr$useExtendedAPI() {
+        // Required for server side block clicking
+        return true;
     }
 
     @Override
@@ -117,10 +154,13 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
 
     // Class specific
 
-    public boolean canAccess(World world, int x, int y, int z) {
+    public boolean canInteract(World world, EnumFace face, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
         EnumDirection direction = getDirectionFacing(meta);
-        return world.isAirOrPassableBlock(direction.getNeighborX(x), direction.getNeighborY(y), direction.getNeighborZ(z), false);
+
+        boolean openFront = world.isAirOrPassableBlock(direction.getNeighborX(x), direction.getNeighborY(y), direction.getNeighborZ(z), false);
+        boolean touchingFront = direction.equals(face.getNormal());
+        return openFront && touchingFront;
     }
 
     public int getCapacity() {
