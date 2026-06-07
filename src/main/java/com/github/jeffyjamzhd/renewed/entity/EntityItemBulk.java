@@ -3,7 +3,7 @@ package com.github.jeffyjamzhd.renewed.entity;
 import net.minecraft.*;
 
 public class EntityItemBulk extends EntityItem {
-    int cooldown = 5;
+    public int cooldown = 5;
 
     public EntityItemBulk(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
