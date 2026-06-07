@@ -99,17 +99,17 @@ public abstract class RenderBlocksMixin {
             tessellator.setColorOpaque_F(r, g, b);
 
             // Crate frame inner faces
-            this.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.0D, 1.0D);
+            this.setRenderBounds(0.0D, .5F / 16F, 0.0D, 1.0D, .5F / 16F, 1.0D);
             this.renderFaceYPos(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 1.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            this.setRenderBounds(0.0D, 15.5F / 16F, 0.0D, 1.0D, 15.5F / 16F, 1.0D);
             this.renderFaceYNeg(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
+            this.setRenderBounds(0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D, .5F / 16F);
             this.renderFaceZPos(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
+            this.setRenderBounds(0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D, 15.5F / 16F);
             this.renderFaceZNeg(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
+            this.setRenderBounds(.5F / 16F, 0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D);
             this.renderFaceXPos(crate, x, y, z, icon);
-            this.setRenderBounds(1.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            this.setRenderBounds(15.5F / 16F, 0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D);
             this.renderFaceXNeg(crate, x, y, z, icon);
 
             // Crate frame outer faces
