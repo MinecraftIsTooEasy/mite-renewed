@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
+import com.github.jeffyjamzhd.renewed.block.BlockCrate;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemQuern;
@@ -16,6 +17,8 @@ import java.util.Arrays;
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
 public class RenewedRecipes {
+    private static final Material[] metals = {Material.copper, Material.silver, Material.gold, Material.iron, Material.ancient_metal, Material.mithril, Material.adamantium};
+
     public static void registerRecipes(RecipeRegistryEvent registry) {
         LOGGER.info("Registering recipes!");
         registerIterativeRecipes(registry);
@@ -101,6 +104,19 @@ public class RenewedRecipes {
                 'B', Item.bowlEmpty,
                 'C', Item.cudgelWood
         ).difficulty(50F);
+
+        for (Material material : metals) {
+            Item ingot = Item.getMatchingItem(ItemIngot.class, material);
+            Block crate = BlockCrate.getBlockForMaterial(material);
+
+            registry.registerShapedRecipe(new ItemStack(crate), true,
+                    " I ",
+                    "IWI",
+                    " I ",
+                    'I', ingot,
+                    'W', Block.planks
+            );
+        }
     }
 
     /**

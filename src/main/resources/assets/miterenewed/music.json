@@ -154,6 +154,7 @@
   "miterenewed:magnetic.ogg" : {
     "title": "Magnetic Circuit",
     "artist": "Markus Persson",
+    "fixed_pitch" : 0.85,
     "conditions" : {
       "miterenewed:dimension": {
         "dimension": "overworld"

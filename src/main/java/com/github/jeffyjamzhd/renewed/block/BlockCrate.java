@@ -3,6 +3,7 @@ package com.github.jeffyjamzhd.renewed.block;
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import com.github.jeffyjamzhd.renewed.entity.EntityItemBulk;
+import com.github.jeffyjamzhd.renewed.registry.RenewedBlocks;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -234,6 +235,17 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
 
     private void playExtractSfx(World world, int x, int y, int z) {
         world.playSoundAtBlock(x, y, z, "random.pop", 0.3F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+    }
+
+    static public Block getBlockForMaterial(Material material) {
+        if (material == Material.copper)            return RenewedBlocks.crateCopper;
+        if (material == Material.silver)            return RenewedBlocks.crateSilver;
+        if (material == Material.gold)              return RenewedBlocks.crateGold;
+        if (material == Material.iron)              return RenewedBlocks.crateIron;
+        if (material == Material.ancient_metal)     return RenewedBlocks.crateAncientMetal;
+        if (material == Material.mithril)           return RenewedBlocks.crateMithril;
+        if (material == Material.adamantium)        return RenewedBlocks.crateAdamantium;
+        throw new IllegalArgumentException("No block for provided material %s".formatted(material.getCapitalizedName()));
     }
 
     // Client methods
