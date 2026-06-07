@@ -69,7 +69,7 @@ public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
         if (crate.heldItemCount > 1) {
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glScalef(0.5F, 0.5F, 0.5F);
-            GL11.glTranslatef(7F, 10F, 0.05F);
+            GL11.glTranslatef(8F, 8F, 0.05F);
             String countStr = String.valueOf(crate.heldItemCount);
 
             // Shadow (drawn slightly behind)
