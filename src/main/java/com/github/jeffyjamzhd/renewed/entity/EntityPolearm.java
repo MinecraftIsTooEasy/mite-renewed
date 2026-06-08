@@ -126,6 +126,12 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
             int blockId2 = this.worldObj.getBlockId(this.tX, this.tY, this.tZ);
             int meta = this.worldObj.getBlockMetadata(this.tX, this.tY, this.tZ);
             if (blockId2 == this.inTile && (meta == this.inData || this.inTile == Block.grass.blockID)) {
+                this.motionX = 0.0D;
+                this.motionY = 0.0D;
+                this.motionZ = 0.0D;
+                this.prevRotationPitch = this.rotationPitch;
+                this.prevRotationYaw = this.rotationYaw;
+
                 ++this.ticksInGround;
                 if (this.ticksInGround >= (this.owner instanceof EntityPlayer ? 24000 : 1000)) {
                     this.setDead();
