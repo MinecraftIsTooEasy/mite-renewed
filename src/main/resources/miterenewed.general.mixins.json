@@ -25,6 +25,7 @@
     "compat.rustedironcore.RenderPlayerRICMixin",
     "compat.rustedironcore.TickListenerMixin",
     "compat.rustedironcore.TileEntityFurnaceRICMixin",
+    "compat.waila.ProxyServerMixin",
     "core.AnvilSaveConverterMixin",
     "core.MinecraftMixin",
     "core.MinecraftServerMixin",

@@ -1,8 +1,10 @@
 package com.github.jeffyjamzhd.renewed;
 
+import com.github.jeffyjamzhd.renewed.compat.waila.RenewedWailaPlugin;
 import com.github.jeffyjamzhd.renewed.handler.RenewedFurnaceHandler;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItemProperties;
 import com.github.jeffyjamzhd.renewed.registry.RenewedNetwork;
+import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import moddedmite.rustedironcore.api.event.Handlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;

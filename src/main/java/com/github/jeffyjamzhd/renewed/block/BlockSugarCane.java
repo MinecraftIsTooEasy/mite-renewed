@@ -39,7 +39,7 @@ public class BlockSugarCane extends BlockAbstractReed {
                 world.setBlock(x, y + 1, z, this.blockID);
                 meta = 0;
             }
-            world.setBlockMetadataWithNotify(x, y, z, meta, 4);
+            world.setBlockMetadataWithNotify(x, y, z, meta, 2 | 4);
             return true;
         }
         return false;

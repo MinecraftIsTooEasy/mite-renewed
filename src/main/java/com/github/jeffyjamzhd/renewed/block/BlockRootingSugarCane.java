@@ -40,6 +40,7 @@ public class BlockRootingSugarCane extends BlockAbstractReed {
         if (super.updateTick(world, x, y, z, random)) {
             return true;
         }
+
         int meta = world.getBlockMetadata(x, y, z);
         int dailyGrowth = (meta & MASK_DAILY_GROWTH) >> 3;
         boolean hasDaily = dailyGrowth == 1;
@@ -70,13 +71,21 @@ public class BlockRootingSugarCane extends BlockAbstractReed {
             meta = 0;
             meta |= growth;
             meta |= dailyGrowth << 3;
-            world.setBlockMetadataWithNotify(x, y, z, meta, 4);
+            world.setBlockMetadataWithNotify(x, y, z, meta, 2 | 4);
             return true;
         } else if (hasDaily) {
             // During night reset bit
             meta = meta & ~MASK_DAILY_GROWTH;
-            world.setBlockMetadataWithNotify(x, y, z, meta, 4);
+            world.setBlockMetadataWithNotify(x, y, z, meta, 2 | 4);
         }
         return true;
+    }
+
+    public int getGrowthStage(int meta) {
+        return meta & MASK_GROWTH;
+    }
+
+    public boolean hasGrownToday(int meta) {
+        return (meta & MASK_DAILY_GROWTH) > 0;
     }
 }

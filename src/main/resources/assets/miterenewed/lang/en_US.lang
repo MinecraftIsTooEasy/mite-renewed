@@ -120,6 +120,12 @@ tooltip.handpan.nothing=Nothing
 tooltip.emi.handpan.process=Takes %d damage after process
 tooltip.emi.handpan.time=Takes %.1fs to process
 tooltip.emi.handpan.chance=Chance: %d%%
+tooltip.waila.crate.storage=%d/%d items stored
+tooltip.waila.crate.contains=Contains %s
+tooltip.waila.sugarCane.stage=Rooting stage: %s%%
+tooltip.waila.sugarCane.hasGrown=Has rooted today
+tooltip.waila.sugarCane.hasntGrown=Has not rooted today
+tooltip.waila.sugarCaneRoot.name=Sugar Cane Roots
 
 emi.category.miterenewed.handpan=Panning
 
