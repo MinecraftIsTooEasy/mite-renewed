@@ -8,7 +8,10 @@ import org.lwjgl.opengl.GL11;
 public class ItemRenderHandpan {
     private static ResourceLocation TEX = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/items/handpan/render.png");
     private static RenderBlocks blockRender = new RenderBlocks();
-    private static float prevAnimX = 0F, prevAnimZ = 0F;
+
+    static private float prevAnimYaw = 0.0F;
+    static private float prevAnimPitch = 0.0F;
+    static private float prevAnimRoll = 0.0F;
 
     static public void renderHandpan(float partialTicks, ItemStack item, EntityClientPlayerMP player, float equipTime, float playerPitch) {
         // Get information
@@ -37,33 +40,39 @@ public class ItemRenderHandpan {
             tiltAngle = 1.0F;
         }
 
-        // Calculate custom animation
         float value = duration > 0 ? progress * maxUse : 0;
-        float animX = (float) ((Math.cos(value / 10F)) * .12F);
-        float animZ = (float) ((Math.sin(value / 6F)) * .3F);
-        animZ = prevAnimZ + (animZ - prevAnimZ) * partialTicks * 0.1f;
-        animX = prevAnimX + (animX - prevAnimX) * partialTicks * 0.1f;
+        float targetYaw = (float) ((Math.sin(value / 3.0F)) * 18.0F);
+        float targetRoll = (float) ((Math.cos(value / 3.0F)) * 12.0F);
+        float targetPitch = (float) ((Math.sin(value / 8.0F)) * 3.0F);
 
-        // Prepare for render (apply easing to tilt)
+        // Smooth interpolation
+        float animYaw = prevAnimYaw + (targetYaw - prevAnimYaw) * partialTicks * 0.5f;
+        float animPitch = prevAnimPitch + (targetPitch - prevAnimPitch) * partialTicks * 0.5f;
+        float animRoll = prevAnimRoll + (targetRoll - prevAnimRoll) * partialTicks * 0.5f;
+
+        // Prepare for render
         tiltAngle = -MathHelper.cos(tiltAngle * (float)Math.PI) * 0.2F + 0.5F;
         GL11.glTranslatef(0.0F, 0.0F * depthScale - (1.0F - equipTime) * 1.2F - tiltAngle * 0.8F + 0.04F, -0.9F * depthScale);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(tiltAngle * -85.0F, 0.0F, 0.0F, 1.0F);
-        GL11.glEnable(32826); // GL_RESCALE_NORMAL
+        GL11.glEnable(32826);
         Minecraft.getMinecraft().getTextureManager().bindTexture(player.getLocationSkin());
 
-        // Translate and animate
+        // Translate to base holding position
         GL11.glTranslatef(.4F, .15F, 0F);
-        GL11.glTranslatef(animX, 0, animZ);
+        GL11.glRotatef(animYaw, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(animPitch, 1.0F, 0.0F, 0.0F);
 
-        prevAnimX = animX;
-        prevAnimZ = animZ;
+        // Save current frame's animation
+        prevAnimYaw = animYaw;
+        prevAnimPitch = animPitch;
+        prevAnimRoll = animRoll;
 
         // Render both player arms (i = 0 is left arm, i = 1 is right arm)
         for(int i = 0; i < 2; ++i) {
-            int armSide = i * 2 - 1; // Results in -1 for left, 1 for right
+            int armSide = i * 2 - 1;
             GL11.glPushMatrix();
-            GL11.glTranslatef(.25F + 0.2F * armTiltAngle, -.95F - 0.05F * armTiltAngle, .6F * (float)armSide);
+            GL11.glTranslatef(.65F + 0.2F * armTiltAngle, -.85F - 0.05F * armTiltAngle, .65F * (float)armSide);
 
             GL11.glRotatef(-50.0F + 10F * armTiltAngle, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef((float) (-25 * armSide), 1.0F, 0.0F, 0.0F);
@@ -78,11 +87,15 @@ public class ItemRenderHandpan {
             GL11.glPopMatrix();
         }
 
-        // Setup the handpan rendering transform
+        // Handpan base transform
         GL11.glRotatef(armTiltAngle * -25.0F + 25F, 0.0F, 0.0F, 1.0F);
         GL11.glTranslatef(armTiltAngle * .25F, 0F, 0F);
 
-        swingProgress = player.getSwingProgress(partialTicks); // Re-fetch for item offset
+        // Handpan rotations
+        GL11.glRotatef(animRoll, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(animPitch * 0.5F, 1.0F, 0.0F, 0.0F);
+
+        swingProgress = player.getSwingProgress(partialTicks);
         swingSin = MathHelper.sin(swingProgress * swingProgress * (float)Math.PI);
         swingSqrtSin = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float)Math.PI);
 
