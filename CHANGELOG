@@ -1,5 +1,10 @@
 # 0.2.8 Changelog
-+ Added tiered crate blocks, which store a mass amount of one item/block
++ Tiered crate blocks, which store a mass amount of one item/block
++ Two new music tracks to the overworld
++ Bowls are now crafted using a knife and wood planks
++ Bows can be decrafted into string with a knife
++ Removed querns, their design has also been superseded by the recent tool bench changes.
++ Fixed EMI display with Renewed's tool bench scaling
 
 [Technical]
 + Server packet/callback for when a player starts to mine a block

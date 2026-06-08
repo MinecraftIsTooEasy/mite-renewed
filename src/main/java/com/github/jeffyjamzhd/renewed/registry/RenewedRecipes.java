@@ -228,6 +228,8 @@ public class RenewedRecipes {
                         .setDamage(20).setDifficulty(250F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.rottenFlesh)
                         .setDamage(30).setDifficulty(400F).scaleDifficulty(fac);
+                registerToolRecipe(new ItemStack(Item.silk), manager, item, new ItemStack(Item.bow, 1, Short.MAX_VALUE))
+                        .setDamage(10).setDifficulty(100F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
                         .setDamage(10).setDifficulty(140F).scaleDifficulty(fac);
                 registerToolRecipe(new ItemStack(Item.silk), manager, item, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
@@ -238,6 +240,10 @@ public class RenewedRecipes {
                 // Register planks knife -> handpan
                 registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks, 1, Short.MAX_VALUE), new ItemStack(Block.planks, 1, Short.MAX_VALUE))
                         .setDamage(50).setDifficulty(600F).scaleDifficulty(fac);
+
+                // Register plank knife -> bowl
+                registerToolRecipe(new ItemStack(Item.bowlEmpty), manager, item, new ItemStack(Block.planks, 1, Short.MAX_VALUE))
+                        .setDamage(25).setDifficulty(300F).scaleDifficulty(fac);
 
                 // Meat cutting recipes
                 registerCuttingRecipe(manager, item, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 200F, fac);

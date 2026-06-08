@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -60,12 +61,21 @@ public class CraftingManagerMixin {
         return woolRecipe;
     }
 
-    @Inject(method = "<init>", at = @At(
-            value = "TAIL"))
-    private void removeWoolRecipe(CallbackInfo ci) {
-        this.recipes.remove(woolRecipe);
+    @Unique
+    private ShapedRecipes bowlRecipe;
+
+    @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/CraftingManager;addRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapedRecipes;", ordinal = 41))
+    private ShapedRecipes removeBowlRecipe(CraftingManager instance, ItemStack par1ItemStack, Object[] par2ArrayOfObj, Operation<ShapedRecipes> original) {
+        bowlRecipe = original.call(instance, par1ItemStack, par2ArrayOfObj);
+        return bowlRecipe;
     }
 
+    @Inject(method = "<init>", at = @At(
+            value = "TAIL"))
+    private void removeRecipes(CallbackInfo ci) {
+        this.recipes.remove(woolRecipe);
+        this.recipes.remove(bowlRecipe);
+    }
 
     @ModifyArg(method = "<init>", at = @At(
             value = "INVOKE",

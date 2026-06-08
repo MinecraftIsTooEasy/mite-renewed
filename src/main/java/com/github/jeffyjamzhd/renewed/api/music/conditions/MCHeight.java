@@ -48,4 +48,9 @@ public class MCHeight implements IMusicCondition {
     public String getIdentifier() {
         return "miterenewed:height";
     }
+
+    @Override
+    public int getPriority() {
+        return 2;
+    }
 }
