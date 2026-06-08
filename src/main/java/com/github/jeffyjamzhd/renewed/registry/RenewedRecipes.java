@@ -4,7 +4,6 @@ import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.block.BlockCrate;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
-import com.github.jeffyjamzhd.renewed.item.ItemQuern;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessBucketConversionRecipe;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
@@ -91,6 +90,29 @@ public class RenewedRecipes {
                 true,
                 new ItemStack(Block.sapling, 1, Short.MAX_VALUE)
         ).difficulty(300F);
+
+        // Biomass recipes
+        registry.registerShapelessRecipe(
+                new ItemStack(RenewedItems.biomass, 1),
+                false,
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
+                new ItemStack(Block.plantRed, 1, Short.MAX_VALUE)
+        ).difficulty(200F);
+        registry.registerShapelessRecipe(
+                new ItemStack(RenewedItems.biomass, 2),
+                false,
+                new ItemStack(Block.leaves, 1, Short.MAX_VALUE),
+                new ItemStack(Block.leaves, 1, Short.MAX_VALUE),
+                new ItemStack(Block.leaves, 1, Short.MAX_VALUE),
+                new ItemStack(Block.leaves, 1, Short.MAX_VALUE)
+        ).difficulty(500F);
+
     }
 
     /**
@@ -98,21 +120,14 @@ public class RenewedRecipes {
      * @param registry event
      */
     private static void registerShapedRecipes(RecipeRegistryEvent registry) {
-        registry.registerShapedRecipe(new ItemStack(RenewedItems.quern), true,
-                "C",
-                "B",
-                'B', Item.bowlEmpty,
-                'C', Item.cudgelWood
-        ).difficulty(50F);
-
         for (Material material : metals) {
             Item ingot = Item.getMatchingItem(ItemIngot.class, material);
             Block crate = BlockCrate.getBlockForMaterial(material);
 
             registry.registerShapedRecipe(new ItemStack(crate), true,
-                    " I ",
                     "IWI",
-                    " I ",
+                    "W W",
+                    "IWI",
                     'I', ingot,
                     'W', Block.planks
             );
@@ -211,6 +226,8 @@ public class RenewedRecipes {
 
         // Iterate and add knife -> sharp bone recipes
         for (Item item : Item.itemsList) {
+            if (item == null) continue;
+
             // Cutting recipes
             if (item instanceof ItemDagger) {
                 // Get item material and factor
@@ -252,64 +269,9 @@ public class RenewedRecipes {
                 registerCuttingRecipe(manager, item, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 300F, fac);
             }
 
-            // Quern recipes
-            if (item instanceof ItemQuern) {
-                registerToolRecipe(new ItemStack(Item.sugar, 1), manager, item, Item.reed)
-                        .setDamage(20)
-                        .setDifficulty(200F);
-                registerToolRecipe(new ItemStack(Item.flour, 1), manager, item, Item.wheat)
-                        .setDamage(35)
-                        .setDifficulty(500F);
-                registerToolRecipe(new ItemStack(RenewedItems.biomass, 1), manager, item,
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE),
-                        new ItemStack(Block.plantRed, 1, Short.MAX_VALUE))
-                        .setDamage(50)
-                        .setDifficulty(400F);
-
-                // Dyes
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.RED), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ROSE))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.YELLOW), manager, item,
-                        new ItemStack(Block.plantYellow))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.LIGHT_BLUE), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ORCHID))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.MAGENTA), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.ALLIUM))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.ORANGE), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.TULIP))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.PINK), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAHLIA))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.GRAY), manager, item,
-                        new ItemStack(Block.plantRed, 1, BlockFlowerMulti.DAISY))
-                        .setDamage(10)
-                        .setDifficulty(100F);
-                registerToolRecipe(new ItemStack(Item.dyePowder, 2, ItemDye.WHITE), manager, item, Item.bone)
-                        .setDamage(25)
-                        .setDifficulty(250F);
-            }
-
             // Bucket output recipes
             if (item instanceof ItemBucket bucket && bucket.contains(Material.stone) && bucket.getEmptyVessel() instanceof ItemRenewedBucket) {
-                manager.getRecipeList()
-                        .add(new ShapelessBucketConversionRecipe(bucket.getVesselMaterial()));
+                manager.getRecipeList().add(new ShapelessBucketConversionRecipe(bucket.getVesselMaterial()));
             }
         }
     }

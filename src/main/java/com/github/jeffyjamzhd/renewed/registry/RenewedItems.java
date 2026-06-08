@@ -54,8 +54,6 @@ public class RenewedItems {
     public static final ItemPolearm adamantium_spear =
             createInstance(ItemPolearm.class, new Class[]{int.class, Material.class, ResourceLocation.class},
                     IdUtil.getNextItemID(), Material.adamantium, new ResourceLocation(MiTERenewed.RESOURCE_ID + "tool/polearm/hand/adamantium_spear"));
-    public static final ItemQuern quern =
-            createInstance(ItemQuern.class, new Class[]{int.class, String.class}, IdUtil.getNextItemID(), "quern");
     public static final ItemBiomass biomass =
             createInstance(ItemBiomass.class, new Class[]{int.class}, IdUtil.getNextItemID());
 
@@ -102,7 +100,6 @@ public class RenewedItems {
         registerItem(registry, "sinew_mesh", "sinew_mesh", sinew_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "silk_mesh", "silk_mesh", silk_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "handpan", "tool/handpan", handpan);
-        registerItem(registry, "quern", "tool/quern", quern);
         registerItem(registry, "biomass", "biomass", biomass);
 
         LOGGER.info("Modifying vanilla items!");
