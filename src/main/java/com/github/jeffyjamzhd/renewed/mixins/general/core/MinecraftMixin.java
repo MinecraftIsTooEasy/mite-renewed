@@ -3,6 +3,8 @@ package com.github.jeffyjamzhd.renewed.mixins.general.core;
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,6 +16,14 @@ public abstract class MinecraftMixin {
     @Shadow public SoundManager sndManager;
     @Shadow public static Minecraft theMinecraft;
     @Shadow public EntityClientPlayerMP thePlayer;
+
+    @Shadow
+    public WorldClient theWorld;
+
+    @Shadow
+    public static boolean inDevMode() {
+        throw new UnsupportedOperationException("Implemented via mixin");
+    }
 
     @ModifyReturnValue(method = "getVersionDescriptor", at = @At("RETURN"))
     private static String modifyVersion(String original) {
@@ -46,5 +56,22 @@ public abstract class MinecraftMixin {
         this.sndManager.mr$getMusicEngine().gui.updateDisplay();
     }
 
+    @WrapOperation(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;advancedItemTooltips:Z", ordinal = 1))
+    private void preventTooltips(GameSettings instance, boolean value, Operation<Void> original) {
+        if (inDevMode()) {
+            original.call(instance, value);
+            return;
+        }
+        original.call(instance, false);
+    }
+
+    @WrapOperation(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/RenderManager;field_85095_o:Z", ordinal = 1))
+    private void preventHitbox(boolean value, Operation<Void> original) {
+        if (inDevMode()) {
+            original.call(value);
+            return;
+        }
+        original.call(false);
+    }
 
 }
