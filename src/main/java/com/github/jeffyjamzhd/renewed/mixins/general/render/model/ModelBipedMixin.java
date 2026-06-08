@@ -38,7 +38,8 @@ public class ModelBipedMixin implements IModelBiped {
             Entity entity, CallbackInfo ci
     ) {
         if (this.mr$aimedPolearm) {
-            ItemRenderPolearm.handlePlayerArms(entity, bipedLeftArm, bipedRightArm, par3, par6);
+            float delta = Minecraft.getMinecraft().timer.elapsedPartialTicks;
+            ItemRenderPolearm.handlePlayerArms(entity, bipedLeftArm, bipedRightArm, par3, delta);
             ci.cancel();
         }
     }

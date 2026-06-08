@@ -2,6 +2,8 @@ package com.github.jeffyjamzhd.renewed.item;
 
 import com.github.jeffyjamzhd.renewed.entity.EntityPolearm;
 import com.github.jeffyjamzhd.renewed.registry.RenewedMaterial;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.*;
 
 public class ItemPolearm extends ItemSword {
@@ -131,5 +133,13 @@ public class ItemPolearm extends ItemSword {
         return Math.min((float)getTicksPulled(item_stack, item_in_use_count) / (float)getTicksForMaxPull(item_stack), 1.0F);
     }
 
+    @Environment(EnvType.CLIENT)
+    public static float getTicksPulledAnimation(ItemStack item_stack, float item_in_use_count) {
+        return (float) item_stack.getMaxItemUseDuration() - item_in_use_count;
+    }
 
+    @Environment(EnvType.CLIENT)
+    public static float getFractionPulledAnimation(ItemStack item_stack, float item_in_use_count) {
+        return Math.min(getTicksPulledAnimation(item_stack, item_in_use_count) / (float)getTicksForMaxPull(item_stack), 1.0F);
+    }
 }

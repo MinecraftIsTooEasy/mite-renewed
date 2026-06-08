@@ -18,12 +18,12 @@ public abstract class MinecraftMixin {
     @Shadow public EntityClientPlayerMP thePlayer;
 
     @Shadow
-    public WorldClient theWorld;
-
-    @Shadow
     public static boolean inDevMode() {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
+
+    @Shadow
+    private Timer timer;
 
     @ModifyReturnValue(method = "getVersionDescriptor", at = @At("RETURN"))
     private static String modifyVersion(String original) {
@@ -63,6 +63,7 @@ public abstract class MinecraftMixin {
             return;
         }
         original.call(instance, false);
+
     }
 
     @WrapOperation(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/RenderManager;field_85095_o:Z", ordinal = 1))
