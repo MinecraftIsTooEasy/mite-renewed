@@ -49,7 +49,7 @@ public class RenewedWailaPlugin implements IWailaDataProvider {
 
             boolean isRoot = cane.isRootCane(world, x, y, z);
             if (isRoot) {
-                currentTip.set(0, WHITE + I18n.getString("tooltip.waila.sugarCaneRoot.name"));
+                currentTip.set(0, WHITE + I18n.getString("tile.sugarCaneRoots.name"));
             }
         }
 
