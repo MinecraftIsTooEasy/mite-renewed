@@ -92,9 +92,7 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
     private void playRandomMusic(CallbackInfo ci) {
         ISoundManager snd = mc.sndManager;
         if (snd.mr$isLoaded()) {
-            if (!snd.mr$isMusicPlaying()) {
-                mc.sndManager.playRandomMusicIfReady();
-            }
+            mc.sndManager.playRandomMusicIfReady();
         }
     }
 

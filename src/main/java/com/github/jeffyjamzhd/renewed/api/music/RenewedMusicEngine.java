@@ -82,6 +82,10 @@ public class RenewedMusicEngine
      */
     private boolean transitionOut;
     /**
+     * Amount of ticks before next transition check.
+     */
+    private int transitionTimer = 20;
+    /**
      * If the transition was manually called
      */
     private boolean transitionOutForced;
@@ -125,6 +129,11 @@ public class RenewedMusicEngine
             return;
         }
 
+        // During blood moon, we need to force delay to be 0
+        if (world != null && world.isBloodMoon24HourPeriod() && world.getAdjustedTimeOfDay() > 15000 && !isPlaying()) {
+            this.ticksBeforeNextTrack = 0;
+        }
+
         // Tick states
         switch (this.state) {
             case STATE_COOLDOWN -> stateCooldown(world, player);
@@ -135,8 +144,10 @@ public class RenewedMusicEngine
 
     private void stateRunning(World world, EntityPlayer player) {
         // Only check once every second
-        if (world != null && world.getTimeOfDay() % 20 == 0) {
+        if (world != null && transitionTimer <= 0) {
             checkForTransition(world, player);
+        } else {
+            this.transitionTimer -= 1;
         }
 
         // Don't bother if music is still playing
@@ -219,6 +230,7 @@ public class RenewedMusicEngine
     }
 
     private void checkForTransition(World world, EntityPlayer player) {
+        this.transitionTimer = 20;
         if (!this.trackStillMatchesConditions(world, player)) {
             this.setState(STATE_TRANSITION);
             this.transitionOut = true;
@@ -282,7 +294,9 @@ public class RenewedMusicEngine
     private boolean trackStillMatchesConditions(World world, EntityPlayer player) {
         // Ignore if track cannot be "cut-off"
         if (track == null || !track.canBeCutoff()) {
-            return true;
+            if (!shouldForceConditionCheck(world, player)) {
+                return true;
+            }
         }
 
         // Check self
@@ -321,6 +335,11 @@ public class RenewedMusicEngine
 
         // Otherwise, we're fine.
         return true;
+    }
+
+    private boolean shouldForceConditionCheck(World world, EntityPlayer player) {
+        if (world == null) return false;
+        return world.isBloodMoonNight();
     }
 
     /**

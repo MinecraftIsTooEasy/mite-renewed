@@ -17,4 +17,9 @@ public class MCTitle implements IMusicCondition {
     public String getIdentifier() {
         return "miterenewed:title";
     }
+
+    @Override
+    public int getPriority() {
+        return 99;
+    }
 }

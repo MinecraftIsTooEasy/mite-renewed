@@ -33,6 +33,6 @@ public class MCDimension implements IMusicCondition {
 
     @Override
     public int getPriority() {
-        return 3;
+        return 5;
     }
 }
