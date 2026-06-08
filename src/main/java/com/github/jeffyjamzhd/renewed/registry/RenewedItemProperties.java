@@ -9,6 +9,7 @@ public class RenewedItemProperties implements Runnable {
     public void run() {
         MiTERenewed.LOGGER.info("Registering item properties!");
 
+        // Handle nugget smelting
         for (Item item : Item.itemsList) {
             if (item instanceof IDamageableItem && (item.isTool() || item.isArmor())) {
                 Material material = item.getMaterialForRepairs();
@@ -35,5 +36,10 @@ public class RenewedItemProperties implements Runnable {
                 FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget));
             }
         }
+
+        // Add experience to shards
+        ItemProperties.RockExperience.register(Item.shardDiamond, 50);
+        ItemProperties.RockExperience.register(Item.shardEmerald, 25);
+        ItemProperties.RockExperience.register(Item.shardNetherQuartz, 5);
     }
 }
