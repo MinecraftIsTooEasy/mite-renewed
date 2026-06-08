@@ -259,8 +259,10 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
                                 // Play sound and bounce back
                                 this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-                                if (!(hit instanceof EntityEnderman))
+                                if (!(hit instanceof EntityEnderman)) {
                                     this.bounceBack();
+                                    this.velocityChanged = true;
+                                }
 
                                 // Refresh owner despawn
                                 if (this.owner != null && hit instanceof EntityPlayer)
@@ -387,7 +389,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     @Override
     public boolean cannotRaycastCollideWith(Entity entity) {
-        return entity == this.owner && this.ticksInAir < 5 ? true : super.cannotRaycastCollideWith(entity);
+        return entity == this.owner && this.ticksInAir < 5 || super.cannotRaycastCollideWith(entity);
     }
 
     public void setIsCritical(boolean par1) {
@@ -426,7 +428,7 @@ public class EntityPolearm extends EntityThrowable implements IProjectile {
 
     @Override
     protected void entityInit() {
-        this.dataWatcher.addObject(16, (byte)0);
+        this.dataWatcher.addObject(16, (byte) 0);
     }
 
     @Override
