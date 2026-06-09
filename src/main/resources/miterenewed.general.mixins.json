@@ -69,6 +69,7 @@
     "world.WorldSettingsMixin"
   ],
   "client": [
+    "compat.manylib.RenderUtilsMixin",
     "entity.ClientPlayerMixin",
     "entity.EntityLivingBaseMixin",
     "gui.GuiCreateWorldBGSMixin",

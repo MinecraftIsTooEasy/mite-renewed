@@ -50,6 +50,7 @@ dependencies {
     shadow(implementation "org.yaml:snakeyaml:2.6")
 
     implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+    implementation "com.github.MinecraftIsTooEasy:ManyLib:2.3.1"
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
     implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.4"
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"

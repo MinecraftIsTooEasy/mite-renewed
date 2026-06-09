@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.api.music;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.RenewedConfig;
 import com.github.jeffyjamzhd.renewed.api.event.MusicConditionRegisterEvent;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiMusic;
 import com.google.common.reflect.TypeToken;
@@ -449,8 +450,7 @@ public class RenewedMusicEngine
     }
 
     public void setDelay() {
-        String ticksEnumString = MiTERenewed.TICKS_UNTIL_NEXT_SONG.get();
-        MusicDelay ticksEnum = MusicDelay.fromString(ticksEnumString);
+        MusicDelay ticksEnum = RenewedConfig.MUSIC_DELAY.getEnumValue();
         int ticks = ticksEnum.getTicksBeforeNext();
         this.setDelay((int) (ticks * 0.75F) + random.nextInt((int) (ticks * 0.25)));
     }

@@ -1,10 +1,8 @@
 package com.github.jeffyjamzhd.renewed;
 
-import com.github.jeffyjamzhd.renewed.compat.waila.RenewedWailaPlugin;
 import com.github.jeffyjamzhd.renewed.handler.RenewedFurnaceHandler;
 import com.github.jeffyjamzhd.renewed.registry.RenewedItemProperties;
 import com.github.jeffyjamzhd.renewed.registry.RenewedNetwork;
-import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import moddedmite.rustedironcore.api.event.Handlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.ModContainer;
@@ -30,25 +28,16 @@ public class MiTERenewed implements ModInitializer {
     public static final String RESOURCE_ID = "miterenewed:";
     public static final String RESOURCE_ID_COMPACT = "MR:";
 
-    public static FieldReference<String> TICKS_UNTIL_NEXT_SONG = new FieldReference<>("default");
-    public static FieldReference<Boolean> MUSIC_DISPLAY = new FieldReference<>(true);
-
-    public static ConfigRoot CONFIG;
-
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing MiTE Renewed!");
         ModResourceManager.addResourcePackDomain(RESOURCE_ID.substring(0, RESOURCE_ID.length()-1));
+        RenewedConfig.init();
 
         MITEEvents.MITE_EVENT_BUS.register(new EventListen());
         EventListen.register();
         RenewedNetwork.init();
         this.registerHandlers();
-    }
-
-    @Override
-    public Optional<ConfigRegistry> createConfig() {
-        return Optional.of(new ConfigRegistry(CONFIG, RENEWED_CONFIG_FILE));
     }
 
     private void registerHandlers() {
@@ -75,13 +64,5 @@ public class MiTERenewed implements ModInitializer {
         VERSION = meta.getVersion().getFriendlyString();
         NAMESPACE = meta.getName();
         LOGGER = LogManager.getLogger(NAMESPACE);
-        RENEWED_CONFIG_FILE = new File(NAMESPACE + ".json");
-
-        CONFIG = ConfigRoot.create(1)
-                .addEntry(ConfigCategory.of("Audio")
-                        .addEntry(ConfigEntry.of("Music Delay", TICKS_UNTIL_NEXT_SONG)
-                                .withComment("The delay between music tracks. [0 : rare, 1 : vanilla, 2 : default, 3 : constant]"))
-                        .addEntry(ConfigEntry.of("Music Display", MUSIC_DISPLAY)
-                                .withComment("When false, disables the music display from showing up.")));
     }
 }

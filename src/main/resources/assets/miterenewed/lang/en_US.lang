@@ -1,3 +1,16 @@
+config.tab.renewed.visuals=Visuals
+config.tab.renewed.audio=Audio
+
+config.name.renewed.showMusicDisplay=Show Music Display
+config.comment.renewed.showMusicDisplay=When enabled, any time a new music track starts,\nthe music display will appear in the top left corner
+config.name.renewed.musicDelay=Music Delay
+config.comment.renewed.musicDelay=Controls the rate of which music plays
+config.name.renewed.poofSoundOnDeath=Poof Sound on Death
+config.comment.renewed.poofSoundOnDeath=When enabled, any creature that dies will make a\n"poof" sound as they turn to dust
+config.name.renewed.hudPadding=HUD Padding
+config.comment.renewed.hudPadding=The amount of padding applied to ingame HUD elements
+config.name.renewed.lootBeams=Loot Beams
+config.comment.renewed.lootBeams=When enabled, dropped items will emit a beam of light\nto indicate their presence and rarity
 
 difficulty.prefix=Difficulty:
 difficulty.customize=Customize Difficulty
