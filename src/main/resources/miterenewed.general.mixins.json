@@ -35,6 +35,8 @@
     "entity.EntityChickenMixin",
     "entity.EntityHangingMixin",
     "entity.EntityItemMixin",
+    "entity.EntityLivingBaseCommonMixin",
+    "entity.EntityLivingMixin",
     "entity.EntityPlayerMixin",
     "entity.EntityRevenantMixin",
     "entity.tile.TileEntityFurnaceMixin",
