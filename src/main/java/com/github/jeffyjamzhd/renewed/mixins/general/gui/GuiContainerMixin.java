@@ -18,6 +18,6 @@ public class GuiContainerMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/InventoryCrafting;hasDamagedItem()Z")
     )
     private boolean modifyExpressionToolCraft(boolean original) {
-        return original && !(((MITEContainerCrafting) (this.inventorySlots)).getRecipe() instanceof ShapelessToolRecipe);
+        return original && !(((MITEContainerCrafting) (this.inventorySlots)).getRecipe() instanceof ShapelessToolRecipe<?>);
     }
 }

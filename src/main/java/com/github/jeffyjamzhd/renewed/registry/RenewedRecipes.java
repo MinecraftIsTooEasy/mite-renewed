@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.api.IFurnaceRecipes;
 import com.github.jeffyjamzhd.renewed.block.BlockCrate;
+import com.github.jeffyjamzhd.renewed.item.ItemBoneKnife;
 import com.github.jeffyjamzhd.renewed.item.ItemHandpan;
 import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
@@ -159,8 +160,8 @@ public class RenewedRecipes {
      * @param input Inputs
      * @return ShapelessToolRecipe
      */
-    public static ShapelessToolRecipe registerToolRecipe(ItemStack output, CraftingManager man, Item... input) {
-        ShapelessToolRecipe recipe = new ShapelessToolRecipe(output, Arrays.stream(input).map(ItemStack::new).toList());
+    public static <T extends Item> ShapelessToolRecipe<T> registerToolRecipe(Class<T> tool, ItemStack output, CraftingManager man, Item... input) {
+        ShapelessToolRecipe<T> recipe = new ShapelessToolRecipe<>(tool, output, Arrays.stream(input).map(ItemStack::new).toList());
         man.getRecipeList().add(recipe);
         return recipe;
     }
@@ -173,12 +174,9 @@ public class RenewedRecipes {
      * @param input Other ingredients
      * @return ShapelessToolRecipe
      */
-    public static ShapelessToolRecipe registerToolRecipe(ItemStack output, CraftingManager man, Item tool, ItemStack... input) {
-        ArrayList<ItemStack> items = new ArrayList<>();
-        items.add(new ItemStack(tool));
-        items.addAll(Arrays.stream(input).toList());
-
-        ShapelessToolRecipe recipe = new ShapelessToolRecipe(output, items);
+    public static <T extends Item> ShapelessToolRecipe<T> registerToolRecipe(Class<T> tool, ItemStack output, CraftingManager man, ItemStack... input) {
+        ArrayList<ItemStack> items = new ArrayList<>(Arrays.stream(input).toList());
+        ShapelessToolRecipe<T> recipe = new ShapelessToolRecipe<>(tool, output, items);
         man.getRecipeList().add(recipe);
         return recipe;
     }
@@ -224,50 +222,47 @@ public class RenewedRecipes {
     public static void registerSpecialRecipes(CraftingManager manager) {
         LOGGER.info("Registering special recipes!");
 
-        // Iterate and add knife -> sharp bone recipes
+        registerToolRecipe(ItemDagger.class, new ItemStack(RenewedItems.sharp_bone), manager, Item.bone)
+                .addExclusion(ItemBoneKnife.class)
+                .setDamage(150)
+                .setDifficulty(900F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.sinew, 2), manager, Item.leather)
+                .setDamage(20)
+                .setDifficulty(250F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.sinew, 2), manager, Item.rottenFlesh)
+                .setDamage(30)
+                .setDifficulty(400F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk), manager, new ItemStack(Item.bow, 1, Short.MAX_VALUE))
+                .setDamage(10)
+                .setDifficulty(100F);
+        registerToolRecipe(ItemBow.class, new ItemStack(Item.stick, 2), manager, new Item[]{})
+                .setDifficulty(200F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk), manager, RenewedItems.tangled_web)
+                .setDamage(10)
+                .setDifficulty(140F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk), manager, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
+                .setDamage(40)
+                .setDifficulty(400F);
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk, 2), manager, new ItemStack(Block.sapling, 1, Short.MAX_VALUE))
+                .setDamage(60)
+                .setDifficulty(600F);
+
+        // Register planks knife -> handpan
+        registerToolRecipe(ItemDagger.class, new ItemStack(RenewedItems.handpan), manager, new ItemStack(Block.planks, 1, Short.MAX_VALUE), new ItemStack(Block.planks, 1, Short.MAX_VALUE))
+                .setDamage(50)
+                .setDifficulty(600F);
+        // Register plank knife -> bowl
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.bowlEmpty), manager, new ItemStack(Block.planks, 1, Short.MAX_VALUE))
+                .setDamage(25)
+                .setDifficulty(300F);
+
+        registerCuttingRecipe(manager, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 200F);
+        registerCuttingRecipe(manager, RenewedItems.raw_beef, RenewedItems.cooked_beef, 30, 300F);
+        registerCuttingRecipe(manager, RenewedItems.raw_poultry, RenewedItems.cooked_poultry, 20, 175F);
+        registerCuttingRecipe(manager, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 300F);
+
         for (Item item : Item.itemsList) {
             if (item == null) continue;
-
-            // Cutting recipes
-            if (item instanceof ItemDagger) {
-                // Get item material and factor
-                float difficulty = item.getLowestCraftingDifficultyToProduce();
-                difficulty = Float.compare(difficulty, Float.MAX_VALUE) == 0 ? 70F : difficulty;
-                float fac = 20F * (1F / MathHelper.sqrt_float(difficulty));
-
-                // Register knife -> sharp bone
-                if (item.itemID != RenewedItems.sharp_bone.itemID)
-                    registerToolRecipe(new ItemStack(RenewedItems.sharp_bone), manager, item, Item.bone)
-                            .setDamage(100).setDifficulty(900F).scaleDifficulty(fac);
-
-                // Register generic extraction recipes
-                registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.leather)
-                        .setDamage(20).setDifficulty(250F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.sinew, 2), manager, item, Item.rottenFlesh)
-                        .setDamage(30).setDifficulty(400F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk), manager, item, new ItemStack(Item.bow, 1, Short.MAX_VALUE))
-                        .setDamage(10).setDifficulty(100F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk), manager, item, RenewedItems.tangled_web)
-                        .setDamage(10).setDifficulty(140F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.silk), manager, item, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
-                        .setDamage(40).setDifficulty(400F).scaleDifficulty(fac);
-                registerToolRecipe(new ItemStack(Item.stick, 2), manager, item, new ItemStack(Block.sapling, 1, Short.MAX_VALUE))
-                        .setDamage(60).setDifficulty(600F).scaleDifficulty(fac);
-
-                // Register planks knife -> handpan
-                registerToolRecipe(new ItemStack(RenewedItems.handpan), manager, item, new ItemStack(Block.planks, 1, Short.MAX_VALUE), new ItemStack(Block.planks, 1, Short.MAX_VALUE))
-                        .setDamage(50).setDifficulty(600F).scaleDifficulty(fac);
-
-                // Register plank knife -> bowl
-                registerToolRecipe(new ItemStack(Item.bowlEmpty), manager, item, new ItemStack(Block.planks, 1, Short.MAX_VALUE))
-                        .setDamage(25).setDifficulty(300F).scaleDifficulty(fac);
-
-                // Meat cutting recipes
-                registerCuttingRecipe(manager, item, RenewedItems.raw_pork, RenewedItems.cooked_pork, 25, 200F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_beef, RenewedItems.cooked_beef, 30, 300F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_poultry, RenewedItems.cooked_poultry, 20, 175F, fac);
-                registerCuttingRecipe(manager, item, RenewedItems.raw_lambchop, RenewedItems.cooked_lambchop, 30, 300F, fac);
-            }
 
             // Bucket output recipes
             if (item instanceof ItemBucket bucket && bucket.contains(Material.stone) && bucket.getEmptyVessel() instanceof ItemRenewedBucket) {
@@ -276,11 +271,11 @@ public class RenewedRecipes {
         }
     }
 
-    private static void registerCuttingRecipe(CraftingManager manager, Item tool, Item raw, Item cooked, int damage, float difficulty, float scale) {
-        registerToolRecipe(new ItemStack(raw.itemID, 2, 1), manager, tool, new ItemStack(raw.itemID, 1, 0))
-                .setDamage(damage).setDifficulty(difficulty).scaleDifficulty(scale);
-        registerToolRecipe(new ItemStack(cooked.itemID, 2, 1), manager, tool, new ItemStack(cooked.itemID, 1, 0))
-                .setDamage(damage * 2).setDifficulty(difficulty + difficulty * 1.75F).scaleDifficulty(scale);
+    private static void registerCuttingRecipe(CraftingManager manager, Item raw, Item cooked, int damage, float difficulty) {
+        registerToolRecipe(ItemDagger.class, new ItemStack(raw.itemID, 2, 1), manager, new ItemStack(raw.itemID, 1, 0))
+                .setDamage(damage).setDifficulty(difficulty);
+        registerToolRecipe(ItemDagger.class, new ItemStack(cooked.itemID, 2, 1), manager, new ItemStack(cooked.itemID, 1, 0))
+                .setDamage(damage * 2).setDifficulty(difficulty + difficulty * 1.75F);
     }
 
     public static void registerFurnaceRecipes() {

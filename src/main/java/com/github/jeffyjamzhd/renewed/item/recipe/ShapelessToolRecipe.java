@@ -3,18 +3,33 @@ package com.github.jeffyjamzhd.renewed.item.recipe;
 import com.github.jeffyjamzhd.renewed.mixins.general.accessor.ShapelessRecipesAccessor;
 import net.minecraft.*;
 
+import java.util.HashSet;
 import java.util.List;
 
-public class ShapelessToolRecipe extends ShapelessRecipes {
+public class ShapelessToolRecipe<T extends Item> extends ShapelessRecipes {
+    public final Class<T> toolClass;
+    public final HashSet<Class<? extends Item>> excludedClasses = new HashSet<>();
     private int damage;
+
 
     /**
      * Creates a new ShapelessToolRecipe instance
      * @param output Item to give upon craft completion
      * @param inputs Ingredients of this recipe
      */
-    public ShapelessToolRecipe(ItemStack output, List<ItemStack> inputs) {
+    public ShapelessToolRecipe(Class<T> toolClass, ItemStack output, List<ItemStack> inputs) {
         super(output, inputs, false);
+        this.toolClass = toolClass;
+    }
+
+    /**
+     * Excludes any item of {@code clazz} from being considered a valid tool
+     * @param clazz Class to exclude
+     * @return This instance
+     */
+    public ShapelessToolRecipe<T> addExclusion(Class<? extends Item> clazz) {
+        this.excludedClasses.add(clazz);
+        return this;
     }
 
     /**
@@ -22,7 +37,7 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
      * @param value Amount to damage tool
      * @return This instance
      */
-    public ShapelessToolRecipe setDamage(int value) {
+    public ShapelessToolRecipe<T> setDamage(int value) {
         this.damage = value;
         return this;
     }
@@ -46,26 +61,34 @@ public class ShapelessToolRecipe extends ShapelessRecipes {
             ItemStack current = inv.getStackInSlot(i);
             // If an item is there (not air)
             if (current != null) {
-                // Check for tool item
-                if (current.isTool()) {
-                    // Item is the right tool, make sure there is only one defined
-                    if (tool != null)
-                        return false;
+                Item currentItem = current.getItem();
 
-                    tool = current;
-                }
-                // Item is not tool, match against ingredients
-                boolean valid = false;
-                for (ItemStack ingredient : ingredients) {
-                    if (ingredient.itemID == current.itemID &&
-                            (ingredient.getItemSubtype() == Short.MAX_VALUE || ingredient.getItemSubtype() == current.getItemSubtype())) {
-                        incomingIngCount++;
-                        valid = true;
+                // 1. Check if item is in our exclusion list first
+                boolean isExcluded = false;
+                for (Class<? extends Item> excluded : this.excludedClasses) {
+                    if (excluded.isInstance(currentItem)) {
+                        isExcluded = true;
                         break;
                     }
                 }
-                if (!valid)
-                    return false;
+
+                // 2. Perform tool matching if not excluded
+                if (!isExcluded && this.toolClass.isInstance(currentItem)) {
+                    if (tool != null) return false;
+                    tool = current;
+                } else {
+                    // Match against ingredients
+                    boolean valid = false;
+                    for (ItemStack ingredient : ingredients) {
+                        if (ingredient.itemID == current.itemID &&
+                                (ingredient.getItemSubtype() == Short.MAX_VALUE || ingredient.getItemSubtype() == current.getItemSubtype())) {
+                            incomingIngCount++;
+                            valid = true;
+                            break;
+                        }
+                    }
+                    if (!valid) return false;
+                }
             }
         }
 

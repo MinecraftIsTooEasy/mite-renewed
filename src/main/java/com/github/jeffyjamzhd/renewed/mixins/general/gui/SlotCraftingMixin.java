@@ -31,13 +31,21 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
 
     @Inject(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;", ordinal = 0))
     private void damageDagger(EntityPlayer player, ItemStack par2ItemStack, CallbackInfo ci, @Local(ordinal = 2) int i) {
+        // Set last crafting recipe
         ItemStack stack = this.craftMatrix.getStackInSlot(i);
         if (this.crafting_result != null)
             mr$lastRecipe = this.crafting_result.recipe;
-        if (stack != null && stack.isTool() && mr$lastRecipe instanceof ShapelessToolRecipe) {
-            // Damage tool
+
+        if (stack != null && mr$lastRecipe instanceof ShapelessToolRecipe<?> toolRecipe) {
+            // Check if item is the same kind of tool
+            Class<?> toolClass = toolRecipe.toolClass;
+            if (!toolClass.isInstance(stack.getItem())) return;
+
+            // Damage the tool
             int currentDamage = stack.getItemDamage();
-            stack.setItemDamage(currentDamage + ((ShapelessToolRecipe) mr$lastRecipe).getDamage());
+            stack.setItemDamage(currentDamage + toolRecipe.getDamage());
+
+            // Or break it, if it's time to
             if (stack.getItemDamage() >= stack.getMaxDamage()) {
                 player.entityFX(EnumEntityFX.item_breaking, new SignalData().setByte(0).setShort(stack.itemID));
                 this.craftMatrix.setInventorySlotContents(i, null);
@@ -62,7 +70,7 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
 
     @WrapOperation(method = "onPickupFromSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/IInventory;decrStackSize(II)Lnet/minecraft/ItemStack;"))
     private ItemStack decrTool(IInventory instance, int i, int j, Operation<ItemStack> original, @Local(name = "item") Item item) {
-        if (mr$lastRecipe instanceof ShapelessToolRecipe && item.isTool()) {
+        if (mr$lastRecipe instanceof ShapelessToolRecipe<?> toolRecipe && toolRecipe.toolClass.isInstance(item)) {
             return this.craftMatrix.decrStackSize(i, 0);
         } else {
             return original.call(instance, i, j);
@@ -85,7 +93,6 @@ public abstract class SlotCraftingMixin implements ISlotCrafting {
             @Local(ordinal = 2) ItemStack newStack) {
         newStack.setItemDamage(slotStack.getItemDamage());
     }
-
 
     @Override
     public void mr$setInitialItemStack(EntityPlayer player, MITEContainerCrafting container) {
