@@ -13,11 +13,14 @@ import net.xiaoyu233.fml.reload.event.RecipeRegistryEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.jeffyjamzhd.renewed.MiTERenewed.LOGGER;
 
 public class RenewedRecipes {
     private static final Material[] metals = {Material.copper, Material.silver, Material.gold, Material.iron, Material.ancient_metal, Material.mithril, Material.adamantium};
+    private static final HashMap<Tuple, Tuple> SLAB_TO_FULL_MAP = new HashMap<>();
 
     public static void registerRecipes(RecipeRegistryEvent registry) {
         LOGGER.info("Registering recipes!");
@@ -75,6 +78,17 @@ public class RenewedRecipes {
      * @param registry event
      */
     private static void registerShapelessRecipes(RecipeRegistryEvent registry) {
+        // 2 slab -> full block
+        for (Map.Entry<Tuple, Tuple> entry : SLAB_TO_FULL_MAP.entrySet()) {
+            Tuple key = entry.getKey();
+            Tuple value = entry.getValue();
+
+            ItemStack slab = new ItemStack((Block) key.getFirst(), 1, (int) key.getSecond());
+            ItemStack block = new ItemStack((Block) value.getFirst(), 1, (int) value.getSecond());
+
+            registry.registerShapelessRecipe(block, true, slab, slab);
+        }
+
         // Simple pan -> mesh recipes
         registry.registerShapelessRecipe(
                 new ItemStack(RenewedItems.handpan, 1, ItemHandpan.SINEW),
@@ -298,5 +312,18 @@ public class RenewedRecipes {
         recipes.mr$addSmeltingComplexEntry(
                 new ItemStack(input.itemID, 2, 1),
                 new ItemStack(output.itemID, 2, 1));
+    }
+
+    static {
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.stoneSingleSlab, 0), new Tuple(Block.stone, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.stoneSingleSlab, 3), new Tuple(Block.cobblestone, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.stoneSingleSlab, 4), new Tuple(Block.brick, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.stoneSingleSlab, 5), new Tuple(Block.stoneBrick, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.stoneSingleSlab, 6), new Tuple(Block.netherBrick, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.woodSingleSlab, 0), new Tuple(Block.planks, 0));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.woodSingleSlab, 1), new Tuple(Block.planks, 1));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.woodSingleSlab, 2), new Tuple(Block.planks, 2));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.woodSingleSlab, 3), new Tuple(Block.planks, 3));
+        SLAB_TO_FULL_MAP.put(new Tuple(Block.obsidianSingleSlab, 0), new Tuple(Block.obsidian, 0));
     }
 }
