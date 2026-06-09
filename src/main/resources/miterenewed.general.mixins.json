@@ -76,6 +76,7 @@
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
     "render.RenderInvisibleStalkerMixin",
+    "render.RenderItemMixin",
     "render.RenderPlayerMixin",
     "render.RenderShadowMixin",
     "render.RenderWightMixin",
