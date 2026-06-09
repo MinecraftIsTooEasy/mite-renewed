@@ -75,6 +75,7 @@
     "packet.NetClientHandlerMixin",
     "render.ItemRendererMixin",
     "render.RenderBipedMixin",
+    "render.RenderInvisibleStalkerMixin",
     "render.RenderPlayerMixin",
     "render.RenderShadowMixin",
     "render.RenderWightMixin",
