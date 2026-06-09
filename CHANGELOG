@@ -1,14 +1,27 @@
 # 0.2.8 Changelog
 + Tiered crate blocks, which store a mass amount of one item/block
++ New integration with WAILA display
 + Two new music tracks to the overworld
-+ Bowls are now crafted using a knife and wood planks
-+ Bows can be decrafted into string with a knife
-+ Removed querns, their design has also been superseded by the recent tool bench changes.
++ Invisible stalkers now render differently
++ Improved the way handpans and polearms are animated in first person
++ Improved how polearm entities are rendered
++ Removed querns, their design has also been superseded by the recent tool bench changes
++ Removed the ability to toggle debug features without having cheats enabled (e.g. hitboxes)
++ Fixed polearm entities desyncing with the client when killing a mob
 + Fixed EMI display with Renewed's tool bench scaling
+
+[Crafting]
++ Gem shards now give a tenth of their full gem equivalent's XP when used
++ Bowls are now crafted using a knife and wood planks
++ Slabs can now be crafted back into their full block equivalent
++ Bows can be crafted into two sticks
++ Bows can be crafted into string with a knife
++ Alternative biomass recipe made with 4 leaves
 
 [Technical]
 + Server packet/callback for when a player starts to mine a block
 + Bulk item entity for large stacks of item
++ Rewrote most of the tool recipe handling for better mod compat
 
 # 0.2.7.2 Changelog
 + Updated some Renewed block and item art to match programmer art better
