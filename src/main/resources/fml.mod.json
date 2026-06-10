@@ -18,6 +18,10 @@
 	"icon": "assets/icon.png",
 	"authors": ["jeffyjamzhd"],
 	"contributors": ["Xy_Lose", "vb1dra#6847"],
+	"contact": {
+		"issues": "https://github.com/MinecraftIsTooEasy/mite-renewed/issues",
+		"homepage": "https://github.com/MinecraftIsTooEasy/mite-renewed"
+	},
 	"entrypoints": {
 		"preLaunch": ["com.github.jeffyjamzhd.renewed.EarlyRiser"],
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"],
