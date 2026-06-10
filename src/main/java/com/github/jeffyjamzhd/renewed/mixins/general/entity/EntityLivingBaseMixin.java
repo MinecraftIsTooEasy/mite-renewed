@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.entity;
 
+import com.github.jeffyjamzhd.renewed.RenewedConfig;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import moddedmite.xylose.bettergamesetting.util.Mth;
 import net.fabricmc.api.EnvType;
@@ -21,6 +22,8 @@ public abstract class EntityLivingBaseMixin extends Entity {
 
     @Inject(method = "onDeathUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityLivingBase;setDead()V"))
     private void playDeathSound(CallbackInfo ci) {
+        if (!RenewedConfig.POOF_SOUND_ON_DEATH.getBooleanValue()) return;
+
         float pitch = (float) Mth.lerp(.25F, 2F, Math.sqrt((this.width * this.height) / 2.5F));
         this.worldObj.playSound(this.posX, this.posY, this.posZ, RenewedSounds.DEATH_POOF.toString(), .5F, pitch, false);
     }

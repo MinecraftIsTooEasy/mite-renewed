@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.render.gui;
 
+import com.github.jeffyjamzhd.renewed.RenewedConfig;
 import com.github.jeffyjamzhd.renewed.api.music.MusicMetadata;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
@@ -54,7 +55,8 @@ public class GuiMusic extends Gui {
     public void updateDisplay() {
         if (Minecraft.theMinecraft.gameSettings.gui_mode != 0
             || Main.is_MITE_DS
-            || this.mc.gameSettings.musicVolume <= 0F)
+            || this.mc.gameSettings.musicVolume <= 0F
+            || !RenewedConfig.SHOW_MUSIC_DISPLAY.getBooleanValue())
         {
             this.displayTime = 0L;
             this.artistName = "";

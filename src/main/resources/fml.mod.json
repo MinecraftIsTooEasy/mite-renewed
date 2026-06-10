@@ -15,13 +15,15 @@
 	"environment": "*",
 	"name": "MiTE Renewed",
 	"description": "A subjective continuation of MiTE's development",
+	"icon": "assets/icon.png",
 	"authors": ["jeffyjamzhd"],
 	"contributors": ["Xy_Lose", "vb1dra#6847"],
 	"entrypoints": {
 		"preLaunch": ["com.github.jeffyjamzhd.renewed.EarlyRiser"],
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"],
 		"registry": ["com.github.jeffyjamzhd.renewed.RenewedGameRegistry"],
-		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"]
+		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"],
+		"modmenu": ["com.github.jeffyjamzhd.renewed.compat.modmenu.RenewedModMenu"]
 	},
 	"mixins": [
 		"miterenewed.base.mixins.json",

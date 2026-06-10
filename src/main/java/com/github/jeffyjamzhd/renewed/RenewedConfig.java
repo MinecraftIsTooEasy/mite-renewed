@@ -5,6 +5,7 @@ import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.ConfigTab;
 import fi.dy.masa.malilib.config.SimpleConfigs;
 import fi.dy.masa.malilib.config.options.*;
+import net.minecraft.GuiScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,10 @@ public class RenewedConfig extends SimpleConfigs {
     @Override
     public List<ConfigTab> getConfigTabs() {
         return TABS;
+    }
+
+    public static GuiScreen getScreen(GuiScreen parent) {
+        return INSTANCE.getConfigScreen(parent);
     }
 
     private static <T extends ConfigBase<?>> T add(T entry) {
