@@ -57,8 +57,8 @@ public class RenewedItems {
     public static final ItemBiomass biomass =
             createInstance(ItemBiomass.class, new Class[]{int.class}, IdUtil.getNextItemID());
     public static final Item bag_of_holding =
-            new ItemWithInventory(IdUtil.getNextItemID(), "backpack/bundle", 4, 3)
-                    .setTextureName(MiTERenewed.RESOURCE_ID + "backpack/bundle")
+            new ItemWithInventory(IdUtil.getNextItemID(), "backpack/bag_of_holding", 4, 3)
+                    .setTextureName(MiTERenewed.RESOURCE_ID + "backpack/bag_of_holding")
                     .setUnlocalizedName("bagOfHolding");
 
     /**
@@ -105,7 +105,7 @@ public class RenewedItems {
         registerItem(registry, "silk_mesh", "silk_mesh", silk_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "handpan", "tool/handpan", handpan);
         registerItem(registry, "biomass", "biomass", biomass);
-        registerItem(registry, "bagOfHolding", "backpack/bundle", bag_of_holding);
+        registerItem(registry, "bagOfHolding", "backpack/bag_of_holding", bag_of_holding);
 
         LOGGER.info("Modifying vanilla items!");
         Item.copperNugget.setXPReward(2);
