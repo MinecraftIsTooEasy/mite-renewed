@@ -250,6 +250,7 @@ public class RenewedRecipes {
                 .setDamage(10)
                 .setDifficulty(100F);
         registerToolRecipe(ItemBow.class, new ItemStack(Item.stick, 2), manager, new Item[]{})
+                .setDamage(9999)
                 .setDifficulty(200F);
         registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk), manager, RenewedItems.tangled_web)
                 .setDamage(10)
