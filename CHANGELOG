@@ -1,8 +1,13 @@
 # 0.2.8 Changelog
 + Tiered crate blocks, which store a mass amount of one item/block
++ Bags of holding, which grant the player a variable amount of additional inventory slots
+
+[General]
 + New integration with WAILA display
++ New integration with ManyLib config library
++ New integration with Baubles
 + Two new music tracks to the overworld
-+ Invisible stalkers now render differently
++ Updated invisible stalkers
 + Improved the way handpans and polearms are animated in first person
 + Improved how polearm entities are rendered
 + Removed querns, their design has also been superseded by the recent tool bench changes
@@ -18,10 +23,18 @@
 + Bows can be crafted into string with a knife
 + Alternative biomass recipe made with 4 leaves
 
+[Config]
++ Music frequency
++ Music display
++ HUD padding
++ Loot beams
+
 [Technical]
++ JeffyLib added as part of Renewed's backend
 + Server packet/callback for when a player starts to mine a block
-+ Bulk item entity for large stacks of item
-+ Rewrote most of the tool recipe handling for better mod compat
++ Bulk item entity for large stacks (>64) of items
++ Rewrote internal tool recipe handler for better mod support
++ New tool recipe parser for EMI
 
 # 0.2.7.2 Changelog
 + Updated some Renewed block and item art to match programmer art better
