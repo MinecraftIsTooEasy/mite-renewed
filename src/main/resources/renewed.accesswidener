@@ -20,3 +20,6 @@ accessible method net/minecraft/EnumDirection isNorthOrSouth ()Z
 accessible method net/minecraft/EnumDirection isEastOrWest ()Z
 accessible field net/minecraft/RenderItem RES_ITEM_GLINT Lnet/minecraft/ResourceLocation;
 accessible field net/minecraft/Minecraft timer Lnet/minecraft/Timer;
+accessible field net/minecraft/Entity rand Ljava/util/Random;
+accessible field net/minecraft/Slot slotIndex I
+accessible method net/minecraft/Item setTextureName (Ljava/lang/String;)Lnet/minecraft/Item;

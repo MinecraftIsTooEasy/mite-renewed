@@ -32,7 +32,8 @@
 	"mixins": [
 		"miterenewed.base.mixins.json",
 		"miterenewed.general.mixins.json",
-		"miterenewed.difficulty.mixins.json"
+		"miterenewed.difficulty.mixins.json",
+		"miterenewed.backpack.mixins.json"
 	],
 	"accessWidener": "renewed.accesswidener",
 	"custom": {
@@ -54,7 +55,8 @@
 			"net/minecraft/SaveFormatComparator": ["com/github/jeffyjamzhd/renewed/api/ISaveFormatComparator"],
 			"net/minecraft/Packet1Login" : ["com/github/jeffyjamzhd/renewed/api/IPacket1Login"],
 			"net/minecraft/Packet9Respawn" : ["com/github/jeffyjamzhd/renewed/api/IPacket9Respawn"],
-			"net/minecraft/EntityLivingBase" : ["com/github/jeffyjamzhd/renewed/api/IEntityLivingBase"]
+			"net/minecraft/EntityLivingBase" : ["com/github/jeffyjamzhd/renewed/api/IEntityLivingBase"],
+			"net/minecraft/InventoryPlayer": ["com/github/jeffyjamzhd/renewed/api/IInventoryPlayer"]
 		}
 	}
 }

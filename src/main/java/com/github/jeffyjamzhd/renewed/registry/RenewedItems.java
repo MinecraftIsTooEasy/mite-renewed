@@ -56,6 +56,10 @@ public class RenewedItems {
                     IdUtil.getNextItemID(), Material.adamantium, new ResourceLocation(MiTERenewed.RESOURCE_ID + "tool/polearm/hand/adamantium_spear"));
     public static final ItemBiomass biomass =
             createInstance(ItemBiomass.class, new Class[]{int.class}, IdUtil.getNextItemID());
+    public static final Item bag_of_holding =
+            new ItemWithInventory(IdUtil.getNextItemID(), "backpack/bundle", 4, 3)
+                    .setTextureName(MiTERenewed.RESOURCE_ID + "backpack/bundle")
+                    .setUnlocalizedName("bagOfHolding");
 
     /**
      * Vanilla overwrites
@@ -101,6 +105,7 @@ public class RenewedItems {
         registerItem(registry, "silk_mesh", "silk_mesh", silk_mesh).setCreativeTab(CreativeTabs.tabMaterials);
         registerItem(registry, "handpan", "tool/handpan", handpan);
         registerItem(registry, "biomass", "biomass", biomass);
+        registerItem(registry, "bagOfHolding", "backpack/bundle", bag_of_holding);
 
         LOGGER.info("Modifying vanilla items!");
         Item.copperNugget.setXPReward(2);

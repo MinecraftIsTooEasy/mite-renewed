@@ -114,6 +114,7 @@ item.handpan.empty.name=Handpan (Empty)
 item.handpan.sinew.name=Handpan (Sinew)
 item.handpan.silk.name=Handpan (String)
 item.biomass.name=Biomass
+item.bagOfHolding.name=Bag of Holding
 
 item.raw_sirloin.name=Raw Sirloin
 item.raw_fillet.name=Raw Fillet
@@ -128,6 +129,10 @@ item.cooked_mutton_chops.name=Cooked Mutton Chops
 item.cooked_gizzard.name=Cooked Gizzard
 item.cooked_nopales.name=Cooked Nopales
 
+tooltip.backpack.slot=%d slot available
+tooltip.backpack.slots=%d slots available
+tooltip.backpack.full=Full
+tooltip.backpack.filtered=Filtered
 tooltip.handpan.contains=Contains
 tooltip.handpan.nothing=Nothing
 tooltip.emi.handpan.process=Takes %d damage after process
