@@ -21,21 +21,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashMap;
-
 @Mixin(value = GuiCreateWorld.class, priority = 1500)
 @Environment(EnvType.CLIENT)
 abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.github.jeffyjamzhd.renewed.api.IGuiCreateWorld {
     @Shadow
     protected abstract void updateButtonText();
     @Unique
-    private GuiButton buttonDifficulty;
+    private GuiButton renewedDifficulty;
     @Unique
     private GuiConfigureButton buttonDifficultyConfig;
     @Unique
     private int difficultyIndice;
     @Unique
     private Difficulty customDifficulty;
+    @Unique
+    private GuiButton nativeDifficultyButton;
 
     @TargetHandler(
             mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
@@ -43,8 +43,18 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     )
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
     private void addButtons(CallbackInfo ci) {
-        this.buttonList.add(this.buttonDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 188, 20, getNameOfDifficulty()));
+        this.buttonList.add(this.renewedDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 188, 20, getNameOfDifficulty()));
         this.buttonList.add(this.buttonDifficultyConfig = new GuiConfigureButton(51, this.width / 2 + 84, this.height / 5 + 50));
+    }
+
+    @TargetHandler(
+            mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
+            name = "recreateButtons"
+    )
+    @ModifyArg(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
+    private <E> E getNativeDifficultyButton(E element) {
+        this.nativeDifficultyButton = (GuiButton) element;
+        return element;
     }
 
     @TargetHandler(
@@ -53,19 +63,19 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     )
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
     private void updateDifficultyButtons(CallbackInfo ci) {
-        this.buttonDifficulty.drawButton = false;
+        this.renewedDifficulty.drawButton = false;
         this.buttonDifficultyConfig.drawButton = false;
 
         if (((IGuiCreateWorld) this).bgs$getCurrentTab() == 100) {
-            this.buttonDifficulty.drawButton = true;
+            this.renewedDifficulty.drawButton = true;
             this.buttonDifficultyConfig.drawButton = true;
         }
     }
 
     @Inject(method = "updateButtonText", at = @At("TAIL"))
     private void updateDifficultyButtonText(CallbackInfo ci) {
-        if (this.buttonDifficulty != null)
-            this.buttonDifficulty.displayString = getNameOfDifficulty();
+        if (this.renewedDifficulty != null)
+            this.renewedDifficulty.displayString = getNameOfDifficulty();
     }
 
     @Inject(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldSettings;func_82750_a(Ljava/lang/String;)Lnet/minecraft/WorldSettings;"))
@@ -96,22 +106,14 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
         }
     }
 
-//    @TargetHandler(
-//            mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
-//            name = "updateButtonVisibilityNAbility"
-//    )
-//    @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
-//    private void updateButtonVisibility(CallbackInfo ci) {
-//        switch ()
-//    }
-
     @TargetHandler(
             mixin = "moddedmite.xylose.bettergamesetting.mixin.client.gui.GuiCreateWorldMixin",
-            name = "recreateButtons"
+            name = "updateButtonVisibilityNAbility"
     )
-    @ModifyArg(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiButton;setPosition(II)V", ordinal = 6), index = 1)
-    private int moveProfessionsButtonDown(int param) {
-        return this.height / 5 + 100;
+    @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
+    private void updateButtonVisibility(CallbackInfo ci) {
+        // Hide the default difficulty button
+        this.nativeDifficultyButton.drawButton = false;
     }
 
 
