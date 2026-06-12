@@ -32,6 +32,7 @@
 [Technical]
 + JeffyLib added as part of Renewed's backend
 + Server packet/callback for when a player starts to mine a block
++ Packets for handling backpacks
 + Bulk item entity for large stacks (>64) of items
 + Rewrote internal tool recipe handler for better mod support
 + New tool recipe parser for EMI

@@ -2,7 +2,6 @@ package com.github.jeffyjamzhd.renewed.item;
 
 import com.github.jeffyjamzhd.renewed.api.inventory.BackpackInventory;
 import com.github.jeffyjamzhd.renewed.network.C2SItemUpdateScroll;
-import com.github.jeffyjamzhd.renewed.network.S2CItemInsertSFX;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import com.github.jeffyjamzhd.renewed.util.ItemUtils;
@@ -291,8 +290,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
 
             // Play sfx and return stack size
             if (result == null || !ItemUtils.areItemsEqual(stack, result)) {
-                if (!world.isRemote)
-                    Network.sendToClient((ServerPlayer) player, new S2CItemInsertSFX());
+                if (!world.isRemote) playInsertSFX(world, player);
             }
 
             // Mark for update
@@ -446,7 +444,6 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
 
     @Environment(EnvType.CLIENT)
     public String addStringFormatting(String string) {
-        return EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC +
-                string + EnumChatFormatting.RESET;
+        return EnumChatFormatting.GRAY.toString() + string + EnumChatFormatting.RESET;
     }
 }

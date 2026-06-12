@@ -10,7 +10,6 @@ import static com.github.jeffyjamzhd.renewed.MiTERenewed.ofPacket;
 
 public class RenewedNetwork {
     public static final ResourceLocation BLOCK_HIT = ofPacket("BlockHit");
-    public static final ResourceLocation ITEM_INSERT_SFX = ofPacket("ItemInsertSFX");
     public static final ResourceLocation ITEM_UPDATE_SCROLL = ofPacket("ItemUpdateScroll");
     public static final ResourceLocation ANIMATE_SLOT = ofPacket("AnimateSlots");
 
@@ -24,7 +23,6 @@ public class RenewedNetwork {
     }
 
     private static void initClient() {
-        PacketReader.registerClientPacketReader(ITEM_INSERT_SFX, S2CItemInsertSFX::new);
         PacketReader.registerClientPacketReader(ANIMATE_SLOT, S2CAnimateSlot::new);
     }
 
