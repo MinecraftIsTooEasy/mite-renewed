@@ -58,12 +58,10 @@ public class EventListen extends Handlers {
         RenewedSounds.register(event);
     }
 
-    @Subscribe
-    public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-    }
 
     @Subscribe
-    public void handleChatCommand(HandleChatCommandEvent event) {
+    public void onEnchantmentsRegister(EnchantmentRegistryEvent event) {
+        RenewedEnchantments.register(event);
     }
 
     @Subscribe

@@ -23,7 +23,6 @@ public class MiTERenewed implements ModInitializer {
     public static final String VERSION;
     public static final String NAMESPACE;
     public static final Logger LOGGER;
-    public static File RENEWED_CONFIG_FILE;
 
     public static final String RESOURCE_ID = "miterenewed:";
     public static final String RESOURCE_ID_COMPACT = "MR:";

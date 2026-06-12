@@ -95,6 +95,10 @@ difficulty.parameter.ChickenBreedingItem.name.1=Worms
 difficulty.parameter.ChickenBreedingItem.desc.0=chickens will breed using seeds.
 difficulty.parameter.ChickenBreedingItem.desc.1=chickens will breed using worms.
 
+enchantment.filling=Filling
+enchantment.holding=Holding
+enchantment.vacuum=Vacuum
+
 item.sharp_bone.name=Sharp Bone
 item.quern.name=Quern
 item.bone_spear.name=Bone Spear
