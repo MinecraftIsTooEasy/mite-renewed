@@ -13,7 +13,7 @@ public class EnchantmentVacuum extends Enchantment {
 
     @Override
     public int getNumLevels() {
-        return 2;
+        return 3;
     }
 
     @Override

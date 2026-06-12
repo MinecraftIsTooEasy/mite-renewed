@@ -179,8 +179,8 @@ public abstract class GuiContainerMixin extends GuiScreen {
 
         ItemWithInventory invItem = (ItemWithInventory) stack.getItem();
         BackpackInventory inv = invItem.createInventory(stack);
-        int gridX = invItem.getGridX();
-        int gridY = invItem.getGridY();
+        int gridX = invItem.getGridX(stack);
+        int gridY = invItem.getGridY(stack);
 
         int invSize = inv.getSizeInventory();
         int invSelected = inv.currentSlotID;

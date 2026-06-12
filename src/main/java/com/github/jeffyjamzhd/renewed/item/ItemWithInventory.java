@@ -3,6 +3,7 @@ package com.github.jeffyjamzhd.renewed.item;
 import com.github.jeffyjamzhd.renewed.api.inventory.BackpackInventory;
 import com.github.jeffyjamzhd.renewed.network.C2SItemUpdateScroll;
 import com.github.jeffyjamzhd.renewed.network.S2CItemInsertSFX;
+import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import com.github.jeffyjamzhd.renewed.util.ItemUtils;
 import com.jeffyjamzhd.jeffylib.api.IItemExtendedInteraction;
@@ -14,11 +15,7 @@ import net.minecraft.*;
 
 import java.util.List;
 
-public class ItemWithInventory extends Item implements IItem, IItemExtendedInteraction {
-    /**
-     * The size of the inventory
-     */
-    public final int inventorySize;
+public class ItemWithInventory extends Item implements IItem, IDamageableItem, IItemExtendedInteraction {
     /**
      * Arrangement of the rendering grid
      */
@@ -33,11 +30,10 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
     public ItemWithInventory(int id, String texture, int x, int y) {
         super(id, "");
 
-        this.inventorySize = x * y;
         this.gridX = x;
         this.gridY = y;
 
-        this.setMaxDamage(0);
+        this.setMaxDamage(64);
         this.setMaxStackSize(1);
         this.setCreativeTab(CreativeTabs.tabTools);
     }
@@ -80,7 +76,7 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
     @SuppressWarnings(value = "unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List stringList, boolean shift, Slot slot) {
         BackpackInventory inv = createInventory(stack);
-        int slotCount = inventorySize - inv.getSizeInventory();
+        int slotCount = this.getInventorySize(stack) - inv.getSizeInventory();
 
         super.addInformation(stack, player, stringList, shift, slot);
         if (hasProperCompoundTag(stack)) {
@@ -245,6 +241,41 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
         player.inventory.onInventoryChanged();
     }
 
+    @Override
+    public int getNumComponentsForDurability() {
+        return 1;
+    }
+
+    @Override
+    public int getRepairCost() {
+        return this.getNumComponentsForDurability() * 2;
+    }
+
+    @Override
+    public Item getRepairItem() {
+        return Item.sinew;
+    }
+
+    @Override
+    public Material getMaterialForRepairs() {
+        return Material.leather;
+    }
+
+    @Override
+    public Material getMaterialForDurability() {
+        return Material.leather;
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return EnumEquipmentMaterial.leather.enchantability * 3;
+    }
+
+    @Override
+    public Material getMaterialForEnchantment() {
+        return Material.leather;
+    }
+
     //***       Class specific methods        ***//
 
     /**
@@ -271,21 +302,6 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
         }
         return stack.stackSize;
     }
-
-    /**
-     * {@code true} if provided {@link ItemStack} matches tag within this {@code ItemWithInventory}
-     */
-//    public boolean stackMatchesFilter(ItemStack backpack, ItemStack stack) {
-//        NBTTagCompound compound = backpack.getTagCompound();
-//        if (compound != null) {
-//            if (compound.hasKey("FilterInventory")) {
-//                FilterInventory filter = new FilterInventory(compound);
-//                return filter.matches(stack);
-//            }
-//            return true;
-//        }
-//        return true;
-//    }
 
     /**
      * Gets the amount of items currently in the provided stack.
@@ -366,7 +382,7 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
         }
         NBTTagCompound tag = stack.getTagCompound();
         if (tag != null) {
-            return tag.hasKey("EmiEffect");
+            return super.hasEffect(stack);
         }
         return false;
     }
@@ -384,15 +400,29 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
      * Shorthand for creating an inventory instance for interaction handling
      */
     public BackpackInventory createInventory(ItemStack stack) {
-        return new BackpackInventory(stack, inventorySize);
+        return new BackpackInventory(stack, this.getInventorySize(stack));
     }
 
-    public int getGridX() {
-        return this.gridX;
+    public int getInventorySize(ItemStack stack) {
+        return this.getGridX(stack) * this.getGridY(stack);
     }
 
-    public int getGridY() {
-        return this.gridY;
+    public int getGridX(ItemStack stack) {
+        return this.gridX + getAdditionalSlotsX(stack);
+    }
+
+    public int getGridY(ItemStack stack) {
+        return this.gridY + getAdditionalSlotsY(stack);
+    }
+
+    public int getAdditionalSlotsX(ItemStack stack) {
+        int level = RenewedEnchantments.ENCHANTMENT_HOLDING.getLevel(stack);
+        return level > 0 ? MathHelper.floor_float((level + 1) / 2F) : 0;
+    }
+
+    public int getAdditionalSlotsY(ItemStack stack) {
+        int level = RenewedEnchantments.ENCHANTMENT_HOLDING.getLevel(stack);
+        return level > 0 ? MathHelper.floor_float(level / 2F) : 0;
     }
 
     public void setSelectedSlot(ItemStack stack, int slotID) {
@@ -407,23 +437,6 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
 
     //***       Clientside methods        ***//
 
-    @Environment(EnvType.CLIENT)
-    private Icon dyedIcon;
-    @Environment(EnvType.CLIENT)
-    private Icon secondPassIcon;
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void registerIcons(IconRegister register) {
-        super.registerIcons(register);
-        dyedIcon = register.registerIcon(getIconString() + "_dyed");
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return hasEffectEMI(stack) ? getUnlocalizedName() + ".filter" : super.getUnlocalizedName(stack);
-    }
-
     /**
      * Sends C2S sync packet for item inventory position
      */
@@ -431,48 +444,6 @@ public class ItemWithInventory extends Item implements IItem, IItemExtendedInter
     public void sendInventoryPositionPacket(int slotID, int currentSlot) {
         Network.sendToServer(new C2SItemUpdateScroll((short) slotID, (short) currentSlot));
     }
-
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public int getColor(ItemStack par1ItemStack) {
-//        NBTTagCompound var2 = par1ItemStack.getTagCompound();
-//        if (var2 == null) {
-//            return -1;
-//        } else {
-//            NBTTagCompound var3 = var2.getCompoundTag("display");
-//            return var3 == null ? -1 : (var3.hasKey("color") ? var3.getInteger("color") : -1);
-//        }
-//    }
-
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public int getColorFromItemStack(ItemStack par1ItemStack, int pass) {
-//        return pass > 0 ? -1 : getColor(par1ItemStack);
-//    }
-//
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public Icon getIconFromDamage(int damage) {
-//        return damage == 1 ? dyedIcon : itemIcon;
-//    }
-//
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public Icon getIconFromDamageForRenderPass(int damage, int pass) {
-//        return pass == 1 && hasSecondPass ? secondPassIcon : itemIcon;
-//    }
-//
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public boolean requiresMultipleRenderPasses() {
-//        return hasSecondPass;
-//    }
-//
-//    @Override
-//    @Environment(EnvType.CLIENT)
-//    public boolean hasEffect(ItemStack stack) {
-//        return hasEffectEMI(stack) || hasFilterTag(stack);
-//    }
 
     @Environment(EnvType.CLIENT)
     public String addStringFormatting(String string) {
