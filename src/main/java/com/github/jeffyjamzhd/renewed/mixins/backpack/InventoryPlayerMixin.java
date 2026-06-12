@@ -1,13 +1,14 @@
 package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
+import baubles.api.BaublesApi;
+import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.EntityPlayer;
-import net.minecraft.InventoryPlayer;
-import net.minecraft.ItemStack;
+import net.minecraft.*;
+import net.xiaoyu233.fml.FishModLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,20 +48,32 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     }
 
     @Unique
-    private boolean validForBackpackInsertion() {
-        for (int i = 0; i < 9; i++) {
-            ItemStack at = getStackInSlot(i);
-            if (at == null) continue;
-            if (!(at.getItem() instanceof ItemWithInventory)) continue;
-            return true;
-        }
-        return false;
-    }
-
-    @Unique
     private boolean putStackInBackpacks(ItemStack stack) {
         boolean modified = false;
 
+        // Check baubles first (if it is loaded)
+        if (FishModLoader.hasMod("baubles")) {
+            InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles(player);
+            ItemStack back = baubles.getStackInSlot(2);
+
+            if (back != null) {
+                boolean isBackpack = back.getItem() instanceof ItemWithInventory;
+                boolean hasVacuum = RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(back) > 0;
+
+                if (isBackpack && hasVacuum) {
+                    ItemWithInventory itemInv = (ItemWithInventory) back.getItem();
+                    int oldCount = stack.stackSize;
+                    stack.stackSize = itemInv.putStackInInventory(back, stack, player, player.getWorld());
+
+                    if (oldCount != stack.stackSize) {
+                        modified = true;
+                    }
+                    if (stack.stackSize == 0) return modified;
+                }
+            }
+        }
+
+        // Check player's hotbar next
         for (int i = 0; i < 9; i++) {
             ItemStack at = getStackInSlot(i);
             if (at == null) continue;
@@ -76,6 +89,7 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
             }
             if (stack.stackSize == 0) break;
         }
+
         return modified;
     }
 
