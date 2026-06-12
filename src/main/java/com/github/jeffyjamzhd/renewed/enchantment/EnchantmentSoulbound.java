@@ -6,8 +6,8 @@ import net.minecraft.Enchantment;
 import net.minecraft.EnumRarity;
 import net.minecraft.Item;
 
-public class EnchantmentVacuum extends Enchantment {
-    public EnchantmentVacuum(int id) {
+public class EnchantmentSoulbound extends Enchantment {
+    public EnchantmentSoulbound(int id) {
         super(id, EnumRarity.rare, 10);
     }
 
@@ -18,12 +18,17 @@ public class EnchantmentVacuum extends Enchantment {
 
     @Override
     public String getNameSuffix() {
-        return "vacuum";
+        return "soulbound";
     }
 
     @Override
     public boolean canEnchantItem(Item item) {
         return item instanceof ItemWithInventory;
+    }
+
+    @Override
+    public boolean canApplyTogether(Enchantment enchantment) {
+        return !(enchantment instanceof EnchantmentHolding) && super.canApplyTogether(enchantment);
     }
 
     @Override

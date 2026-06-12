@@ -27,6 +27,11 @@ public class EnchantmentHolding extends Enchantment {
     }
 
     @Override
+    public boolean canApplyTogether(Enchantment enchantment) {
+        return !(enchantment instanceof EnchantmentSoulbound) && super.canApplyTogether(enchantment);
+    }
+
+    @Override
     public boolean isOnCreativeTab(CreativeTabs creativeTabs) {
         return creativeTabs == CreativeTabs.tabTools;
     }

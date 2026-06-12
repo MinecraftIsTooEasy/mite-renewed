@@ -27,7 +27,8 @@
 		"main": ["com.github.jeffyjamzhd.renewed.MiTERenewed"],
 		"registry": ["com.github.jeffyjamzhd.renewed.RenewedGameRegistry"],
 		"emi": ["com.github.jeffyjamzhd.renewed.compat.emi.RenewedEMIPlugin"],
-		"modmenu": ["com.github.jeffyjamzhd.renewed.compat.modmenu.RenewedModMenu"]
+		"modmenu": ["com.github.jeffyjamzhd.renewed.compat.modmenu.RenewedModMenu"],
+		"baubles": ["com.github.jeffyjamzhd.renewed.compat.baubles.RenewedBaublesPlugin"]
 	},
 	"mixins": [
 		"miterenewed.base.mixins.json",

@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
 import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
+import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.EntityPlayer;
@@ -13,8 +14,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.ArrayList;
 
 @Mixin(InventoryPlayer.class)
 public abstract class InventoryPlayerMixin implements IInventoryPlayer {
@@ -66,6 +65,7 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
             ItemStack at = getStackInSlot(i);
             if (at == null) continue;
             if (!(at.getItem() instanceof ItemWithInventory inv)) continue;
+            if (RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(at) == 0) continue;
 
             int oldCount = stack.stackSize;
             stack.stackSize = inv.putStackInInventory(at, stack, player, player.getWorld());
