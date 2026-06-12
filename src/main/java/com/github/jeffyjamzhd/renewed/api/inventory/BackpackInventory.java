@@ -136,7 +136,7 @@ public class BackpackInventory implements IItemStackInventory {
     public ItemStack putStackAt(ItemStack stack, int slot) {
         ItemStack slotStack = getStackInSlot(slot);
 
-        if (slotStack != null && ItemUtils.areItemsEqual(slotStack, stack, false)) {
+        if (slotStack != null && ItemUtils.areItemsEqual(slotStack, stack)) {
             // Attempt merge
             int countInSlot = slotStack.stackSize;
             int maxCount = slotStack.getMaxStackSize();

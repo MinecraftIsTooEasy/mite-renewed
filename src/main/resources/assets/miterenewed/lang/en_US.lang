@@ -12,6 +12,8 @@ config.comment.renewed.hudPadding=The amount of padding applied to ingame HUD el
 config.name.renewed.lootBeams=Loot Beams
 config.comment.renewed.lootBeams=When enabled, dropped items will emit a beam of light\nto indicate their presence and rarity
 
+container.repair.itemInvFull=Backpack inventory must be empty!
+
 difficulty.prefix=Difficulty:
 difficulty.customize=Customize Difficulty
 difficulty.enabled=Enabled

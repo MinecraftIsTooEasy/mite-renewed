@@ -34,12 +34,7 @@ public class ItemUtils {
         }
     }
 
-    static public boolean areItemsEqual(ItemStack item, ItemStack otherItem, boolean checkIfWildcard) {
-        if (item == null || otherItem == null) return false;
-
-        boolean sameID = item.itemID == otherItem.itemID;
-        boolean sameMeta = item.getItemDamage() == otherItem.getItemDamage();
-        boolean wildcard = checkIfWildcard && otherItem.getItemDamage() == Short.MAX_VALUE;
-        return sameID && (wildcard || sameMeta);
+    static public boolean areItemsEqual(ItemStack item, ItemStack otherItem) {
+        return ItemStack.areItemStacksEqual(item, otherItem, true, false, false, false);
     }
 }

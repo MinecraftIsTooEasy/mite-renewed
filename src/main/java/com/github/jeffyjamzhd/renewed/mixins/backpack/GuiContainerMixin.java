@@ -5,7 +5,9 @@ import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.*;
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.spongepowered.asm.mixin.Mixin;
@@ -120,17 +122,27 @@ public abstract class GuiContainerMixin extends GuiScreen {
         }
     }
 
-    @Inject(method = "drawScreen", at = @At(
+    @Inject(method = "drawItemStackTooltip(Lnet/minecraft/ItemStack;IILnet/minecraft/Slot;)V", at = @At(
             value = "INVOKE",
-            target = "Lorg/lwjgl/opengl/GL11;glPopMatrix()V",
-            shift = At.Shift.AFTER,
-            ordinal = 0
+            target = "Lnet/minecraft/GuiContainer;func_102021_a(Ljava/util/List;II)V"
     ), cancellable = true)
-    private void mr$drawTooltipWithItem(CallbackInfo ci, @Local(ordinal = 0, argsOnly = true) int x, @Local(ordinal = 1, argsOnly = true)  int y) {
+    private void mr$drawTooltipWithItem(ItemStack par1ItemStack, int x, int y, Slot slot, CallbackInfo ci, @Local(ordinal = 0) List tooltip) {
+        if (slot instanceof SlotCrafting || slot instanceof ContainerRepairINNER2) {
+            if (this.inventorySlots.repair_fail_condition == 3) {
+                tooltip.add("");
+
+                String wrapped = StringUtil.wrapLines(Translator.get("container.repair.itemInvFull"), 20);
+                String[] split = StringUtils.split(wrapped, '\n');
+                for (String string : split) {
+                    tooltip.add(EnumChatFormatting.GOLD + string);
+                }
+            }
+        }
+
         ItemStack cursorStack = mc.thePlayer.inventory.getItemStack();
         if (cursorStack != null && cursorStack.getItem() instanceof ItemWithInventory inv) {
             if (inv.hasProperCompoundTag(cursorStack)) {
-                this.mr$renderTooltipWithStackContents(cursorStack, x, y);
+                this.mr$renderTooltipWithStackContents(cursorStack, x, y, tooltip);
                 ci.cancel();
                 return;
             }
@@ -139,7 +151,7 @@ public abstract class GuiContainerMixin extends GuiScreen {
         if (this.theSlot != null && this.theSlot.getHasStack()) {
             ItemStack stackOver = this.theSlot.getStack();
             if (stackOver.getItem() instanceof ItemWithInventory inv && inv.hasProperCompoundTag(stackOver)) {
-                this.mr$renderTooltipWithStackContents(stackOver, x, y);
+                this.mr$renderTooltipWithStackContents(stackOver, x, y, tooltip);
                 ci.cancel();
             }
         }
@@ -172,11 +184,8 @@ public abstract class GuiContainerMixin extends GuiScreen {
     }
 
     @Unique
-    private void mr$renderTooltipWithStackContents(ItemStack stack, int x, int y) {
+    private void mr$renderTooltipWithStackContents(ItemStack stack, int x, int y, List<String> tooltipList) {
         // Declare variables
-        @SuppressWarnings(value = "unchecked")
-        List<String> tooltipList = stack.getTooltip(mc.thePlayer, false, theSlot);
-
         ItemWithInventory invItem = (ItemWithInventory) stack.getItem();
         BackpackInventory inv = invItem.createInventory(stack);
         int gridX = invItem.getGridX(stack);
@@ -199,13 +208,13 @@ public abstract class GuiContainerMixin extends GuiScreen {
         for (String string : tooltipList)
             width = Math.max(width, fontRenderer.getStringWidth(string));
 
-        height = 5;
+        height = 2;
         int size = Math.max(invSize, 1);
         while (size > 0) {
             size -= gridX;
             height += 18;
         }
-        height += tooltipList.size() * 9;
+        height += tooltipList.size() * 10;
 
         // Handle screen margins
         if (posX + width > this.width) {

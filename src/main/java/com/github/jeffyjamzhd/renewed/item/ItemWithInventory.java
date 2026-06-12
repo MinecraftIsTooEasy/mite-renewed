@@ -73,12 +73,10 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
-    public void addInformation(ItemStack stack, EntityPlayer player, List stringList, boolean shift, Slot slot) {
+    public void addInformationBeforeEnchantments(ItemStack stack, EntityPlayer player, List stringList, boolean shift, Slot slot) {
         BackpackInventory inv = createInventory(stack);
         int slotCount = this.getInventorySize(stack) - inv.getSizeInventory();
 
-        super.addInformation(stack, player, stringList, shift, slot);
         if (hasProperCompoundTag(stack)) {
             // Determine tooltip
             String slotCountString;
@@ -94,11 +92,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
             stringList.add(slotCountString);
         }
 
-        // Add filter field
-        if (hasFilterTag(stack)) {
-            String filterString = addStringFormatting(I18n.getString("tooltip.backpack.filtered"));
-            stringList.add(filterString);
-        }
+        super.addInformation(stack, player, stringList, shift, slot);
     }
 
     //***       IItemExtendedInteraction        ***//
@@ -185,7 +179,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
             ItemStack result = inv.putStackSmart(mouseStack);
             itemStack.stackTagCompound = inv.writeToNBT(itemStack.stackTagCompound);
 
-            if (result == null || !ItemUtils.areItemsEqual(mouseStack, result, false)) {
+            if (result == null || !ItemUtils.areItemsEqual(mouseStack, result)) {
                 playInsertSFX(world, player);
             } else {
                 playFullSFX(world, player);
@@ -208,7 +202,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
             ItemStack result = inv.putStackSmart(slotStack);
             mouseStack.stackTagCompound = inv.writeToNBT(mouseStack.stackTagCompound);
 
-            if (result == null || !ItemUtils.areItemsEqual(slotStack, result, false)) {
+            if (result == null || !ItemUtils.areItemsEqual(slotStack, result)) {
                 playInsertSFX(world, player);
             } else {
                 playFullSFX(world, player);
@@ -291,7 +285,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
             backpack.stackTagCompound = inv.writeToNBT(backpack.getTagCompound());
 
             // Play sfx and return stack size
-            if (result == null || !ItemUtils.areItemsEqual(stack, result, false)) {
+            if (result == null || !ItemUtils.areItemsEqual(stack, result)) {
                 if (!world.isRemote)
                     Network.sendToClient((ServerPlayer) player, new S2CItemInsertSFX());
             }

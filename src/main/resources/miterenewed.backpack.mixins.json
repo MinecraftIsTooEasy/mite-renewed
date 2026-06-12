@@ -9,6 +9,9 @@
   },
   "client": [
     "GuiContainerMixin"
+  ],
+  "mixins": [
+    "ContainerRepairMixin"
   ]
 }
 
