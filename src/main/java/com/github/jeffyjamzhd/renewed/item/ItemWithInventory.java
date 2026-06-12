@@ -27,8 +27,8 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
      * @param x The amount of slots to render horizontally
      * @param y The amount of slots to render vertically
      */
-    public ItemWithInventory(int id, String texture, int x, int y) {
-        super(id, "");
+    public ItemWithInventory(int id, int x, int y) {
+        super(id, Material.leather, "");
 
         this.gridX = x;
         this.gridY = y;
@@ -268,6 +268,11 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     @Override
     public Material getMaterialForEnchantment() {
         return Material.leather;
+    }
+
+    @Override
+    public boolean canCatchFire() {
+        return true;
     }
 
     //***       Class specific methods        ***//

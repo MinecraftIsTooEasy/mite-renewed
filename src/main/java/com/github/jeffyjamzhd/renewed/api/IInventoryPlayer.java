@@ -10,4 +10,6 @@ public interface IInventoryPlayer {
     default boolean mr$addStackFromWorld(ItemStack stack) {
         return false;
     }
+
+    default boolean mr$slotNeedsToAnimate(byte slot) { return false; }
 }

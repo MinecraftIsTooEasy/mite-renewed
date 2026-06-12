@@ -1,9 +1,7 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
-import com.github.jeffyjamzhd.renewed.network.C2SBlockHit;
-import com.github.jeffyjamzhd.renewed.network.C2SItemUpdateScroll;
-import com.github.jeffyjamzhd.renewed.network.S2CItemInsertSFX;
+import com.github.jeffyjamzhd.renewed.network.*;
 import moddedmite.rustedironcore.network.PacketReader;
 import net.minecraft.ResourceLocation;
 import net.xiaoyu233.fml.FishModLoader;
@@ -14,6 +12,7 @@ public class RenewedNetwork {
     public static final ResourceLocation BLOCK_HIT = ofPacket("BlockHit");
     public static final ResourceLocation ITEM_INSERT_SFX = ofPacket("ItemInsertSFX");
     public static final ResourceLocation ITEM_UPDATE_SCROLL = ofPacket("ItemUpdateScroll");
+    public static final ResourceLocation ANIMATE_SLOT = ofPacket("AnimateSlots");
 
     public static void init() {
         MiTERenewed.LOGGER.info("Registering packets!");
@@ -26,6 +25,7 @@ public class RenewedNetwork {
 
     private static void initClient() {
         PacketReader.registerClientPacketReader(ITEM_INSERT_SFX, S2CItemInsertSFX::new);
+        PacketReader.registerClientPacketReader(ANIMATE_SLOT, S2CAnimateSlot::new);
     }
 
     private static void initServer() {

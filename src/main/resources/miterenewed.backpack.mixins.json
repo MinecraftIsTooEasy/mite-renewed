@@ -11,7 +11,11 @@
     "GuiContainerMixin"
   ],
   "mixins": [
-    "ContainerRepairMixin"
+    "ContainerRepairMixin",
+    "EntityItemMixin",
+    "EntityPlayerMixin",
+    "InventoryPlayerMixin",
+    "ServerPlayerMixin"
   ]
 }
 

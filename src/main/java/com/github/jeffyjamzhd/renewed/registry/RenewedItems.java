@@ -57,7 +57,7 @@ public class RenewedItems {
     public static final ItemBiomass biomass =
             createInstance(ItemBiomass.class, new Class[]{int.class}, IdUtil.getNextItemID());
     public static final Item bag_of_holding =
-            new ItemWithInventory(IdUtil.getNextItemID(), "backpack/bag_of_holding", 4, 3)
+            new ItemWithInventory(IdUtil.getNextItemID(), 4, 3)
                     .setTextureName(MiTERenewed.RESOURCE_ID + "backpack/bag_of_holding")
                     .setUnlocalizedName("bagOfHolding");
 
