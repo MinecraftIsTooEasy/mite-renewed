@@ -15,6 +15,7 @@
     "EntityItemMixin",
     "EntityPlayerMixin",
     "InventoryPlayerMixin",
+    "ItemStackMixin",
     "ServerPlayerMixin"
   ]
 }

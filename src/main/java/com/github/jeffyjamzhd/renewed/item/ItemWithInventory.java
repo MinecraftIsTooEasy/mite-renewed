@@ -35,6 +35,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
         this.setMaxDamage(64);
         this.setMaxStackSize(1);
         this.setCreativeTab(CreativeTabs.tabTools);
+        this.setSkillsetThatCanRepairThis(-1);
     }
 
     @Override
@@ -236,7 +237,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
 
     @Override
     public int getNumComponentsForDurability() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -246,7 +247,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
 
     @Override
     public Item getRepairItem() {
-        return Item.sinew;
+        return Item.leather;
     }
 
     @Override
@@ -273,6 +274,12 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     public boolean canCatchFire() {
         return true;
     }
+
+    @Override
+    public float getLowestCraftingDifficultyToProduce() {
+        return 0;
+    }
+
 
     //***       Class specific methods        ***//
 
