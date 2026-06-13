@@ -136,6 +136,8 @@ item.cooked_mutton_chops.name=Cooked Mutton Chops
 item.cooked_gizzard.name=Cooked Gizzard
 item.cooked_nopales.name=Cooked Nopales
 
+potion.renewed.encumbered=Encumbered
+
 tooltip.backpack.slot=%d slot available
 tooltip.backpack.slots=%d slots available
 tooltip.backpack.full=Full

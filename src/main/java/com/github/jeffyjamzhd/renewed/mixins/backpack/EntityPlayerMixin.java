@@ -5,6 +5,7 @@ import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
+import com.github.jeffyjamzhd.renewed.registry.RenewedPotion;
 import net.minecraft.*;
 import net.xiaoyu233.fml.FishModLoader;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,6 +23,9 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
 
     @Shadow public InventoryPlayer inventory;
 
+    @Shadow
+    public abstract World getEntityWorld();
+
     /**
      * Amount of items currently stored within backpacks
      * the player is currently holding
@@ -29,62 +33,20 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
     @Unique private int jbp$itemsInsideBackpacks = 0;
 
     @Inject(method = "onLivingUpdate", at = @At("HEAD"))
-    public void runAddonUpdates(CallbackInfo ci) {
+    public void runBackpackUpdates(CallbackInfo ci) {
         mr$updateBackpackItemCount(this.inventory);
-//        if (!getEntityWorld().isRemote)
-//            jbp$updateDamageOverTime();
+        if (!getEntityWorld().isRemote)
+            jbp$updateDamageOverTime();
     }
 
-//    @Unique
-//    public void jbp$updateDamageOverTime() {
-//        ArrayList<StatusEffect> statusEffectList = getAllActiveStatusEffects();
-//
-//        // Clear out old effects
-//        for (StatusEffect status : jbp$ticksUntilNextDOT.keySet()) {
-//            if (!statusEffectList.contains(status)) {
-//                jbp$ticksUntilNextDOT.remove(status);
-//            }
-//        }
-//
-//        // Iterate through effects
-//        for (StatusEffect status : statusEffectList) {
-//            // Check if already exists
-//            if (jbp$ticksUntilNextDOT.containsKey(status)) {
-//                // Get information
-//                int value = jbp$ticksUntilNextDOT.get(status);
-//                int damageValue = status.jbp$getDamageOverTimeDamage();
-//                DamageSource source = status.jbp$getDamageOverTimeSource();
-//
-//                // Decrement timer
-//                value--;
-//                jbp$ticksUntilNextDOT.put(status, value);
-//
-//                // Reset ticks if needed
-//                if (value <= 0) {
-//                    // Get ticks
-//                    int reset = status.jbp$getDamageOverTimeTicks();
-//
-//                    // Damage player and reset timer
-//                    this.attackEntityFrom(source, damageValue);
-//                    this.getEntityWorld()
-//                            .playSoundAtEntity(this, JBSounds.CRUSHED.sound(), 0.8F, 0.6F + this.rand.nextFloat() * 0.1F);
-//                    jbp$ticksUntilNextDOT.put(status, reset);
-//                }
-//
-//            } else if (status.jbp$getDamageOverTimeTicks() > 0) {
-//                // If it doesn't exist, but should...
-//                // Damage player and set timer
-//                DamageSource source = status.jbp$getDamageOverTimeSource();
-//                int damage = status.jbp$getDamageOverTimeDamage();
-//                int ticks = status.jbp$getDamageOverTimeTicks();
-//
-//                this.attackEntityFrom(source, damage);
-//                this.getEntityWorld()
-//                        .playSoundAtEntity(this, JBSounds.CRUSHED.sound(), 0.8F, 0.6F + this.rand.nextFloat() * 0.1F);
-//                jbp$ticksUntilNextDOT.put(status, ticks);
-//            }
-//        }
-//    }
+    @Unique
+    public void jbp$updateDamageOverTime() {
+        int encumberanceLevel = MathHelper.clamp_int((int) Math.floor((this.jbp$itemsInsideBackpacks - 27) / 9F), -1, 3);
+        if (encumberanceLevel < 0) return;
+        if (ticksExisted % 20 != 0) return;
+
+        this.addPotionEffect(new PotionEffect(RenewedPotion.ENCUMBERED.id, 100, encumberanceLevel));
+    }
 
     @Inject(method = "clonePlayer", at = @At("TAIL"))
     private void cloneNBTOfBackpack(EntityPlayer player, boolean full, CallbackInfo ci) {

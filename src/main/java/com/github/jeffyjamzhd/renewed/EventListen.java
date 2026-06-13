@@ -73,6 +73,7 @@ public class EventListen extends Handlers {
         EntityTracker.register(new RenewedTracker());
         LootTable.register(new RenewedLootTable());
 
+        RenewedPotion.register();
         CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
         HandpanRegisterEvent.register(new RenewedHandpanRecipes());
         MusicConditionRegisterEvent.register(new RenewedMusicConditions());
