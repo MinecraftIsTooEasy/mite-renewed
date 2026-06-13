@@ -6,13 +6,16 @@ import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.registry.RenewedPotion;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.*;
 import net.xiaoyu233.fml.FishModLoader;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityPlayer.class)
@@ -39,13 +42,47 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
             jbp$updateDamageOverTime();
     }
 
+    @Inject(method = "onLivingUpdate", at = @At("TAIL"))
+    public void updateSpeed(CallbackInfo ci) {
+        PotionEffect effect = this.getActivePotionEffect(RenewedPotion.ENCUMBERED.id);
+        if (effect != null) {
+            int amplifier = effect.getAmplifier();
+            if (amplifier == 0) return;
+
+            this.jumpMovementFactor /= amplifier * 2;
+        }
+    }
+
+    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
+    private void preventJumpIfSuperEncumbered(CallbackInfo ci) {
+        PotionEffect effect = this.getActivePotionEffect(RenewedPotion.ENCUMBERED.id);
+        if (effect != null) {
+            int amplifier = effect.getAmplifier();
+            if (amplifier > 1) {
+                ci.cancel();
+            }
+        }
+    }
+
+    @Override
+    public boolean isSprinting() {
+        PotionEffect effect = this.getActivePotionEffect(RenewedPotion.ENCUMBERED.id);
+        if (effect != null) {
+            return false;
+        }
+        return super.isSprinting();
+    }
+
     @Unique
     public void jbp$updateDamageOverTime() {
-        int encumberanceLevel = MathHelper.clamp_int((int) Math.floor((this.jbp$itemsInsideBackpacks - 27) / 9F), -1, 3);
-        if (encumberanceLevel < 0) return;
-        if (ticksExisted % 20 != 0) return;
+        int encumberedLevel = MathHelper.clamp_int((int) Math.floor((this.jbp$itemsInsideBackpacks - 27) / 9F), -1, 3);
+        if (encumberedLevel < 0) return;
+        if (this.ticksExisted % 20 != 0) return;
 
-        this.addPotionEffect(new PotionEffect(RenewedPotion.ENCUMBERED.id, 100, encumberanceLevel));
+        this.addPotionEffect(new PotionEffect(RenewedPotion.ENCUMBERED.id, 100, encumberedLevel));
+        if (encumberedLevel > 0) {
+            this.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 100, encumberedLevel - 1));
+        }
     }
 
     @Inject(method = "clonePlayer", at = @At("TAIL"))
