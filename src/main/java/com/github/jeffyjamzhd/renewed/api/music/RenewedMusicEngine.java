@@ -303,7 +303,7 @@ public class RenewedMusicEngine
         // Check self
         Optional<Integer> checkContainer = this.track.getConditions()
                 .stream()
-                .map(condition -> condition.check(world, player) ? condition.getPriority() : -condition.getPriority())
+                .map(condition -> condition.check(world, player) ? condition.getPriority() : 0)
                 .reduce(Integer::sum);
 
         // Sort music
@@ -356,7 +356,7 @@ public class RenewedMusicEngine
 
             Optional<Integer> checkContainer = data.getConditions()
                     .stream()
-                    .map(condition -> condition.check(world, player) ? condition.getPriority() : -condition.getPriority())
+                    .map(condition -> condition.check(world, player) ? condition.getPriority() : 0)
                     .reduce(Integer::sum);
 
             if (checkContainer.isPresent()) {

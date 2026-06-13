@@ -332,7 +332,37 @@
     "partial": true,
     "fixed_pitch": 0.95,
     "conditions" : {
-      "miterenewed:title": {}
+      "miterenewed:title": {},
+      "miterenewed:dimension": {
+        "dimension": "underworld"
+      }
+    }
+  },
+  "miterenewed:reminisce5.ogg" : {
+    "title": "Zweiton",
+    "artist": "C418",
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:time": {
+        "from" : 12500,
+        "to" : 24000
+      }
+    }
+  },
+  "miterenewed:reminisce6.ogg" : {
+    "title": "I Will Perhaps Never  Meet You in Person",
+    "artist": "C418",
+    "partial": true,
+    "fixed_pitch": 0.95,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "overworld"
+      },
+      "miterenewed:event": {
+        "rain": true
+      }
     }
   },
   "miterenewed:underworld1.ogg" : {
@@ -347,6 +377,26 @@
   },
   "miterenewed:underworld2.ogg" : {
     "title": "One Second Is Enough to Die For",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "underworld"
+      }
+    }
+  },
+  "miterenewed:underworld3.ogg" : {
+    "title": "It's Complicated",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "underworld"
+      }
+    }
+  },
+  "miterenewed:underworld4.ogg" : {
+    "title": "I Lack An Emotion",
     "artist": "C418",
     "partial": true,
     "conditions" : {
