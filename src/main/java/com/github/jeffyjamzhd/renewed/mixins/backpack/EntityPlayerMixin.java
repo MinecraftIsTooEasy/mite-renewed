@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
 import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
+import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -81,6 +82,19 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
 //            }
 //        }
 //    }
+
+    @Inject(method = "clonePlayer", at = @At("TAIL"))
+    private void cloneNBTOfBackpack(EntityPlayer player, boolean full, CallbackInfo ci) {
+        if (full || this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) return;
+
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack item = player.inventory.getStackInSlot(i);
+            if (item == null) continue;
+            if (RenewedEnchantments.ENCHANTMENT_SOUL_BOUND.getLevel(item) == 0) continue;
+
+            this.inventory.setInventorySlotContents(i, item.copy());
+        }
+    }
 
     @Unique
     @Override

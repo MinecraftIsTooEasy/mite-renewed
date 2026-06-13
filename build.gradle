@@ -55,7 +55,9 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.4"
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
     implementation "com.github.MinecraftIsTooEasy:BetterGameSetting:1.4.0"
-    implementation "com.github.MinecraftIsTooEasy:Baubles:1.1.2"
+    //implementation "com.github.MinecraftIsTooEasy:Baubles:1.1.2"
+
+    implementation files("libs\\Baubles-1.1.2.jar")
 
     implementation files("libs\\jeffy-lib-1.0.0.jar")
     implementation files("libs\\jeffy-lib-1.0.0-sources.jar")
@@ -64,14 +66,14 @@ dependencies {
     implementation files("libs\\OhMyCommands-3.0.jar")
 }
 
-runClient{
-    dependsOn(jar)
-    args("--username", "Dev", "--session", "a.a.a.a", "--width", 800, "--height", 600)
-}
-
-runServer{
-    dependsOn(jar)
-}
+//runClient{
+//    dependsOn(jar)
+//    args("--username", "Dev", "--session", "a.a.a.a", "--width", 800, "--height", 600)
+//}
+//
+//runServer{
+//    dependsOn(jar)
+//}
 
 shadowJar {
     configurations = [project.configurations.shadow]
@@ -93,6 +95,17 @@ loom {
         "MiTE-Renewed" {
             sourceSet sourceSets.main
         }
+    }
+    runs {
+        client {
+            String name = project.username
+            String width = project.screen_width
+            String height = project.screen_height
+            programArgs "--userProperties", "{}", "--username", name, "--session", "a.a.a.a", "--width", width, "--height", height
+        }
+//        server {
+//            programArgs "--", ""
+//        }
     }
 
 }

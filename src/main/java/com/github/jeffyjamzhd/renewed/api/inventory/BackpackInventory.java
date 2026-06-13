@@ -7,9 +7,7 @@ import net.minecraft.EntityPlayer;
 import net.minecraft.ItemStack;
 import net.minecraft.NBTTagCompound;
 import net.minecraft.NBTTagList;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class BackpackInventory implements IItemStackInventory {
     protected final int size;

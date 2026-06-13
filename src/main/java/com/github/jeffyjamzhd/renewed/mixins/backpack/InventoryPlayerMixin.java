@@ -6,23 +6,32 @@ import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.*;
 import net.xiaoyu233.fml.FishModLoader;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InventoryPlayer.class)
 public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     @Shadow public abstract boolean addItemStackToInventory(ItemStack par1ItemStack);
     @Shadow public EntityPlayer player;
     @Shadow public abstract ItemStack getStackInSlot(int par1);
+
+    @Shadow
+    public ItemStack[] mainInventory;
     @Unique boolean mr$stackFromWorld = false;
     @Unique boolean[] mr$shouldAnimate = new boolean[9];
+    @Unique ItemStack mr$soulboundStack;
 
     @ModifyReturnValue(method = "addItemStackToInventory", at = @At(
             value = "RETURN",
@@ -45,6 +54,52 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     @Inject(method = "onInventoryChanged", at = @At("TAIL"))
     private void updatePlayerBackpackItemCount(CallbackInfo ci) {
         player.mr$updateBackpackItemCount((InventoryPlayer) (Object) this);
+    }
+
+    @Inject(method = "clearInventory", at = @At(value = "FIELD", target = "Lnet/minecraft/InventoryPlayer;mainInventory:[Lnet/minecraft/ItemStack;", shift = At.Shift.AFTER, opcode = Opcodes.GETFIELD, ordinal = 2))
+    private void keepBackpackFromClear(int par1, int par2, CallbackInfoReturnable<Integer> cir,
+                              @Local ItemStack stack) {
+        if (hasSoulbound(stack)) {
+            this.mr$soulboundStack = stack;
+        }
+    }
+
+    @Inject(method = "clearInventory", at = @At(value = "FIELD", target = "Lnet/minecraft/InventoryPlayer;mainInventory:[Lnet/minecraft/ItemStack;", ordinal = 1, shift = At.Shift.AFTER))
+    private void revertBackpackClear(int par1, int par2, CallbackInfoReturnable<Integer> cir,
+                                     @Local(ordinal = 2) LocalIntRef removedCount,
+                                     @Local(ordinal = 3) int at) {
+        if (hasSoulbound(this.mr$soulboundStack)) {
+            // Revert removal
+            removedCount.set(removedCount.get() - this.mr$soulboundStack.getMaxStackSize());
+            this.mainInventory[at - 1] = this.mr$soulboundStack;
+            this.mr$soulboundStack = null;
+        }
+    }
+
+    @WrapOperation(method = "dropAllItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityPlayer;dropPlayerItemWithRandomChoice(Lnet/minecraft/ItemStack;Z)Lnet/minecraft/EntityItem;", ordinal = 0))
+    private EntityItem keepBackpackFromDrop(EntityPlayer instance, ItemStack stack, boolean _unused, Operation<EntityItem> original) {
+        if (hasSoulbound(stack)) {
+            this.mr$soulboundStack = stack;
+            return null;
+        }
+        return original.call(instance, stack, _unused);
+    }
+
+    @Inject(method = "dropAllItems", at = @At(value = "FIELD", target = "Lnet/minecraft/InventoryPlayer;mainInventory:[Lnet/minecraft/ItemStack;", ordinal = 1))
+    private void keepBackpackFromDropArray(CallbackInfo ci, @Local int indice) {
+        if (hasSoulbound(this.mr$soulboundStack)) {
+            this.mainInventory[indice - 1] = this.mr$soulboundStack;
+            this.mr$soulboundStack = null;
+        }
+    }
+
+    @Unique
+    private boolean hasSoulbound(ItemStack stack) {
+        if (stack == null) return false;
+
+        boolean isBag = stack.getItem() instanceof ItemWithInventory;
+        boolean hasSoulbound = RenewedEnchantments.ENCHANTMENT_SOUL_BOUND.getLevel(stack) > 0;
+        return isBag && hasSoulbound;
     }
 
     @Unique
