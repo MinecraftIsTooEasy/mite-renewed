@@ -1,9 +1,12 @@
 package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
+import baubles.api.BaublesApi;
+import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import net.minecraft.*;
+import net.xiaoyu233.fml.FishModLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -104,7 +107,17 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
         // Check stack at cursor
         ItemStack cursorStack = inventory.getItemStack();
         if (cursorStack != null && cursorStack.getItem() instanceof ItemWithInventory inv) {
-            total += inv.getItemCountInStack(cursorStack);
+            total += inv.getItemCountInStack(cursorStack, true);
+        }
+
+        // Check bauble
+        if (FishModLoader.hasMod("baubles")) {
+            InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles((EntityPlayer) (Object) this);
+            ItemStack back = baubles.getStackInSlot(2);
+
+            if (back != null && back.getItem() instanceof ItemWithInventory inv) {
+                total += inv.getItemCountInStack(back, true);
+            }
         }
 
         // Iterate through main inventory
@@ -114,23 +127,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
 
             // Add to total if item is valid
             if (stack.getItem() instanceof ItemWithInventory inv) {
-                total += inv.getItemCountInStack(stack);
-            } else {
-                total += 1;
-            }
-        }
-
-        // Iterate through armor
-        for (ItemStack stack : inventory.armorInventory) {
-            if (stack == null)
-                continue;
-
-            // Add to total if item is valid
-            if (stack.getItem() instanceof ItemWithInventory inv) {
-                // Dampen value slightly since the backpack is worn
-                int count = inv.getItemCountInStack(stack);
-                count = Math.max(0, count - 12);
-                total += count;
+                total += inv.getItemCountInStack(stack, true);
             } else {
                 total += 1;
             }

@@ -310,9 +310,11 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     /**
      * Gets the amount of items currently in the provided stack.
      */
-    public int getItemCountInStack(ItemStack stack) {
+    public int getItemCountInStack(ItemStack stack, boolean withEnchant) {
         BackpackInventory inv = createInventory(stack);
-        return inv.getSizeInventory();
+        int featherWeight = RenewedEnchantments.ENCHANTMENT_FEATHER_WEIGHT.getLevel(stack);
+
+        return withEnchant ? Math.max(0, inv.getSizeInventory() - 3 * featherWeight) : inv.getSizeInventory();
     }
 
     /**

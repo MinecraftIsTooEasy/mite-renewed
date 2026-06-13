@@ -29,7 +29,7 @@ public abstract class ContainerRepairMixin extends Container {
             if (!(stackCombine.getItem() instanceof ItemBottleOfDisenchanting)) return;
 
             boolean hasEnchant = RenewedEnchantments.ENCHANTMENT_HOLDING.getLevel(stackInput) > 0;
-            boolean hasItems = inv.getItemCountInStack(stackInput) > 0;
+            boolean hasItems = inv.getItemCountInStack(stackInput, false) > 0;
 
             if (hasEnchant && hasItems) {
                 this.repair_fail_condition = 3;
