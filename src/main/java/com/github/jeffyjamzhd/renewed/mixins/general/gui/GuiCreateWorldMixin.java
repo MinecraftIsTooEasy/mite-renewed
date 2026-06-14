@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.gui;
 
+import com.github.jeffyjamzhd.renewed.render.gui.GuiConfigureButton;
 import net.minecraft.GuiButton;
 import net.minecraft.GuiCreateWorld;
 import net.minecraft.GuiScreen;
@@ -33,7 +34,7 @@ abstract public class GuiCreateWorldMixin extends GuiScreen {
     private void addButtons(CallbackInfo ci) {
         // Todo: replace hardcoded strings
         this.buttonList.add(this.buttonDifficulty = new GuiButton(50, this.width / 2 + 2, BUTTON_GM_Y, 132, 20, "Difficulty: Extreme"));
-        this.buttonList.add(this.buttonDifficultyConfig = new GuiButton(51, this.width / 2 + 134, BUTTON_GM_Y, 20, 20, "C"));
+        this.buttonList.add(this.buttonDifficultyConfig = new GuiConfigureButton(51, this.width / 2 + 134, BUTTON_GM_Y));
     }
 
     // Add text draw for gamemode

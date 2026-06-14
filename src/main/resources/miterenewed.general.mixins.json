@@ -43,6 +43,7 @@
     "entity.tile.TileEntityFurnaceMixin",
     "entity.tile.TileEntityHopperMixin",
     "gui.GuiContainerMixin",
+    "gui.GuiCreateWorldMixin",
     "gui.GuiMainMenuMixin",
     "gui.MITEContainerCraftingMixin",
     "gui.SlotCraftingMixin",
