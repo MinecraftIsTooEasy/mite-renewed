@@ -24,6 +24,9 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> MINIMUM_HUNGER;
     public static DifficultyParameter<Integer> MAXIMUM_HUNGER;
     public static DifficultyParameter<Integer> LEVELS_NEEDED_FOR_STAT_UP;
+    public static DifficultyParameter<Float> REGEN_SPEED;
+    public static DifficultyParameter<Float> EXHAUSTION_FACTOR;
+
     public static DifficultyParameter<Float> MINING_FACTOR;
     public static DifficultyParameter<Float> PLAYER_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> MOB_DAMAGE_FACTOR;
@@ -68,6 +71,8 @@ public class RenewedDifficulties {
         MAXIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHunger"), Category.GENERAL, 1, 20), 10)
                 .withSanitizer((difficulty, value) -> Math.max(value, difficulty.getParamValue(MINIMUM_HUNGER)));
         LEVELS_NEEDED_FOR_STAT_UP   = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.GENERAL, FieldSuffix.LEVELS, 1, 10, 1), 5);
+        REGEN_SPEED                 = registerParameter(new DPFloatSlider(loc("RegenSpeed"), Category.GENERAL, .25F, 4F, .25F), 1F);
+        EXHAUSTION_FACTOR           = registerParameter(new DPFloatSlider(loc("ExhaustionFactor"), Category.GENERAL, .25F, 4F, .25F), 1F);
 
         MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);
         PLAYER_DAMAGE_FACTOR        = registerParameter(new DPFloatSlider(loc("PlayerDamageFactor"), Category.INTERACTION, .25F, 2F, .25F), 1F);
