@@ -57,7 +57,8 @@
 			"net/minecraft/Packet1Login" : ["com/github/jeffyjamzhd/renewed/api/IPacket1Login"],
 			"net/minecraft/Packet9Respawn" : ["com/github/jeffyjamzhd/renewed/api/IPacket9Respawn"],
 			"net/minecraft/EntityLivingBase" : ["com/github/jeffyjamzhd/renewed/api/IEntityLivingBase"],
-			"net/minecraft/InventoryPlayer": ["com/github/jeffyjamzhd/renewed/api/IInventoryPlayer"]
+			"net/minecraft/InventoryPlayer": ["com/github/jeffyjamzhd/renewed/api/IInventoryPlayer"],
+			"net/minecraft/DedicatedServer": ["com/github/jeffyjamzhd/renewed/api/IDedicatedServer"]
 		}
 	}
 }

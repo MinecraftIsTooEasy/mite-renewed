@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.core;
 
+import com.github.jeffyjamzhd.renewed.api.IDedicatedServer;
 import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.api.server.RenewedYAML;
@@ -20,7 +21,7 @@ import java.io.File;
 
 @Mixin(DedicatedServer.class)
 @Environment(EnvType.SERVER)
-public abstract class DedicatedServerMixin extends MinecraftServer {
+public abstract class DedicatedServerMixin extends MinecraftServer implements IDedicatedServer {
     public DedicatedServerMixin(File par1File) {
         super(par1File);
     }
@@ -45,5 +46,11 @@ public abstract class DedicatedServerMixin extends MinecraftServer {
             IWorldInfo info = (IWorldInfo) server.getWorldInfo();
             info.mr$setDifficulty(difficulty);
         }
+    }
+
+    @Override
+    public void mr$writeToYaml() {
+        IWorldInfo info = (IWorldInfo) this.getOverworld().getWorldInfo();
+        this.renewedYAML.saveToYaml(info);
     }
 }

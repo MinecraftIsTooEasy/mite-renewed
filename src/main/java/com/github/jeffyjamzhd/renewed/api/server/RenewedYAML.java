@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.api.server;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyProvider;
@@ -94,8 +95,16 @@ public class RenewedYAML {
         return RenewedDifficulties.EXTREME.cloneAsCustom();
     }
 
+    public void saveToYaml(IWorldInfo worldInfo) {
+        generateFromDifficulty(worldInfo.mr$getDifficulty());
+    }
+
+    private void generateDefault() {
+        generateFromDifficulty(RenewedDifficulties.EXTREME);
+    }
+
     @SuppressWarnings("unchecked")
-    private <T> void generateDefault() {
+    private <T> void generateFromDifficulty(Difficulty difficulty) {
         Config config = new Config();
         HashMap<String, ParameterNamespace> namespaces = new HashMap<>();
 
@@ -112,7 +121,7 @@ public class RenewedYAML {
             }
 
             Parameter<T> paramSerialized = new Parameter<>();
-            T value = (T) DifficultyProvider.defaults.get(parameter);
+            T value = (T) difficulty.getParamValue(parameter);
             paramSerialized.key = parameter.id.getResourcePath();
             paramSerialized.value = value;
             paramSerialized.comment = languageParser.translate(parameter.getDescriptionKey(null));
@@ -124,7 +133,7 @@ public class RenewedYAML {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(HEADER_INFO.formatted(MiTERenewed.getVersionString()));
             yaml.dump(config, writer);
-            logger.logInfo("[MiTE-Renewed] Generating default MiTE-Renewed server config");
+            logger.logInfo("[MiTE-Renewed] Saving MiTE-Renewed server config");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
