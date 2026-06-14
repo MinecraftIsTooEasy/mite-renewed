@@ -22,6 +22,7 @@ public class GuiConfigureButton extends GuiButton {
         mc.getTextureManager().bindTexture(RENEWED_WIDGET);
         GL11.glColor4f(1F, 1F, 1F, 1F);
         boolean hovered = x >= this.xPosition && y >= this.yPosition && x < this.xPosition + this.width && y < this.yPosition + this.height;
-        this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, hovered ? 20 : 0, this.width, this.height);
+        int hoverState = getHoverState(hovered);
+        this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, hoverState * 20, this.width, this.height);
     }
 }
