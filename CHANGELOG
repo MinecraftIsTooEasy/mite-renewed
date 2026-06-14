@@ -14,6 +14,8 @@
 + Removed the ability to toggle debug features without having cheats enabled (e.g. hitboxes)
 + Fixed polearm entities desyncing with the client when killing a mob
 + Fixed EMI display with Renewed's tool bench scaling
++ Fixed "ghost shanks"
++ Fixed enum options not saving properly
 
 [Crafting]
 + Gem shards now give a tenth of their full gem equivalent's XP when used

@@ -2,6 +2,7 @@ package com.github.jeffyjamzhd.renewed.mixins.difficulty.block;
 
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.BlockCrops;
 import net.minecraft.World;

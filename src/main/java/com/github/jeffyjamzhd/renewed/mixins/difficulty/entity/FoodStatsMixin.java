@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.IFoodStats;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedFood;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.EntityPlayer;
 import net.minecraft.FoodStats;
 import net.minecraft.Item;
@@ -11,8 +12,6 @@ import net.minecraft.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FoodStats.class)
 public abstract class FoodStatsMixin implements IFoodStats {
@@ -35,20 +34,18 @@ public abstract class FoodStatsMixin implements IFoodStats {
         }
     }
 
-    @Inject(method = "getNutritionLimit", at = @At("HEAD"), cancellable = true)
-    private void getNutritionLimit(CallbackInfoReturnable<Integer> cir) {
+    @ModifyReturnValue(method = "getNutritionLimit", at = @At("RETURN"))
+    private int getNutritionLimit(int original) {
         Difficulty difficulty = this.player.worldObj.mr$getDifficulty();
         if (difficulty == null) {
-            return;
+            return original;
         }
 
-        float level = this.player.getExperienceLevel();
+        int level = this.player.getExperienceLevel();
         int levelsPer = difficulty.getParamValue(RenewedDifficulties.LEVELS_NEEDED_FOR_STAT_UP);
         int minimum = difficulty.getParamValue(RenewedDifficulties.MINIMUM_HUNGER) * 2;
         int maximum = difficulty.getParamValue(RenewedDifficulties.MAXIMUM_HUNGER) * 2;
 
-        int lower = (int) Math.min(minimum + level / levelsPer * 2, maximum);
-        int value = (int) Math.max(lower, minimum);
-        cir.setReturnValue(value);
+        return Math.max(Math.min(minimum + level / levelsPer * 2, maximum), minimum);
     }
 }

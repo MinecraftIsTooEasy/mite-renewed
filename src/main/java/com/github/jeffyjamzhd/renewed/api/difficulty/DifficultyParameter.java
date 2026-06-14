@@ -90,12 +90,12 @@ public abstract class DifficultyParameter<T> {
 
         @Override
         public void writeNBT(NBTTagCompound tag, Integer value) {
-
+            tag.setInteger(id.toString(), value);
         }
 
         @Override
         public Integer readNBT(NBTTagCompound tag) {
-            return 0;
+            return tag.getInteger(id.toString());
         }
     }
 
