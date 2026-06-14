@@ -19,6 +19,24 @@ public abstract class FoodStatsMixin implements IFoodStats {
     @Shadow public abstract int addNutrition(int nutrition);
     @Shadow private EntityPlayer player;
 
+    @Shadow
+    public abstract int getNutrition();
+
+    @Shadow
+    public abstract void setNutrition(int nutrition, boolean check_limit);
+
+    @Shadow
+    private int nutrition;
+
+    @Shadow
+    public abstract int getSatiation();
+
+    @Shadow
+    public abstract void setSatiation(int satiation, boolean check_limit);
+
+    @Shadow
+    private int satiation;
+
     @Override
     public void mr$addFoodValueSubtype(Item item, int subtype) {
         if (item instanceof ItemRenewedFood food) {
@@ -46,6 +64,7 @@ public abstract class FoodStatsMixin implements IFoodStats {
         int minimum = difficulty.getParamValue(RenewedDifficulties.MINIMUM_HUNGER) * 2;
         int maximum = difficulty.getParamValue(RenewedDifficulties.MAXIMUM_HUNGER) * 2;
 
-        return Math.max(Math.min(minimum + level / levelsPer * 2, maximum), minimum);
+        int limit = Math.max(Math.min(minimum + level / levelsPer * 2, maximum), minimum);
+        return limit;
     }
 }

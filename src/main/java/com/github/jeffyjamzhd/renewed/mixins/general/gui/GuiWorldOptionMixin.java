@@ -127,7 +127,7 @@ public abstract class GuiWorldOptionMixin extends GuiScreen implements IGuiWorld
             mr$updateButtonText();
         } else {
             // Lan or net we just send the packet
-            Network.sendToServer(new C2SAssignDifficulty(this.mc.thePlayer, difficulty));
+            Network.sendToServer(new C2SAssignDifficulty(difficulty));
         }
     }
 }

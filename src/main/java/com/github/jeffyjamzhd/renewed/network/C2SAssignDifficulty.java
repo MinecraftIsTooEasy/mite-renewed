@@ -12,11 +12,9 @@ import net.minecraft.server.MinecraftServer;
 import java.io.IOException;
 
 public class C2SAssignDifficulty implements Packet {
-    int playerID;
     NBTTagCompound difficulty;
 
     public C2SAssignDifficulty(PacketByteBuf buf) {
-        this.playerID = buf.readInt();
         try {
             this.difficulty = (NBTTagCompound) NBTTagCompound.readNamedTag(buf.getInputStream());
         } catch (IOException e) {
@@ -24,14 +22,12 @@ public class C2SAssignDifficulty implements Packet {
         }
     }
 
-    public C2SAssignDifficulty(EntityPlayer player, Difficulty difficulty) {
-        this.playerID = player.entityId;
+    public C2SAssignDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty.asTagCompound();
     }
 
     @Override
     public void write(PacketByteBuf buf) {
-        buf.writeInt(this.playerID);
         try {
             NBTTagCompound.writeNamedTag(this.difficulty, buf.getOutputStream());
         } catch (IOException e) {
@@ -50,7 +46,29 @@ public class C2SAssignDifficulty implements Packet {
         if ((isOP || isOwner) && !isLocked) {
             Difficulty difficultyObj = Difficulty.createFromTagCompound(this.difficulty);
             info.mr$setDifficulty(difficultyObj);
-            Network.sendToClient((ServerPlayer) player, new S2CSyncDifficulty(difficultyObj));
+
+            S2CSyncDifficulty sync = new S2CSyncDifficulty(difficultyObj);
+            MinecraftServer server = MinecraftServer.getServer();
+
+            for (Object o : server.getConfigurationManager().playerEntityList) {
+                if (o instanceof ServerPlayer playerAt) {
+                    // Send sync packet to player
+                    Network.sendToClient(playerAt, sync);
+
+                    // Set player variables
+                    FoodStats stats = playerAt.getFoodStats();
+                    playerAt.setHealth(playerAt.getHealth(), true, null);
+                    stats.setNutrition(stats.getNutrition(), true);
+                    stats.setSatiation(stats.getSatiation(), true);
+
+                    // Sync stats to client in next packet
+                    float health = playerAt.getHealth();
+                    int nutrition = stats.getNutrition();
+                    int satiation = stats.getSatiation();
+                    float visionDimming = playerAt.vision_dimming;
+                    playerAt.getNetManager().addToSendQueue(new Packet8UpdateHealth(health, satiation, nutrition, visionDimming));
+                }
+            }
         }
     }
 
