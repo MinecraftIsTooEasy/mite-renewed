@@ -1,9 +1,13 @@
 package com.github.jeffyjamzhd.renewed.util;
 
+import baubles.api.BaublesApi;
+import baubles.common.container.InventoryBaubles;
+import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import net.minecraft.EntityItem;
 import net.minecraft.EntityPlayer;
 import net.minecraft.ItemStack;
 import net.minecraft.World;
+import net.xiaoyu233.fml.FishModLoader;
 
 public class ItemUtils {
     static public void ejectStackWithRandomVelocity(World world, double x, double y, double z, ItemStack stack)
@@ -36,5 +40,14 @@ public class ItemUtils {
 
     static public boolean areItemsEqual(ItemStack item, ItemStack otherItem) {
         return ItemStack.areItemStacksEqual(item, otherItem, true, false, false, false);
+    }
+
+    static public ItemStack getBaubleInBackSlot(EntityPlayer player) {
+        if (FishModLoader.hasMod("baubles")) {
+            InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles(player);
+            return baubles.getStackInSlot(2);
+        }
+
+        return null;
     }
 }

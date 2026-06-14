@@ -1,21 +1,16 @@
 package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
-import baubles.api.BaublesApi;
-import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IEntityPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.registry.RenewedPotion;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.github.jeffyjamzhd.renewed.util.ItemUtils;
 import net.minecraft.*;
-import net.xiaoyu233.fml.FishModLoader;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityPlayer.class)
@@ -110,13 +105,9 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
         }
 
         // Check bauble
-        if (FishModLoader.hasMod("baubles")) {
-            InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles((EntityPlayer) (Object) this);
-            ItemStack back = baubles.getStackInSlot(2);
-
-            if (back != null && back.getItem() instanceof ItemWithInventory inv) {
-                total += inv.getItemCountInStack(back, true);
-            }
+        ItemStack backSlot = ItemUtils.getBaubleInBackSlot((EntityPlayer) (Object) this);
+        if (backSlot != null && backSlot.getItem() instanceof ItemWithInventory inv) {
+            total += inv.getItemCountInStack(backSlot, true);
         }
 
         // Iterate through main inventory

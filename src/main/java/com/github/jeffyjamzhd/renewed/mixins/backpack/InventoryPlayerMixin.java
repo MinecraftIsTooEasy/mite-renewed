@@ -5,6 +5,7 @@ import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
+import com.github.jeffyjamzhd.renewed.util.ItemUtils;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -106,25 +107,21 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     private boolean putStackInBackpacks(ItemStack stack) {
         boolean modified = false;
 
-        // Check baubles first (if it is loaded)
-        if (FishModLoader.hasMod("baubles")) {
-            InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles(player);
-            ItemStack back = baubles.getStackInSlot(2);
+        // Check bauble first (if exists)
+        ItemStack back = ItemUtils.getBaubleInBackSlot(player);
+        if (back != null) {
+            boolean isBackpack = back.getItem() instanceof ItemWithInventory;
+            boolean hasVacuum = RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(back) > 0;
 
-            if (back != null) {
-                boolean isBackpack = back.getItem() instanceof ItemWithInventory;
-                boolean hasVacuum = RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(back) > 0;
+            if (isBackpack && hasVacuum) {
+                ItemWithInventory itemInv = (ItemWithInventory) back.getItem();
+                int oldCount = stack.stackSize;
+                stack.stackSize = itemInv.putStackInInventory(back, stack, player, player.getWorld());
 
-                if (isBackpack && hasVacuum) {
-                    ItemWithInventory itemInv = (ItemWithInventory) back.getItem();
-                    int oldCount = stack.stackSize;
-                    stack.stackSize = itemInv.putStackInInventory(back, stack, player, player.getWorld());
-
-                    if (oldCount != stack.stackSize) {
-                        modified = true;
-                    }
-                    if (stack.stackSize == 0) return modified;
+                if (oldCount != stack.stackSize) {
+                    modified = true;
                 }
+                if (stack.stackSize == 0) return modified;
             }
         }
 

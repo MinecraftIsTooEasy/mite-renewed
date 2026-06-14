@@ -86,6 +86,7 @@ public class RenewedYAML {
             }
 
             logger.logInfo("[MiTE-Renewed] Successfully loaded server config.");
+            return custom;
 
         } catch (Exception e) {
             logger.logSevereException("[MiTE-Renewed] Failed to parse config!", e);
