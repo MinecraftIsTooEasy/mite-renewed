@@ -7,6 +7,7 @@ import moddedmite.rustedironcore.network.Network;
 import moddedmite.rustedironcore.network.Packet;
 import moddedmite.rustedironcore.network.PacketByteBuf;
 import net.minecraft.*;
+import net.minecraft.server.MinecraftServer;
 
 import java.io.IOException;
 
@@ -41,9 +42,10 @@ public class C2SAssignDifficulty implements Packet {
     @Override
     public void apply(EntityPlayer player) {
         boolean isOP = player.canCommandSenderUseCommand(2, "");
+        boolean isOwner = MinecraftServer.isPlayerHostingGame(player);
         boolean isSP = Minecraft.isSingleplayer();
 
-        if (isOP || isSP) {
+        if (isOP || isSP || isOwner) {
             IWorldInfo info = (IWorldInfo) player.worldObj.getWorldInfo();
             Difficulty difficultyObj = Difficulty.createFromTagCompound(this.difficulty);
             info.mr$setDifficulty(difficultyObj);

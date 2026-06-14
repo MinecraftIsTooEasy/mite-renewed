@@ -1,14 +1,13 @@
 package com.github.jeffyjamzhd.renewed.network;
 
 import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
+import com.github.jeffyjamzhd.renewed.api.compat.IGuiWorldOption;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedNetwork;
 import moddedmite.rustedironcore.network.Packet;
 import moddedmite.rustedironcore.network.PacketByteBuf;
-import net.minecraft.EntityPlayer;
-import net.minecraft.NBTTagCompound;
-import net.minecraft.ResourceLocation;
-import net.minecraft.World;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiWorldOption;
+import net.minecraft.*;
 
 import java.io.IOException;
 
@@ -41,6 +40,11 @@ public class S2CSyncDifficulty implements Packet {
         World world = player.getWorld();
         IWorldInfo info = (IWorldInfo) world.getWorldInfo();
         info.mr$setDifficulty(Difficulty.createFromTagCompound(this.difficulty));
+
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiWorldOption gui) {
+            IGuiWorldOption cast = (IGuiWorldOption) gui;
+            cast.mr$updateButtonText();
+        }
     }
 
     @Override

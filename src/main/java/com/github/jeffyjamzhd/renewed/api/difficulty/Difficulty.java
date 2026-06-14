@@ -48,6 +48,16 @@ public class Difficulty {
         return new Difficulty(CUSTOM, params);
     }
 
+    public static int getIndiceForDifficulty(Difficulty difficulty) {
+        for (int i = 0; i < RenewedDifficulties.LIST.size(); i++) {
+            Difficulty at = RenewedDifficulties.LIST.get(i);
+            if (difficulty.id.equals(at.id)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public NBTTagCompound asTagCompound() {
         NBTTagCompound difficultyTag = new NBTTagCompound();
         NBTTagCompound parameterTag = new NBTTagCompound();

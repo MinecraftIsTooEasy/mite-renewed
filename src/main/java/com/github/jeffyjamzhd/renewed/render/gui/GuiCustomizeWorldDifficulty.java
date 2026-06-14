@@ -13,7 +13,6 @@ import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -75,7 +74,7 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         }
 
         if (this.parentScreen instanceof GuiWorldOption) {
-            ((IGuiWorldOption)this.parentScreen).mr$attemptAssigningCustomDifficulty(this.difficulty);
+            ((IGuiWorldOption)this.parentScreen).mr$assignOrSendDifficulty(this.difficulty);
         }
 
         cancelPressed();

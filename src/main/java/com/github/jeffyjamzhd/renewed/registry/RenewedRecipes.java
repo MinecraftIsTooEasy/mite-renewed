@@ -258,7 +258,7 @@ public class RenewedRecipes {
         registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk), manager, new ItemStack(Block.cloth, 1, Short.MAX_VALUE))
                 .setDamage(40)
                 .setDifficulty(400F);
-        registerToolRecipe(ItemDagger.class, new ItemStack(Item.silk, 2), manager, new ItemStack(Block.sapling, 1, Short.MAX_VALUE))
+        registerToolRecipe(ItemDagger.class, new ItemStack(Item.stick, 2), manager, new ItemStack(Block.sapling, 1, Short.MAX_VALUE))
                 .setDamage(60)
                 .setDifficulty(600F);
 
