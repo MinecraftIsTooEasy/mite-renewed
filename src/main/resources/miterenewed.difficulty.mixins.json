@@ -19,6 +19,7 @@
     "entity.EntityPlayerMixin",
     "entity.EntitySkeletonMixin",
     "entity.FoodStatsMixin",
+    "item.ItemArmorMixin",
     "item.ItemBowMixin",
     "server.Packet1LoginMixin",
     "server.Packet9RespawnMixin",
@@ -28,6 +29,7 @@
   "client": [
     "NetClientHandlerMixin",
     "gui.GuiIngameMixin",
+    "item.ItemStackMixin",
     "world.WorldClientMixin"
   ],
   "injectors": {

@@ -28,6 +28,7 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Float> EXHAUSTION_FACTOR;
 
     public static DifficultyParameter<Float> MINING_FACTOR;
+    public static DifficultyParameter<Float> ARMOR_PROTECTION_FACTOR;
     public static DifficultyParameter<Float> PLAYER_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> MOB_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> FALL_DAMAGE_FACTOR;
@@ -75,6 +76,7 @@ public class RenewedDifficulties {
         EXHAUSTION_FACTOR           = registerParameter(new DPFloatSlider(loc("ExhaustionFactor"), Category.GENERAL, .25F, 4F, .25F), 1F);
 
         MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);
+        ARMOR_PROTECTION_FACTOR     = registerParameter(new DPFloatSlider(loc("ArmorProtectionFactor"), Category.INTERACTION, 0F, 2F, .25F), 1F);
         PLAYER_DAMAGE_FACTOR        = registerParameter(new DPFloatSlider(loc("PlayerDamageFactor"), Category.INTERACTION, .25F, 2F, .25F), 1F);
         MOB_DAMAGE_FACTOR           = registerParameter(new DPFloatSlider(loc("MobDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
         FALL_DAMAGE_FACTOR          = registerParameter(new DPFloatSlider(loc("FallDamageFactor"), Category.INTERACTION,.25F, 4F, .25F), 1F);
@@ -101,6 +103,8 @@ public class RenewedDifficulties {
                 .withParam(LEVELS_NEEDED_FOR_STAT_UP, 7)
                 .withParam(MOB_DAMAGE_FACTOR, 1.5F)
                 .withParam(PLAYER_DAMAGE_FACTOR, .75F)
+                .withParam(ARMOR_PROTECTION_FACTOR, 1.5F)
+                .withParam(REGEN_SPEED, 2F)
                 .withParam(WEATHER_GRACE_PERIOD, 0)
                 .withParam(NON_SOLID_LEAVES, true)
                 .withParam(CLIMBABLE_VINES, false)
