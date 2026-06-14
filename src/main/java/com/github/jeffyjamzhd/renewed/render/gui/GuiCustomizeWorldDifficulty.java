@@ -1,11 +1,13 @@
 package com.github.jeffyjamzhd.renewed.render.gui;
 
 import com.github.jeffyjamzhd.renewed.api.IGuiCreateWorld;
+import com.github.jeffyjamzhd.renewed.api.compat.IGuiWorldOption;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyProvider;
 import com.github.jeffyjamzhd.renewed.api.difficulty.gui.IParameterField;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiWorldOption;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import net.fabricmc.loader.impl.util.StringUtil;
 import net.minecraft.*;
@@ -70,6 +72,10 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
     private void donePressed() {
         if (this.parentScreen instanceof GuiCreateWorld) {
             ((IGuiCreateWorld)this.parentScreen).mr$assignCustomDifficulty(this.difficulty);
+        }
+
+        if (this.parentScreen instanceof GuiWorldOption) {
+            ((IGuiWorldOption)this.parentScreen).mr$attemptAssigningCustomDifficulty(this.difficulty);
         }
 
         cancelPressed();

@@ -75,6 +75,7 @@
     "gui.GuiCreateWorldBGSMixin",
     "gui.GuiIngameMixin",
     "gui.GuiOptionsMixin",
+    "gui.GuiWorldOptionMixin",
     "gui.GuiWorldSlotMixin",
     "packet.NetClientHandlerMixin",
     "render.ItemRendererMixin",

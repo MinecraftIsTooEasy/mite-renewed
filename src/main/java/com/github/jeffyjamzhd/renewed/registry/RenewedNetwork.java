@@ -12,6 +12,8 @@ public class RenewedNetwork {
     public static final ResourceLocation BLOCK_HIT = ofPacket("BlockHit");
     public static final ResourceLocation ITEM_UPDATE_SCROLL = ofPacket("ItemUpdateScroll");
     public static final ResourceLocation ANIMATE_SLOT = ofPacket("AnimateSlots");
+    public static final ResourceLocation ASSIGN_DIFFICULTY = ofPacket("AssignDifficulty");
+    public static final ResourceLocation SYNC_DIFFICULTY = ofPacket("SyncDifficulty");
 
     public static void init() {
         MiTERenewed.LOGGER.info("Registering packets!");
@@ -24,10 +26,12 @@ public class RenewedNetwork {
 
     private static void initClient() {
         PacketReader.registerClientPacketReader(ANIMATE_SLOT, S2CAnimateSlot::new);
+        PacketReader.registerClientPacketReader(SYNC_DIFFICULTY, S2CSyncDifficulty::new);
     }
 
     private static void initServer() {
         PacketReader.registerServerPacketReader(BLOCK_HIT, C2SBlockHit::new);
         PacketReader.registerServerPacketReader(ITEM_UPDATE_SCROLL, C2SItemUpdateScroll::new);
+        PacketReader.registerServerPacketReader(ASSIGN_DIFFICULTY, C2SAssignDifficulty::new);
     }
 }
