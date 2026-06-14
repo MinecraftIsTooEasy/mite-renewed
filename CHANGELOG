@@ -1,12 +1,14 @@
 # 0.2.8 Changelog
 + Tiered crate blocks, which store a mass amount of one item/block
 + Bags of holding, which grant the player a variable amount of additional inventory slots
++ New enchants: Feather Weight, Holding, Vacuum and Soulbound
 
 [General]
 + New integration with WAILA display
 + New integration with ManyLib config library
 + New integration with Baubles
-+ Two new music tracks to the overworld
++ Four new music tracks for the overworld
++ Two new music tracks for the underworld
 + Updated invisible stalkers
 + Improved the way handpans and polearms are animated in first person
 + Improved how polearm entities are rendered
@@ -14,8 +16,9 @@
 + Removed the ability to toggle debug features without having cheats enabled (e.g. hitboxes)
 + Fixed polearm entities desyncing with the client when killing a mob
 + Fixed EMI display with Renewed's tool bench scaling
-+ Fixed "ghost shanks"
++ Fixed "ghost shanks" and stat desyncs with difficulty
 + Fixed enum options not saving properly
++ Fixed YAML not applying properly in dedicated servers
 
 [Crafting]
 + Gem shards now give a tenth of their full gem equivalent's XP when used

@@ -9,6 +9,7 @@ import net.minecraft.Entity;
 import net.minecraft.EntityLivingBase;
 import net.minecraft.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,7 +25,12 @@ public abstract class EntityLivingBaseMixin extends Entity {
     private void playDeathSound(CallbackInfo ci) {
         if (!RenewedConfig.POOF_SOUND_ON_DEATH.getBooleanValue()) return;
 
-        float pitch = (float) Mth.lerp(.25F, 2F, Math.sqrt((this.width * this.height) / 2.5F));
+        float pitch = (float) lerp(.25F, 2F, Math.sqrt((this.width * this.height) / 2.5F));
         this.worldObj.playSound(this.posX, this.posY, this.posZ, RenewedSounds.DEATH_POOF.toString(), .5F, pitch, false);
+    }
+
+    @Unique
+    public double lerp(double d, double e, double f) {
+        return e + d * (f - e);
     }
 }
