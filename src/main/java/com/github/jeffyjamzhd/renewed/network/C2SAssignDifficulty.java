@@ -43,10 +43,11 @@ public class C2SAssignDifficulty implements Packet {
     public void apply(EntityPlayer player) {
         boolean isOP = player.canCommandSenderUseCommand(2, "");
         boolean isOwner = MinecraftServer.isPlayerHostingGame(player);
-        boolean isSP = Minecraft.isSingleplayer();
 
-        if (isOP || isSP || isOwner) {
-            IWorldInfo info = (IWorldInfo) player.worldObj.getWorldInfo();
+        IWorldInfo info = (IWorldInfo) player.worldObj.getWorldInfo();
+        boolean isLocked = info.mr$isDifficultyLocked();
+
+        if ((isOP || isOwner) && !isLocked) {
             Difficulty difficultyObj = Difficulty.createFromTagCompound(this.difficulty);
             info.mr$setDifficulty(difficultyObj);
             Network.sendToClient((ServerPlayer) player, new S2CSyncDifficulty(difficultyObj));

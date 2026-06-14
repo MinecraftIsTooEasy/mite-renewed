@@ -5,4 +5,7 @@ import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 public interface IWorldSettings {
     void mr$setDifficulty(Difficulty difficulty);
     Difficulty mr$getDifficulty();
+
+    boolean mr$isDifficultyLocked();
+    void mr$setDifficultyLocked(boolean locked);
 }

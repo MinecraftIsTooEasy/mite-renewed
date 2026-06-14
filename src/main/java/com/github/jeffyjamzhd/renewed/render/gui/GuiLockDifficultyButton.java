@@ -6,10 +6,11 @@ import net.minecraft.Minecraft;
 import net.minecraft.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiConfigureButton extends GuiButton {
+public class GuiLockDifficultyButton extends GuiButton {
     private static final ResourceLocation RENEWED_WIDGET = new ResourceLocation(MiTERenewed.RESOURCE_ID + "textures/gui/widgets.png");
+    public boolean toggled = false;
 
-    public GuiConfigureButton(int id, int x, int y) {
+    public GuiLockDifficultyButton(int id, int x, int y) {
         super(id, x, y, 20, 20, "");
     }
 
@@ -23,11 +24,6 @@ public class GuiConfigureButton extends GuiButton {
         GL11.glColor4f(1F, 1F, 1F, 1F);
         this.field_82253_i = x >= this.xPosition && y >= this.yPosition && x < this.xPosition + this.width && y < this.yPosition + this.height;
         int hoverState = getHoverState(this.field_82253_i);
-        this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, hoverState * 20, this.width, this.height);
-    }
-
-    @Override
-    public boolean func_82252_a() {
-        return super.func_82252_a();
+        this.drawTexturedModalRect(this.xPosition, this.yPosition, 40 + (!toggled ? 20 : 0), hoverState * 20, this.width, this.height);
     }
 }

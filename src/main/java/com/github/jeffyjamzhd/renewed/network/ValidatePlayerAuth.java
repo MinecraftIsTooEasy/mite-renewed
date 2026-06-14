@@ -35,7 +35,9 @@ public class ValidatePlayerAuth {
             boolean isOP = player.canCommandSenderUseCommand(2, "");
             boolean isOwner = MinecraftServer.isPlayerHostingGame(player);
 
-            Network.sendToClient((ServerPlayer) player, new S2C(isOP || isOwner));
+            // Also... is the difficulty not locked?
+            boolean isLocked = player.getWorld().mr$isDifficultyLocked();
+            Network.sendToClient((ServerPlayer) player, new S2C((isOP || isOwner) && !isLocked));
         }
 
         @Override

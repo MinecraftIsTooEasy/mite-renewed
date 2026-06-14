@@ -21,13 +21,19 @@ public abstract class NetClientHandlerMixin extends NetHandler {
 
     @Inject(method = "handleLogin", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;loadWorld(Lnet/minecraft/WorldClient;)V"))
     private void assignDifficulty(Packet1Login packet, CallbackInfo ci) {
-        Difficulty difficulty = ((IPacket1Login) packet).mr$getDifficulty();
-        ((IWorldInfo) this.worldClient.getWorldInfo()).mr$setDifficulty(difficulty);
+        IPacket1Login login = (IPacket1Login) packet;
+        IWorldInfo info = (IWorldInfo) this.worldClient.getWorldInfo();
+
+        info.mr$setDifficulty(login.mr$getDifficulty());
+        info.mr$setDifficultyLocked(login.mr$getDifficultyLock());
     }
 
     @Inject(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;loadWorld(Lnet/minecraft/WorldClient;)V"))
-    private void assignDifficultyOnRespawn(Packet9Respawn respawn, CallbackInfo ci) {
-        Difficulty difficulty = ((IPacket9Respawn) respawn).mr$getDifficulty();
-        ((IWorldInfo) this.worldClient.getWorldInfo()).mr$setDifficulty(difficulty);
+    private void assignDifficultyOnRespawn(Packet9Respawn packet, CallbackInfo ci) {
+        IPacket9Respawn respawn = (IPacket9Respawn) packet;
+        IWorldInfo info = (IWorldInfo) this.worldClient.getWorldInfo();
+
+        info.mr$setDifficulty(respawn.mr$getDifficulty());
+        info.mr$setDifficultyLocked(respawn.mr$getDifficultyLock());
     }
 }

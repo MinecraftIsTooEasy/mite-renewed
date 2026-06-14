@@ -63,7 +63,7 @@ dependencies {
     implementation files("libs\\jeffy-lib-1.0.0-sources.jar")
 
     implementation files("libs\\Waila-2.0.6.jar")
-    //implementation files("libs\\OhMyCommands-3.0.jar")
+    implementation files("libs\\OhMyCommands-3.0.jar")
 }
 
 //runClient{

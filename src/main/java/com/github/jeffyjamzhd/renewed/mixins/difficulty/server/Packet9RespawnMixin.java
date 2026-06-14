@@ -20,10 +20,13 @@ import java.io.IOException;
 public class Packet9RespawnMixin implements IPacket9Respawn {
     @Unique
     NBTTagCompound difficulty;
+    @Unique
+    boolean locked;
 
     @Inject(method = "readPacketData", at = @At("TAIL"))
     private void readDifficultyData(DataInput input, CallbackInfo ci) {
         try {
+            this.locked = input.readBoolean();
             this.difficulty = (NBTTagCompound) NBTTagCompound.readNamedTag(input);
         } catch (IOException e) {
         }
@@ -32,6 +35,7 @@ public class Packet9RespawnMixin implements IPacket9Respawn {
     @Inject(method = "writePacketData", at = @At("TAIL"))
     private void writeDifficultyData(DataOutput output, CallbackInfo ci) {
         try {
+            output.writeBoolean(this.locked);
             NBTTagCompound.writeNamedTag(this.difficulty, output);
         } catch (IOException e) {
         }
@@ -39,7 +43,7 @@ public class Packet9RespawnMixin implements IPacket9Respawn {
 
     @ModifyReturnValue(method = "getPacketSize", at = @At("RETURN"))
     private int adjustPacketSize(int original) {
-        return original + (int) NBTSizeCalculator.getCompoundByteSize(this.difficulty);
+        return original + (int) NBTSizeCalculator.getCompoundByteSize(this.difficulty) + 1;
     }
 
     @Override
@@ -50,5 +54,15 @@ public class Packet9RespawnMixin implements IPacket9Respawn {
     @Override
     public Difficulty mr$getDifficulty() {
         return Difficulty.createFromTagCompound(this.difficulty);
+    }
+
+    @Override
+    public void mr$setDifficultyLock(boolean locked) {
+        this.locked = locked;
+    }
+
+    @Override
+    public boolean mr$getDifficultyLock() {
+        return this.locked;
     }
 }

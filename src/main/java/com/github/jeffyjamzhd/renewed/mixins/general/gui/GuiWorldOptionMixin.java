@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.gui;
 
+import com.github.jeffyjamzhd.renewed.api.IWorld;
 import com.github.jeffyjamzhd.renewed.api.IWorldInfo;
 import com.github.jeffyjamzhd.renewed.api.compat.IGuiWorldOption;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
@@ -8,6 +9,7 @@ import com.github.jeffyjamzhd.renewed.network.ValidatePlayerAuth;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiConfigureButton;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiCustomizeWorldDifficulty;
+import com.github.jeffyjamzhd.renewed.render.gui.GuiLockDifficultyButton;
 import moddedmite.rustedironcore.network.Network;
 import moddedmite.xylose.bettergamesetting.client.gui.GuiWorldOption;
 import net.fabricmc.api.EnvType;
@@ -29,7 +31,7 @@ public abstract class GuiWorldOptionMixin extends GuiScreen implements IGuiWorld
     @Unique
     private GuiButton difficultyButton;
     @Unique
-    private GuiButton difficultyConfigButton;
+    private GuiButton difficultyConfigOrLockButton;
     @Unique
     private int currentDifficultyIndice;
 
@@ -41,12 +43,16 @@ public abstract class GuiWorldOptionMixin extends GuiScreen implements IGuiWorld
 
         Difficulty difficulty = Difficulty.getFromWorld(mc.theWorld).orElseThrow();
         this.buttonList.add(this.difficultyButton = new GuiButton(1000, this.width / 2 - 155, 60, 130, 20, getNameOfDifficulty()));
-        this.buttonList.add(this.difficultyConfigButton = new GuiConfigureButton(1001, this.width / 2 - 25, 60));
+        this.buttonList.add(this.difficultyConfigOrLockButton = isUnlocked() ? new GuiConfigureButton(1001, this.width / 2 - 25, 60) : new GuiLockDifficultyButton(1002, this.width / 2 - 25, 60));
         this.currentDifficultyIndice = Difficulty.getIndiceForDifficulty(difficulty);
 
-        if (!isSingleplayer()) {
+        if (!isSingleplayer() && isUnlocked()) {
             mr$updateButtonUsability(false);
             Network.sendToServer(new ValidatePlayerAuth.C2S(this.mc.thePlayer));
+        }
+        if (!isUnlocked()) {
+            ((GuiLockDifficultyButton)this.difficultyConfigOrLockButton).toggled = true;
+            mr$updateButtonUsability(false);
         }
 
         return false;
@@ -88,10 +94,15 @@ public abstract class GuiWorldOptionMixin extends GuiScreen implements IGuiWorld
         return Minecraft.isSingleplayer() && this.mc.getIntegratedServer() != null;
     }
 
+    @Unique
+    private boolean isUnlocked() {
+        return !((IWorld)this.mc.theWorld).mr$isDifficultyLocked();
+    }
+
     @Override
     public void mr$updateButtonUsability(boolean mode) {
         this.difficultyButton.enabled = mode;
-        this.difficultyConfigButton.enabled = mode;
+        this.difficultyConfigOrLockButton.enabled = mode;
     }
 
     @Override
@@ -101,7 +112,7 @@ public abstract class GuiWorldOptionMixin extends GuiScreen implements IGuiWorld
 
     @Override
     public void mr$assignOrSendDifficulty(Difficulty difficulty) {
-        if (isSingleplayer()) {
+        if (isSingleplayer() && isUnlocked()) {
             // On singleplayer we set the integrated server info
             // (player always has authority in singleplayer)
             IWorldInfo mainInfo = (IWorldInfo) mc.theWorld.getWorldInfo();

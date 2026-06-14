@@ -22,4 +22,14 @@ public class WorldInfoMixin implements IWorldInfo {
     public void mr$setDifficulty(Difficulty difficulty) {
         ((IWorldInfoShared)this.shared).mr$setDifficulty(difficulty);
     }
+
+    @Override
+    public boolean mr$isDifficultyLocked() {
+        return ((IWorldInfoShared)this.shared).mr$isDifficultyLocked();
+    }
+
+    @Override
+    public void mr$setDifficultyLocked(boolean locked) {
+        ((IWorldInfoShared)this.shared).mr$setDifficultyLocked(locked);
+    }
 }

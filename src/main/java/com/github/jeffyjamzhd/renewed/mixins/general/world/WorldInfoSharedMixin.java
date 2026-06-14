@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class WorldInfoSharedMixin implements IWorldInfoShared {
     @Unique
     public Difficulty difficulty;
+    @Unique
+    public boolean difficultyLocked;
 
     @Unique
     @Override
@@ -27,13 +29,24 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
         this.difficulty = difficulty;
     }
 
+    @Override
+    public boolean mr$isDifficultyLocked() {
+        return this.difficultyLocked;
+    }
+
+    @Override
+    public void mr$setDifficultyLocked(boolean locked) {
+        this.difficultyLocked = locked;
+    }
+
     @Inject(method = "<init>(Lnet/minecraft/WorldSettings;Ljava/lang/String;)V", at = @At("TAIL"))
     private void setDifficultyFromSettings(WorldSettings world_settings, String level_name, CallbackInfo ci) {
         this.difficulty = ((IWorldSettings)world_settings).mr$getDifficulty();
+        this.difficultyLocked = ((IWorldSettings)world_settings).mr$isDifficultyLocked();
     }
 
     @Inject(method = "<init>(Lnet/minecraft/NBTTagCompound;)V", at = @At("TAIL"))
-    private void createOrGetDifficultyObject(NBTTagCompound tag, CallbackInfo ci) {
+    private void createOrGetDifficultyObjects(NBTTagCompound tag, CallbackInfo ci) {
         if (tag.hasKey("RenewedDifficulty")) {
             NBTTagCompound difficultyTag = tag.getCompoundTag("RenewedDifficulty");
             this.difficulty = Difficulty.createFromTagCompound(difficultyTag);
@@ -41,10 +54,18 @@ public class WorldInfoSharedMixin implements IWorldInfoShared {
             // Assign the default if none exists (legacy world)
             this.difficulty = RenewedDifficulties.EXTREME;
         }
+
+        if (tag.hasKey("RenewedDifficultyLocked")) {
+            this.difficultyLocked = tag.getBoolean("RenewedDifficultyLocked");
+        } else {
+            // Assign default (no lock)
+            this.difficultyLocked = false;
+        }
     }
 
     @Inject(method = "updateTagCompound", at = @At("TAIL"))
     private void addDifficultyToTagCompound(NBTTagCompound worldTag, NBTTagCompound playerTag, CallbackInfo ci) {
-        worldTag.setCompoundTag("RenewedDifficulty", difficulty.asTagCompound());
+        worldTag.setCompoundTag("RenewedDifficulty", this.difficulty.asTagCompound());
+        worldTag.setBoolean("RenewedDifficultyLocked", this.difficultyLocked);
     }
 }

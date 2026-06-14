@@ -21,19 +21,34 @@ public class ServerConfigurationManagerMixin {
 
     @WrapOperation(method = "initializeConnectionToPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/NetServerHandler;sendPacketToPlayer(Lnet/minecraft/Packet;)V", ordinal = 0))
     private void assignDifficulty(NetServerHandler instance, Packet packet, Operation<Void> original, @Local WorldServer server) {
-        ((IPacket1Login) packet).mr$setDifficulty(server.getWorld().mr$getDifficulty());
+        IPacket1Login login = (IPacket1Login) packet;
+        IWorld worldCast = (IWorld) server.getWorld();
+
+        login.mr$setDifficulty(worldCast.mr$getDifficulty());
+        login.mr$setDifficultyLock(worldCast.mr$isDifficultyLocked());
+
         original.call(instance, packet);
     }
 
     @WrapOperation(method = "respawnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/NetServerHandler;sendPacketToPlayer(Lnet/minecraft/Packet;)V", ordinal = 1))
     private void assignDifficultyForRespawn(NetServerHandler instance, Packet packet, Operation<Void> original, @Local WorldServer server) {
-        ((IPacket9Respawn) packet).mr$setDifficulty(((IWorld)this.mcServer.getOverworld()).mr$getDifficulty());
+        IPacket9Respawn respawn = (IPacket9Respawn) packet;
+        IWorld worldCast = (IWorld) server.getWorld();
+
+        respawn.mr$setDifficulty(worldCast.mr$getDifficulty());
+        respawn.mr$setDifficultyLock(worldCast.mr$isDifficultyLocked());
+
         original.call(instance, packet);
     }
 
     @WrapOperation(method = "transferPlayerToDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/NetServerHandler;sendPacketToPlayer(Lnet/minecraft/Packet;)V", ordinal = 0))
     private void assignDifficultyForDimension(NetServerHandler instance, Packet packet, Operation<Void> original) {
-        ((IPacket9Respawn) packet).mr$setDifficulty(((IWorld)this.mcServer.getOverworld()).mr$getDifficulty());
+        IPacket9Respawn respawn = (IPacket9Respawn) packet;
+        IWorld worldCast = (IWorld) this.mcServer.getOverworld();
+
+        respawn.mr$setDifficulty(worldCast.mr$getDifficulty());
+        respawn.mr$setDifficultyLock(worldCast.mr$isDifficultyLocked());
+
         original.call(instance, packet);
     }
 }

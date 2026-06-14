@@ -7,6 +7,7 @@ import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiConfigureButton;
 import com.github.jeffyjamzhd.renewed.render.gui.GuiCustomizeWorldDifficulty;
+import com.github.jeffyjamzhd.renewed.render.gui.GuiLockDifficultyButton;
 import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
@@ -31,7 +32,11 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     @Unique
     private GuiConfigureButton buttonDifficultyConfig;
     @Unique
+    private GuiLockDifficultyButton buttonDifficultyLock;
+    @Unique
     private int difficultyIndice;
+    @Unique
+    private boolean difficultyLocked = false;
     @Unique
     private Difficulty customDifficulty;
     @Unique
@@ -43,8 +48,10 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     )
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"))
     private void addButtons(CallbackInfo ci) {
-        this.buttonList.add(this.renewedDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 188, 20, getNameOfDifficulty()));
-        this.buttonList.add(this.buttonDifficultyConfig = new GuiConfigureButton(51, this.width / 2 + 84, this.height / 5 + 50));
+        this.buttonList.add(this.renewedDifficulty = new GuiButton(50, this.width / 2 - 104, this.height / 5 + 50, 168, 20, getNameOfDifficulty()));
+        this.buttonList.add(this.buttonDifficultyConfig = new GuiConfigureButton(51, this.width / 2 + 64, this.height / 5 + 50));
+        this.buttonList.add(this.buttonDifficultyLock = new GuiLockDifficultyButton(52, this.width / 2 + 84, this.height / 5 + 50));
+        this.buttonDifficultyLock.toggled = this.difficultyLocked;
     }
 
     @TargetHandler(
@@ -65,10 +72,12 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     private void updateDifficultyButtons(CallbackInfo ci) {
         this.renewedDifficulty.drawButton = false;
         this.buttonDifficultyConfig.drawButton = false;
+        this.buttonDifficultyLock.drawButton = false;
 
         if (((IGuiCreateWorld) this).bgs$getCurrentTab() == 100) {
             this.renewedDifficulty.drawButton = true;
             this.buttonDifficultyConfig.drawButton = true;
+            this.buttonDifficultyLock.drawButton = true;
         }
     }
 
@@ -80,7 +89,10 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
 
     @Inject(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldSettings;func_82750_a(Ljava/lang/String;)Lnet/minecraft/WorldSettings;"))
     private void supplyDifficultyObject(GuiButton btn, CallbackInfo ci, @Local WorldSettings settings) {
-        ((IWorldSettings) settings).mr$setDifficulty(getSelectedDifficulty());
+        IWorldSettings cast = (IWorldSettings) settings;
+
+        cast.mr$setDifficulty(getSelectedDifficulty());
+        cast.mr$setDifficultyLocked(this.buttonDifficultyLock.toggled);
     }
 
     @Inject(method = "actionPerformed", at = @At("TAIL"))
@@ -103,6 +115,11 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
                 }
 
                 this.mc.displayGuiScreen(newScreen);
+                break;
+            case 52: // Difficulty lock button
+                GuiLockDifficultyButton cast = (GuiLockDifficultyButton) btn;
+                cast.toggled = !cast.toggled;
+                this.difficultyLocked = cast.toggled;
         }
     }
 
@@ -123,8 +140,15 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     )
     @Inject(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
     private void drawDifficultyTooltip(int mouseX, int mouseY, CallbackInfo ci, @Local GuiButton button) {
-        if (button.id == 50) {
-            ScreenUtil.getInstance().drawTooltip(getTooltipOfDifficulty(), mouseX, mouseY);
+        String text = switch (button.id) {
+            case 50 -> getTooltipOfDifficulty();
+            case 51 -> I18n.getString("difficulty.customize.tooltip");
+            case 52 -> I18n.getString("difficulty.%s.tooltip".formatted(this.buttonDifficultyLock.toggled ? "unlock" : "lock"));
+            default -> "";
+        };
+
+        if (!text.isEmpty()) {
+            ScreenUtil.getInstance().drawTooltip(text, mouseX, mouseY);
         }
     }
 
@@ -134,7 +158,6 @@ abstract public class GuiCreateWorldBGSMixin extends GuiScreen implements com.gi
     }
 
     // Unique methods
-
 
     @Override
     public void mr$assignCustomDifficulty(Difficulty difficulty) {

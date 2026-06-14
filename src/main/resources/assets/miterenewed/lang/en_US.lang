@@ -18,6 +18,9 @@ difficulty.prefix=Difficulty:
 difficulty.customize=Customize Difficulty
 difficulty.enabled=Enabled
 difficulty.disabled=Disabled
+difficulty.customize.tooltip=Click to customize difficulty parameters
+difficulty.lock.tooltip=Click to lock the world's difficulty (cannot be modified after world creation!)
+difficulty.unlock.tooltip=Click to unlock the world's difficulty
 
 difficulty.category.general=General
 difficulty.category.interaction=World Interactions

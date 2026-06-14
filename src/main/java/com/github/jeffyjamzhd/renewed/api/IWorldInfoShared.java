@@ -8,4 +8,7 @@ public interface IWorldInfoShared {
      */
     Difficulty mr$getDifficulty();
     void mr$setDifficulty(Difficulty difficulty);
+
+    boolean mr$isDifficultyLocked();
+    void mr$setDifficultyLocked(boolean locked);
 }

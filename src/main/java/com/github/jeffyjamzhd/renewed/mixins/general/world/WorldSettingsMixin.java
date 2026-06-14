@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.Unique;
 public class WorldSettingsMixin implements IWorldSettings {
     @Unique
     private Difficulty difficulty;
+    @Unique
+    private boolean difficultyLocked;
 
     @Unique
     public void mr$setDifficulty(Difficulty difficulty) {
@@ -21,5 +23,15 @@ public class WorldSettingsMixin implements IWorldSettings {
     @Unique
     public Difficulty mr$getDifficulty() {
         return this.difficulty;
+    }
+
+    @Override
+    public boolean mr$isDifficultyLocked() {
+        return this.difficultyLocked;
+    }
+
+    @Override
+    public void mr$setDifficultyLocked(boolean locked) {
+        this.difficultyLocked = locked;
     }
 }

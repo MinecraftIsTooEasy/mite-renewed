@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.Collections;
 import java.util.List;
 
 @Mixin(World.class)
@@ -75,6 +76,6 @@ public abstract class WorldMixin {
         // in the weather event methods if you're in the overworld.
         // So instead, return an empty list!
 
-        return List.of();
+        return Collections.EMPTY_LIST;
     }
 }

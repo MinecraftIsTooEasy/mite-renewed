@@ -33,4 +33,9 @@ public abstract class WorldMixin implements IWorld {
     public Difficulty mr$getDifficulty() {
         return ((IWorldInfo)this.getWorldInfo()).mr$getDifficulty();
     }
+
+    @Override
+    public boolean mr$isDifficultyLocked() {
+        return ((IWorldInfo)this.getWorldInfo()).mr$isDifficultyLocked();
+    }
 }
