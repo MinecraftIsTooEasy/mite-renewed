@@ -21,17 +21,25 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setInteger("HeldItemID", this.heldItemID);
-        tag.setInteger("HeldItemMeta", this.heldItemMeta);
-        tag.setInteger("HeldItemCount", this.heldItemCount);
+        tag.setBoolean("UseCompression", true);
+        tag.setShort("HeldItemID", this.heldItemID);
+        tag.setShort("HeldItemMeta", this.heldItemMeta);
+        tag.setShort("HeldItemCount", this.heldItemCount);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        this.heldItemID = (short) tag.getInteger("HeldItemID");
-        this.heldItemMeta = (short) tag.getInteger("HeldItemMeta");
-        this.heldItemCount = (short) tag.getInteger("HeldItemCount");
+        if (!tag.hasKey("UseCompression")) {
+            this.heldItemID = (short) tag.getInteger("HeldItemID");
+            this.heldItemMeta = (short) tag.getInteger("HeldItemMeta");
+            this.heldItemCount = (short) tag.getInteger("HeldItemCount");
+        } else {
+            this.heldItemID = tag.getShort("HeldItemID");
+            this.heldItemMeta = tag.getShort("HeldItemMeta");
+            this.heldItemCount = tag.getShort("HeldItemCount");
+        }
+
     }
 
     @Override

@@ -43,7 +43,7 @@ public class EmiShapelessToolRecipe<T extends Item> extends EmiCraftingRecipe {
         super(
                 Arrays.stream(recipe.getComponents()).map(RetroEMI::wildcardIngredient).toList(),
                 EmiStack.of(recipe.getRecipeOutput()),
-                new SyntheticIdentifier(recipe),
+                new SyntheticIdentifier(recipe, "/tool"),
                 true,
                 null,
                 recipe.getUnmodifiedDifficulty()
