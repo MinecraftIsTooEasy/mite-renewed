@@ -13,12 +13,20 @@
 + Improved the way handpans and polearms are animated in first person
 + Improved how polearm entities are rendered
 + Removed querns, their design has also been superseded by the recent tool bench changes
-+ Removed the ability to toggle debug features without having cheats enabled (e.g. hitboxes)
++ Removed the ability to toggle debug features without having cheats enabled. This includes hitboxes and durability tooltips
 + Fixed polearm entities desyncing with the client when killing a mob
 + Fixed EMI display with Renewed's tool bench scaling
-+ Fixed "ghost shanks" and stat desyncs with difficulty
-+ Fixed enum options not saving properly
-+ Fixed YAML not applying properly in dedicated servers
++ Fixed "ghost shanks" and stat desyncs with difficulty changes
++ Fixed enum options not saving / being applied properly
++ Fixed YAML config not applying properly in dedicated servers
+
+[Difficulty]
++ Difficulty can now be changed from in-game, and is also available for LAN server hosts
++ Difficulty can now be locked during world creation, preventing changes after a world is made
++ Added 3 new parameters: Regen speed, exhaustion factor and armor protection factor
++ In Legendary, players will now regen twice as fast. There was too much downtime required between mob encounters in order to prepare for fights, so this should let players stay in the action more (i.e when caving)
++ In Legendary, both players and mobs now have 150% armor protection (instead of 100%.) Mobs are beefier and armored mobs are even more of a threat, but likewise you are also beefier too :)
++ Made tooltips for armor and tools reflect difficulty stat scaling
 
 [Crafting]
 + Gem shards now give a tenth of their full gem equivalent's XP when used

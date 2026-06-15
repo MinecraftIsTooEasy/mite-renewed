@@ -54,8 +54,15 @@ difficulty.parameter.PlayerMaximumHunger.name=Maximum Hunger
 difficulty.parameter.PlayerMaximumHunger.desc=The maximum amount of hunger pips players can have.
 difficulty.parameter.LevelsNeededForStatUp.name=Stat-up Multiple
 difficulty.parameter.LevelsNeededForStatUp.desc=When players reach this multiple of level, they will get another health and hunger pip.
+difficulty.parameter.RegenSpeed.name=Regeneration Factor
+difficulty.parameter.RegenSpeed.desc=How fast players are able to regenerate their health.
+difficulty.parameter.ExhaustionFactor.name=Exhaustion Factor
+difficulty.parameter.ExhaustionFactor.desc=How much exhaustion (hunger) affects players.
+
 difficulty.parameter.MiningFactor.name=Mining Speed
 difficulty.parameter.MiningFactor.desc=How fast players are able to break blocks.
+difficulty.parameter.ArmorProtectionFactor.name=Armor Protection
+difficulty.parameter.ArmorProtectionFactor.desc=How effective armor is at protecting all creatures.
 difficulty.parameter.PlayerDamageFactor.name=Player Damage
 difficulty.parameter.PlayerDamageFactor.desc=How much damage players inflict onto other creatures.
 difficulty.parameter.MobDamageFactor.name=Mob Damage
