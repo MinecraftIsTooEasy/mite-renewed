@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.block.entity.TileEntityCrate;
 import com.github.jeffyjamzhd.renewed.entity.EntityItemBulk;
 import com.github.jeffyjamzhd.renewed.registry.RenewedBlocks;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
+import com.github.jeffyjamzhd.renewed.util.ItemUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.*;
@@ -29,13 +30,15 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
         }
 
         TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
+        ItemStack contained = te.getStackInSlot(0);
+        boolean equal = ItemUtils.areItemsEqual(contained, player.getHeldItemStack());
 
         // Block insertion if full
         if (te.isFull()) {
             return false;
         }
 
-        if (player.getHeldItemStack() != null) {
+        if ((player.getHeldItemStack() != null && te.isEmpty()) || equal) {
             // Insert held stack
             if (player.onServer()) {
                 ItemStack stack = player.getHeldItemStack();
