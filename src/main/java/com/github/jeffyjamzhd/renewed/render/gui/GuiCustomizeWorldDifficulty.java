@@ -212,6 +212,29 @@ public class GuiCustomizeWorldDifficulty extends GuiScreen {
         }
 
         @Override
+        public boolean mouseClicked(int mouseXIn, int mouseYIn, int mouseEvent) {
+            if (this.isMouseYWithinSlotBounds(mouseYIn)) {
+                int i = this.getSlotIndexFromScreenCoords(mouseXIn, mouseYIn);
+
+                if (i >= 0) {
+                    int j = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+                    int k = this.top + 4 - this.getAmountScrolled() + i * this.slotHeight + this.headerPadding;
+                    int l = mouseXIn - j;
+                    int i1 = mouseYIn - k;
+
+                    try {
+                        if (this.getListEntry(i).mousePressed(i, mouseXIn, mouseYIn, mouseEvent, l, i1)) {
+                            this.setEnabled(false);
+                            return true;
+                        }
+                    } catch (Exception ignore) {}
+                }
+            }
+
+            return false;
+        }
+
+        @Override
         public int getSlotIndexFromScreenCoords(int mouseX, int mouseY) {
             int result = super.getSlotIndexFromScreenCoords(mouseX, mouseY);
             if (result != -1) {

@@ -229,6 +229,7 @@ public abstract class DifficultyParameter<T> {
 
     public enum Category {
         GENERAL("general"),
+        EXPERIENCE("experience"),
         INTERACTION("interaction"),
         GAME_MECHANICS("game_mechanics");
 

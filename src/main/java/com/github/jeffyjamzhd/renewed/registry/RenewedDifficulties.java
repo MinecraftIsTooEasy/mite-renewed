@@ -21,17 +21,23 @@ public class RenewedDifficulties {
 
     public static DifficultyParameter<Integer> MINIMUM_HEALTH;
     public static DifficultyParameter<Integer> MAXIMUM_HEALTH;
+    public static DifficultyParameter<Float> REGEN_SPEED;
     public static DifficultyParameter<Integer> MINIMUM_HUNGER;
     public static DifficultyParameter<Integer> MAXIMUM_HUNGER;
-    public static DifficultyParameter<Integer> LEVELS_NEEDED_FOR_STAT_UP;
-    public static DifficultyParameter<Float> REGEN_SPEED;
     public static DifficultyParameter<Float> EXHAUSTION_FACTOR;
+    public static DifficultyParameter<Integer> LEVELS_NEEDED_FOR_STAT_UP;
+    public static DifficultyParameter<Float> HARVESTING_BONUS_PER_LEVEL;
+    public static DifficultyParameter<Float> CRAFTING_BONUS_PER_LEVEL;
+    public static DifficultyParameter<Float> MELEE_DAMAGE_BONUS_PER_LEVEL;
 
     public static DifficultyParameter<Float> MINING_FACTOR;
     public static DifficultyParameter<Float> ARMOR_PROTECTION_FACTOR;
     public static DifficultyParameter<Float> PLAYER_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> MOB_DAMAGE_FACTOR;
     public static DifficultyParameter<Float> FALL_DAMAGE_FACTOR;
+
+    public static DifficultyParameter<Float> MOB_EXPERIENCE_FACTOR;
+    public static DifficultyParameter<Float> SMELTING_EXPERIENCE_FACTOR;
 
     public static DifficultyParameter<Boolean> NON_SOLID_LEAVES;
     public static DifficultyParameter<Boolean> CLIMBABLE_VINES;
@@ -71,9 +77,15 @@ public class RenewedDifficulties {
                 .withSanitizer((difficulty, value) -> Math.max(value, difficulty.getParamValue(MINIMUM_HEALTH)));
         MAXIMUM_HUNGER              = registerParameter(new DPIntegerSlider(loc( "PlayerMaximumHunger"), Category.GENERAL, 1, 20), 10)
                 .withSanitizer((difficulty, value) -> Math.max(value, difficulty.getParamValue(MINIMUM_HUNGER)));
-        LEVELS_NEEDED_FOR_STAT_UP   = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.GENERAL, FieldSuffix.LEVELS, 1, 10, 1), 5);
         REGEN_SPEED                 = registerParameter(new DPFloatSlider(loc("RegenSpeed"), Category.GENERAL, .25F, 4F, .25F), 1F);
         EXHAUSTION_FACTOR           = registerParameter(new DPFloatSlider(loc("ExhaustionFactor"), Category.GENERAL, .25F, 4F, .25F), 1F);
+
+        LEVELS_NEEDED_FOR_STAT_UP       = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.EXPERIENCE, FieldSuffix.LEVELS, 1, 10, 1), 5);
+        HARVESTING_BONUS_PER_LEVEL      = registerParameter(new DPFloatSlider(loc("HarvestBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .02F);
+        CRAFTING_BONUS_PER_LEVEL        = registerParameter(new DPFloatSlider(loc("CraftBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .02F);
+        MELEE_DAMAGE_BONUS_PER_LEVEL    = registerParameter(new DPFloatSlider(loc("MeleeBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .005F);
+        MOB_EXPERIENCE_FACTOR           = registerParameter(new DPFloatSlider(loc("MobXPFactor"), Category.EXPERIENCE, 0, 2F, .25F), 1F);
+        SMELTING_EXPERIENCE_FACTOR      = registerParameter(new DPFloatSlider(loc("SmeltXPFactor"), Category.EXPERIENCE, 0, 2F, .25F), 1F);
 
         MINING_FACTOR               = registerParameter(new DPFloatSlider(loc("MiningFactor"), Category.INTERACTION, .5F, 4F, .25F), 1F);
         ARMOR_PROTECTION_FACTOR     = registerParameter(new DPFloatSlider(loc("ArmorProtectionFactor"), Category.INTERACTION, 0F, 2F, .25F), 1F);

@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.api.difficulty.DifficultyParameter;
 import net.minecraft.GuiButton;
 import net.minecraft.I18n;
 import net.minecraft.Minecraft;
+import net.minecraft.SoundManager;
 import org.lwjgl.opengl.GL11;
 
 public class GuiFieldSlider<T extends Number> extends GuiButton implements IParameterField<T> {
@@ -36,7 +37,7 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
             return false;
         }
 
-        setValueByMouse(mX);
+        setValueByMouse(mc, mX);
         return this.dragging = true;
     }
 
@@ -48,7 +49,7 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
         }
 
         if (this.dragging) {
-            setValueByMouse(mX);
+            setValueByMouse(mc, mX);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -87,7 +88,10 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
                 this.displayString = I18n.getString("difficulty.disabled");
             }
         } else {
-            this.displayString = "%d%%".formatted((int)(this.value.floatValue() * 100F));
+            float percentValue = this.value.floatValue() * 100F;
+            String raw = (percentValue % 1 == 0) ? "%.0f%%" : "%.1f%%";
+
+            this.displayString = raw.formatted(percentValue);
 
             if (this.suffix != null) {
                 this.displayString += " %s".formatted(this.suffix.getSuffix(this.value));
@@ -101,17 +105,27 @@ public class GuiFieldSlider<T extends Number> extends GuiButton implements IPara
     }
 
     @SuppressWarnings("unchecked")
-    private void setValueByMouse(int mouseX) {
-        float snapX = this.width / (getDifference() / this.step);
+    private void setValueByMouse(Minecraft mc, int mouseX) {
+        float previousValue = this.value != null ? this.value.floatValue() : Float.NaN;
+        float ratio = (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+        ratio = Math.max(0.0F, Math.min(1.0F, ratio));
+
+        float rawValue = min + ratio * (max - min);
+        float snappedValue = (float) Math.round(rawValue / this.step) * this.step;
+        snappedValue = Math.max(min, Math.min(max, snappedValue));
 
         if (this.value instanceof Float) {
-            float newValue = (mouseX - (this.xPosition - snapX / 2)) / (float) (this.width - 8) * (max - min);
-            newValue = (float) Math.round(newValue / this.step) * this.step;
-            setValue((T) Float.valueOf(newValue));
+            setValue((T) Float.valueOf(snappedValue));
         } else {
-            int newValue = (int) ((mouseX - (this.xPosition - snapX / 2)) / (float) (this.width - 8) * (max - min));
-            newValue = (int) Math.round(newValue / this.step) * (int) this.step;
-            setValue((T) Integer.valueOf(newValue));
+            setValue((T) Integer.valueOf((int) snappedValue));
+        }
+
+        float newValue = this.value != null ? this.value.floatValue() : Float.NaN;
+        if (!Float.isNaN(previousValue) && Math.abs(newValue - previousValue) > 0.0001F) {
+            float pitchRatio = (snappedValue - min) / getDifference();
+            float pitch = 0.5F + (pitchRatio * 1.5F);
+
+            mc.sndManager.playSoundFX("random.click", 1F, pitch);
         }
     }
 

@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.IEntityLivingBase;
 import com.github.jeffyjamzhd.renewed.api.difficulty.Difficulty;
 import com.github.jeffyjamzhd.renewed.registry.RenewedDifficulties;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.*;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +29,14 @@ public abstract class EntityLivingBaseMixin extends Entity implements IEntityLiv
         Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
         boolean dropLoot = difficulty.getParamValue(RenewedDifficulties.ENTITIES_DROP_LOOT_ALWAYS);
         return !dropLoot && original;
+    }
+
+    @ModifyReturnValue(method = "getExperienceValue", at = @At("RETURN"))
+    private int experienceValueScalar(int original) {
+        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
+        float scalar = difficulty.getParamValue(RenewedDifficulties.MOB_EXPERIENCE_FACTOR);
+
+        return Math.round(original * scalar);
     }
 
     @ModifyExpressionValue(method = "moveEntityWithHeading", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityLivingBase;isOnLadder()Z", ordinal = 1))

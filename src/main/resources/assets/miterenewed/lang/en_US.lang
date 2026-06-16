@@ -23,6 +23,7 @@ difficulty.lock.tooltip=Click to lock the world's difficulty (cannot be modified
 difficulty.unlock.tooltip=Click to unlock the world's difficulty
 
 difficulty.category.general=General
+difficulty.category.experience=Levels and Experience
 difficulty.category.interaction=World Interactions
 difficulty.category.game_mechanics=Game Mechanics
 
@@ -52,12 +53,23 @@ difficulty.parameter.PlayerMinimumHunger.name=Minimum Hunger
 difficulty.parameter.PlayerMinimumHunger.desc=The mimimum amount of hunger pips players can have.
 difficulty.parameter.PlayerMaximumHunger.name=Maximum Hunger
 difficulty.parameter.PlayerMaximumHunger.desc=The maximum amount of hunger pips players can have.
-difficulty.parameter.LevelsNeededForStatUp.name=Stat-up Multiple
-difficulty.parameter.LevelsNeededForStatUp.desc=When players reach this multiple of level, they will get another health and hunger pip.
 difficulty.parameter.RegenSpeed.name=Regeneration Factor
 difficulty.parameter.RegenSpeed.desc=How fast players are able to regenerate their health.
 difficulty.parameter.ExhaustionFactor.name=Exhaustion Factor
 difficulty.parameter.ExhaustionFactor.desc=How much exhaustion (hunger) affects players.
+
+difficulty.parameter.LevelsNeededForStatUp.name=Stat-up Multiple
+difficulty.parameter.LevelsNeededForStatUp.desc=When players reach this multiple of level, they will get another health and hunger pip.
+difficulty.parameter.HarvestBonusPerLevel.name=Harvest Bonus per Level
+difficulty.parameter.HarvestBonusPerLevel.desc=How much additional block breaking speed is given for each player level.
+difficulty.parameter.CraftBonusPerLevel.name=Craft Speed Bonus per Level
+difficulty.parameter.CraftBonusPerLevel.desc=How much additional crafting speed is given for each player level.
+difficulty.parameter.MeleeBonusPerLevel.name=Melee Bonus per Level
+difficulty.parameter.MeleeBonusPerLevel.desc=How much additional melee damage is given for each player level.
+difficulty.parameter.MobXPFactor.name=Mob Experience Factor
+difficulty.parameter.MobXPFactor.desc=Scalar for the amount of experience mobs drop.
+difficulty.parameter.SmeltXPFactor.name=Smelting Experience Factor
+difficulty.parameter.SmeltXPFactor.desc=Scalar for the amount of experience gained from smelting items.
 
 difficulty.parameter.MiningFactor.name=Mining Speed
 difficulty.parameter.MiningFactor.desc=How fast players are able to break blocks.

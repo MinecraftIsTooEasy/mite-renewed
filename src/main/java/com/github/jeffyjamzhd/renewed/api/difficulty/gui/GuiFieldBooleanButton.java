@@ -24,6 +24,7 @@ public class GuiFieldBooleanButton extends GuiButton implements IParameterField<
     public boolean onMousePressed(Minecraft mc, int mouseEvent, int mX, int mY) {
         if (super.mousePressed(mc, mX, mY)) {
             setValue(!this.enabled);
+            mc.sndManager.playSoundFX("random.click", 1F, 1F);
             return true;
         }
         return false;
