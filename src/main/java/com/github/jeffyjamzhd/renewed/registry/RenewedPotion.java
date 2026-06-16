@@ -16,11 +16,18 @@ public class RenewedPotion extends PotionExtend {
         this.setPotionName("potion.renewed.%s".formatted(texture));
     }
 
-    public static void register() {
+    private static void register() {
         MiTERenewed.LOGGER.info("Registering potion effects");
     }
 
     private static int next() {
         return IdUtil.getNextPotionId();
+    }
+
+    public static class Register implements Runnable {
+        @Override
+        public void run() {
+           RenewedPotion.register();
+        }
     }
 }

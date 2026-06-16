@@ -88,11 +88,11 @@
     "render.RenderWightMixin",
     "render.model.ModelBipedMixin"
   ],
+  "server": [
+    "core.DedicatedServerMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig",
-  "server": [
-    "core.DedicatedServerMixin"
-  ]
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig"
 }
