@@ -92,6 +92,7 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
         }
 
         TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
+        boolean sneak = player.isSneaking();
 
         // Block extraction if empty
         if (te.isEmpty()) {
@@ -106,7 +107,7 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
                 return false;
             }
 
-            ItemStack extract = te.extractStack();
+            ItemStack extract = sneak ? te.extractStack(1) : te.extractStack();
             if (extract != null) {
                 player.inventory.addItemStackToInventory(extract);
                 if (extract.stackSize > 0) {
