@@ -31,7 +31,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements IEntityLiv
         return !dropLoot && original;
     }
 
-    @ModifyReturnValue(method = "getExperienceValue", at = @At("RETURN"))
+    @ModifyExpressionValue(method = "onDeathUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityLivingBase;getExperienceValue()I"))
     private int experienceValueScalar(int original) {
         Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
         float scalar = difficulty.getParamValue(RenewedDifficulties.MOB_EXPERIENCE_FACTOR);

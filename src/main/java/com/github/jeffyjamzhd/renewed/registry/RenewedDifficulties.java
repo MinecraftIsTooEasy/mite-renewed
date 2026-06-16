@@ -25,7 +25,9 @@ public class RenewedDifficulties {
     public static DifficultyParameter<Integer> MINIMUM_HUNGER;
     public static DifficultyParameter<Integer> MAXIMUM_HUNGER;
     public static DifficultyParameter<Float> EXHAUSTION_FACTOR;
+
     public static DifficultyParameter<Integer> LEVELS_NEEDED_FOR_STAT_UP;
+    public static DifficultyParameter<Boolean> ANIMALS_DROP_XP;
     public static DifficultyParameter<Float> HARVESTING_BONUS_PER_LEVEL;
     public static DifficultyParameter<Float> CRAFTING_BONUS_PER_LEVEL;
     public static DifficultyParameter<Float> MELEE_DAMAGE_BONUS_PER_LEVEL;
@@ -81,6 +83,7 @@ public class RenewedDifficulties {
         EXHAUSTION_FACTOR           = registerParameter(new DPFloatSlider(loc("ExhaustionFactor"), Category.GENERAL, .25F, 4F, .25F), 1F);
 
         LEVELS_NEEDED_FOR_STAT_UP       = registerParameter(new DPIntegerSlider(loc("LevelsNeededForStatUp"), Category.EXPERIENCE, FieldSuffix.LEVELS, 1, 10, 1), 5);
+        ANIMALS_DROP_XP                 = registerParameter(new DPBoolean(loc("AnimalsDropXP"), Category.EXPERIENCE), false);
         HARVESTING_BONUS_PER_LEVEL      = registerParameter(new DPFloatSlider(loc("HarvestBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .02F);
         CRAFTING_BONUS_PER_LEVEL        = registerParameter(new DPFloatSlider(loc("CraftBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .02F);
         MELEE_DAMAGE_BONUS_PER_LEVEL    = registerParameter(new DPFloatSlider(loc("MeleeBonusPerLevel"), Category.EXPERIENCE, 0, 0.1F, .005F), .005F);
@@ -117,6 +120,9 @@ public class RenewedDifficulties {
                 .withParam(PLAYER_DAMAGE_FACTOR, .75F)
                 .withParam(ARMOR_PROTECTION_FACTOR, 1.5F)
                 .withParam(REGEN_SPEED, 2F)
+                .withParam(MOB_EXPERIENCE_FACTOR, 2F)
+                .withParam(CRAFTING_BONUS_PER_LEVEL, .04F)
+                .withParam(HARVESTING_BONUS_PER_LEVEL, .04F)
                 .withParam(WEATHER_GRACE_PERIOD, 0)
                 .withParam(NON_SOLID_LEAVES, true)
                 .withParam(CLIMBABLE_VINES, false)
@@ -129,6 +135,7 @@ public class RenewedDifficulties {
                 .withParam(MINING_FACTOR, 1.5F)
                 .withParam(MOB_DAMAGE_FACTOR, .75F)
                 .withParam(WEATHER_GRACE_PERIOD, 16)
+                .withParam(ANIMALS_DROP_XP, true)
                 .withParam(ENTITIES_DROP_LOOT_ALWAYS, true)
                 .withParam(CHICKEN_BREEDING_ITEM, 0)
                 .withParam(CAN_DISTURB_GROUND, false)

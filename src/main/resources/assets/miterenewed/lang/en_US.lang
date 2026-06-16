@@ -60,11 +60,13 @@ difficulty.parameter.ExhaustionFactor.desc=How much exhaustion (hunger) affects 
 
 difficulty.parameter.LevelsNeededForStatUp.name=Stat-up Multiple
 difficulty.parameter.LevelsNeededForStatUp.desc=When players reach this multiple of level, they will get another health and hunger pip.
-difficulty.parameter.HarvestBonusPerLevel.name=Harvest Bonus per Level
+difficulty.parameter.AnimalsDropXP.name=Animals Drop Experience
+difficulty.parameter.AnimalsDropXP.desc=If enabled, animals will drop a small amount of experience on death.
+difficulty.parameter.HarvestBonusPerLevel.name=Harvest Bonus
 difficulty.parameter.HarvestBonusPerLevel.desc=How much additional block breaking speed is given for each player level.
-difficulty.parameter.CraftBonusPerLevel.name=Craft Speed Bonus per Level
+difficulty.parameter.CraftBonusPerLevel.name=Craft Speed Bonus
 difficulty.parameter.CraftBonusPerLevel.desc=How much additional crafting speed is given for each player level.
-difficulty.parameter.MeleeBonusPerLevel.name=Melee Bonus per Level
+difficulty.parameter.MeleeBonusPerLevel.name=Melee Bonus
 difficulty.parameter.MeleeBonusPerLevel.desc=How much additional melee damage is given for each player level.
 difficulty.parameter.MobXPFactor.name=Mob Experience Factor
 difficulty.parameter.MobXPFactor.desc=Scalar for the amount of experience mobs drop.
