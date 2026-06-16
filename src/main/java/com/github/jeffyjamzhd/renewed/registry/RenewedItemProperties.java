@@ -32,8 +32,9 @@ public class RenewedItemProperties implements Runnable {
                     heatLevel = 4;
                 }
 
+                int components = ((IDamageableItem) item).getNumComponentsForDurability();
                 ItemProperties.HeatLevelRequired.register(item, heatLevel);
-                FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget));
+                FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget, components));
             }
         }
 
