@@ -1,3 +1,123 @@
+config.tab.renewed.visuals=视效
+config.tab.renewed.audio=音频
+
+config.name.renewed.showMusicDisplay=显示音乐播放
+config.comment.renewed.showMusicDisplay=启用后，每当新的音轨播放时，\n音乐会显示在左上角
+config.name.renewed.musicDelay=音乐间隔
+config.comment.renewed.musicDelay=控制音乐播放切换速率
+config.name.renewed.poofSoundOnDeath=死亡时的噗声
+config.comment.renewed.poofSoundOnDeath=启用后，任何死亡的生物都会化为尘埃，\n并发出“噗”的声音
+config.name.renewed.hudPadding=HUD填充
+config.comment.renewed.hudPadding=游戏内HUD元素的填充量
+config.name.renewed.lootBeams=战利品光束
+config.comment.renewed.lootBeams=启用后，掉落物会发出光束，\n以显示其存在与稀有度
+
+container.repair.itemInvFull=背包物品栏必须为空！
+
+difficulty.prefix=难度:
+difficulty.customize=自定义难度
+difficulty.enabled=启用
+difficulty.disabled=禁用
+difficulty.customize.tooltip=点击自定义难度参数
+difficulty.lock.tooltip=点击锁定此世界难度（创建后无法修改！）
+difficulty.unlock.tooltip=点击解锁此世界难度
+
+difficulty.category.general=通用
+difficulty.category.interaction=世界交互
+difficulty.category.game_mechanics=游戏机制
+
+difficulty.miterenewed.extreme.name=极限
+difficulty.miterenewed.extreme.desc=MiTE默认的难度。忘了你对Minecraft的所有理解吧！
+difficulty.miterenewed.legendary.name=传奇
+difficulty.miterenewed.legendary.desc=更难的机制和更强的怪物;适合最有技巧的玩家！
+difficulty.miterenewed.hard.name=困难
+difficulty.miterenewed.hard.desc=更简单的机制和更低的挑战性，适合休闲玩家。
+difficulty.miterenewed.custom.name=自定义
+difficulty.miterenewed.custom.desc=自定义难度配置！
+
+difficulty.parameter.suffix.days=天
+difficulty.parameter.suffix.days.singular=天
+difficulty.parameter.suffix.minutes=分钟
+difficulty.parameter.suffix.minutes.singular=分钟
+difficulty.parameter.suffix.seconds=秒
+difficulty.parameter.suffix.seconds.singular=秒
+difficulty.parameter.suffix.levels=级
+difficulty.parameter.suffix.levels.singular=级
+
+difficulty.parameter.PlayerMinimumHealth.name=最小生命值
+difficulty.parameter.PlayerMinimumHealth.desc=玩家所能拥有的最少红心数量
+difficulty.parameter.PlayerMaximumHealth.name=最大生命值
+difficulty.parameter.PlayerMaximumHealth.desc=玩家所能拥有的最多红心数量
+difficulty.parameter.PlayerMinimumHunger.name=最小饥饿值
+difficulty.parameter.PlayerMinimumHunger.desc=玩家所能拥有的最少鸡腿数量
+difficulty.parameter.PlayerMaximumHunger.name=最大饥饿值
+difficulty.parameter.PlayerMaximumHunger.desc=T玩家所能拥有的最多鸡腿数量
+difficulty.parameter.LevelsNeededForStatUp.name=属性提升所需等级倍数
+difficulty.parameter.LevelsNeededForStatUp.desc=当玩家达到该等级倍数时，将获得额外的一颗红心和一个鸡腿
+difficulty.parameter.RegenSpeed.name=再生系数
+difficulty.parameter.RegenSpeed.desc=玩家恢复生命值的速度
+difficulty.parameter.ExhaustionFactor.name=饥饿消耗系数
+difficulty.parameter.ExhaustionFactor.desc=饥饿消耗对玩家的影响程度
+
+difficulty.parameter.MiningFactor.name=挖掘速度
+difficulty.parameter.MiningFactor.desc=玩家破坏方块的速度
+difficulty.parameter.ArmorProtectionFactor.name=护甲保护
+difficulty.parameter.ArmorProtectionFactor.desc=护甲对所有生物的保护效果
+difficulty.parameter.PlayerDamageFactor.name=玩家伤害
+difficulty.parameter.PlayerDamageFactor.desc=玩家对其他生物造成的伤害量
+difficulty.parameter.MobDamageFactor.name=生物伤害
+difficulty.parameter.MobDamageFactor.desc=生物对其他生物造成的伤害量
+difficulty.parameter.FallDamageFactor.name=摔落伤害
+difficulty.parameter.FallDamageFactor.desc=对所有生物造成的摔落伤害量
+difficulty.parameter.NonSolidLeaves.name=松散树叶
+difficulty.parameter.NonSolidLeaves.desc=启用后，所有生物都能穿过树叶方块。在树叶内的生物会被减速。树叶仍会减免摔落伤害
+difficulty.parameter.ClimbableVines.name=可攀爬藤蔓
+difficulty.parameter.ClimbableVines.desc=禁用后，藤蔓只能用于下降。
+difficulty.parameter.EntitiesDropLootAlways.name=生物始终掉落战利品
+difficulty.parameter.EntitiesDropLootAlways.desc=启用后，生物在正常情况下不会掉落战利品时（如从极高处摔死）也会掉落
+difficulty.parameter.CanDisturbGround.name=走动扰动地面
+difficulty.parameter.CanDisturbGround.desc=启用后，踩在不稳定的地面上（悬空的沙砾）会导致相连的悬空方块塌落
+difficulty.parameter.DayMinuteLength.name=白昼时长（分）
+difficulty.parameter.DayMinuteLength.desc=世界昼夜循环中白昼持续的时长
+difficulty.parameter.NightMinuteLength.name=夜晚时长（分）
+difficulty.parameter.NightMinuteLength.desc=世界昼夜循环中夜晚持续的时长
+difficulty.parameter.WeatherGracePeriod.name=天气宽限期
+difficulty.parameter.WeatherGracePeriod.desc=保证世界创建时的最初几天没有天气事件发生
+
+difficulty.parameter.AnimalSicknessBehavior.name=动物生病行为
+difficulty.parameter.AnimalSicknessBehavior.desc=决定动物对疾病的反应方式；
+difficulty.parameter.AnimalSicknessBehavior.name.0=无
+difficulty.parameter.AnimalSicknessBehavior.name.1=原版
+difficulty.parameter.AnimalSicknessBehavior.name.2=焕新
+difficulty.parameter.AnimalSicknessBehavior.desc.0=动物永远不会生病
+difficulty.parameter.AnimalSicknessBehavior.desc.1=生病时，动物无法繁殖，也不会掉落任何物品
+difficulty.parameter.AnimalSicknessBehavior.desc.2=生病时，动物无法繁殖，不会掉落任何战利品，并会缓慢走向死亡
+
+difficulty.parameter.CropSicknessBehavior.name=作物生病行为
+difficulty.parameter.CropSicknessBehavior.desc=决定作物对疾病的反应方式；
+difficulty.parameter.CropSicknessBehavior.name.0=无
+difficulty.parameter.CropSicknessBehavior.name.1=原版
+difficulty.parameter.CropSicknessBehavior.name.2=焕新
+difficulty.parameter.CropSicknessBehavior.desc.0=作物永远不会生病
+difficulty.parameter.CropSicknessBehavior.desc.1=生病的作物会缓慢地将疾病传播给周围作物，并最终死亡
+difficulty.parameter.CropSicknessBehavior.desc.2=生病的作物在被收获或死亡时，会向周围散播疾病
+
+difficulty.parameter.ChickenBreedingItem.name=鸡的繁殖物品
+difficulty.parameter.ChickenBreedingItem.desc=决定鸡使用的繁殖物品；
+difficulty.parameter.ChickenBreedingItem.name.0=种子
+difficulty.parameter.ChickenBreedingItem.name.1=虫子
+difficulty.parameter.ChickenBreedingItem.desc.0=鸡需使用种子繁殖
+difficulty.parameter.ChickenBreedingItem.desc.1=鸡需使用蠕虫繁殖
+
+# 当快捷栏与背包装满时会自动吸取物品
+enchantment.vacuum=吸取
+# 容量提升，不能与灵魂绑定共存
+enchantment.holding=持有
+# 每级减少 3 层重量惩罚
+enchantment.featherWeight=羽量
+# 当穿戴者死亡时，背包会严重损坏，重生时仍留在穿戴者的物品栏里
+enchantment.soulbound=灵魂绑定
+
 item.sharp_bone.name=锋利骨刃
 item.quern.name=木臼
 item.bone_spear.name=骨矛
@@ -17,6 +137,7 @@ item.handpan.empty.name=筛盘(空)
 item.handpan.sinew.name=筛盘(皮革绳)
 item.handpan.silk.name=筛盘(线)
 item.biomass.name=生物质
+item.bagOfHolding.name=口袋
 
 item.raw_sirloin.name=生牛里脊
 item.raw_fillet.name=生鸡里脊
@@ -25,17 +146,29 @@ item.raw_gizzard.name=生鸡胗
 item.raw_mutton_chops.name=生羊排
 item.raw_nopales.name=仙人掌叶
 item.cooked_sirloin.name=熟牛里脊
-item.cooked_fillet.name=生鸡里脊
+item.cooked_fillet.name=熟鸡里脊
 item.cooked_bacon.name=熟培根
 item.cooked_mutton_chops.name=熟羊排
 item.cooked_gizzard.name=熟鸡胗
 item.cooked_nopales.name=熟仙人掌叶
 
+potion.renewed.encumbered=负重
+
+tooltip.backpack.slot=%d 个可用槽位
+tooltip.backpack.slots=%d 个可用槽位
+tooltip.backpack.full=已装满
+tooltip.backpack.filtered=已过滤
 tooltip.handpan.contains=含有
 tooltip.handpan.nothing=无
 tooltip.emi.handpan.process=使用后减少 %d 耐久
 tooltip.emi.handpan.time=使用需要 %.1f 秒
-tooltip.emi.handpan.chance=概率: %d%%
+tooltip.emi.handpan.chance=概率：%d%%
+tooltip.waila.crate.storage=已存储 %d/%d 个物品
+tooltip.waila.crate.contains=包含 %s
+tooltip.waila.sugarCane.stage=生根阶段：%s%%
+tooltip.waila.sugarCane.hasGrown=今日已生根
+tooltip.waila.sugarCane.hasntGrown=今日未生根
+tooltip.waila.sugarCaneRoot.name=甘蔗根
 
 emi.category.miterenewed.handpan=过筛
 
@@ -48,3 +181,13 @@ tag.wildcard.Cooked Chicken.366=熟鸡肉
 tag.wildcard.Raw Lambchop.1172=生羊肉
 tag.wildcard.Cooked Lambchop.1173=熟羊肉
 tag.wildcard.Handpan (Empty).4262=筛盘
+
+tile.sandstoneFurnace.name=沙石熔炉
+tile.sugarCaneRoots.name=甘蔗根
+tile.crateCopper.name=铜板条箱
+tile.crateSilver.name=银板条箱
+tile.crateGold.name=金板条箱
+tile.crateIron.name=铁板条箱
+tile.crateAncientMetal.name=古代金属板条箱
+tile.crateMithril.name=秘银板条箱
+tile.crateAdamantium.name=艾德曼板条箱
