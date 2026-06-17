@@ -28,7 +28,7 @@ public abstract class ItemBlockMixin extends Item {
 
         Block block = this.getBlock();
         if (block == Block.woodenButton) {
-            cir.setReturnValue(100);
+            cir.setReturnValue(200);
         }
     }
 }

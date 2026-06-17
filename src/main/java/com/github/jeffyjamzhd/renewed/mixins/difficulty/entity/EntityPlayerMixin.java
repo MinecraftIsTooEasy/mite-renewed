@@ -6,10 +6,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import net.minecraft.Entity;
-import net.minecraft.EntityLivingBase;
-import net.minecraft.EntityPlayer;
-import net.minecraft.World;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +24,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 
     @Inject(method = "getHealthLimit()F", at = @At("HEAD"), cancellable = true)
     private void getHealthLimit(CallbackInfoReturnable<Float> cir) {
-        Difficulty difficulty = Difficulty.getFromWorld(this.worldObj).orElseThrow();
+        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
 
         int experienceLevel = this.getExperienceLevel();
         int levelsPer = difficulty.getParamValue(RenewedDifficulties.LEVELS_NEEDED_FOR_STAT_UP);
@@ -41,7 +38,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 
     @ModifyReturnValue(method = "getDamageVsBlock", at = @At("RETURN"))
     public float miningSpeedFactor(float original) {
-        Difficulty difficulty = Difficulty.getFromWorld(this.worldObj).orElseThrow();
+        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
         float factor = difficulty.getParamValue(RenewedDifficulties.MINING_FACTOR);
         return original * factor;
     }
@@ -50,8 +47,21 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
     private void modifyAttackDamagePercent(Entity target, boolean critical,
                                            boolean suspended_in_liquid, CallbackInfoReturnable<Float> cir,
                                            @Local(ordinal = 0) LocalFloatRef damage) {
-        Difficulty difficulty = Difficulty.getFromWorld(this.worldObj).orElseThrow();
+        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
         float factor = difficulty.getParamValue(RenewedDifficulties.PLAYER_DAMAGE_FACTOR);
         damage.set(damage.get() * factor);
+    }
+
+    @ModifyReturnValue(method = "getLevelModifier(Lnet/minecraft/EnumLevelBonus;)F", at = @At("RETURN"))
+    private float scaleLevelModifiers(float original,
+                                             @Local(argsOnly = true) EnumLevelBonus kind) {
+        Difficulty difficulty = Difficulty.getFromWorld(this.getWorld()).orElseThrow();
+        int level = this.getExperienceLevel();
+
+        return switch (kind) {
+            case CRAFTING -> level * difficulty.getParamValue(RenewedDifficulties.CRAFTING_BONUS_PER_LEVEL);
+            case HARVESTING -> level * difficulty.getParamValue(RenewedDifficulties.HARVESTING_BONUS_PER_LEVEL);
+            case MELEE_DAMAGE -> level * difficulty.getParamValue(RenewedDifficulties.MELEE_DAMAGE_BONUS_PER_LEVEL);
+        };
     }
 }
