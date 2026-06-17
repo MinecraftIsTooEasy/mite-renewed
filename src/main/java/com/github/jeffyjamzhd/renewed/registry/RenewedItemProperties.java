@@ -22,21 +22,28 @@ public class RenewedItemProperties implements Runnable {
                     continue;
 
                 int heatLevel;
+                int components = ((IDamageableItem) item).getRepairCost();
                 if (item.hasMaterial(
                         Material.copper, Material.silver, Material.gold,
                         Material.iron, Material.rusted_iron)) {
                     heatLevel = 2;
+
+                    if (item.hasMaterial(Material.rusted_iron)) {
+                        components /= 2;
+                    }
                 } else if (item.hasMaterial(Material.ancient_metal, Material.mithril)) {
                     heatLevel = 3;
                 } else {
                     heatLevel = 4;
                 }
 
-                int components = ((IDamageableItem) item).getNumComponentsForDurability();
+
                 ItemProperties.HeatLevelRequired.register(item, heatLevel);
                 FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget, components));
             }
         }
+
+        ItemProperties.BurnTime.register(Item.getItem(Block.woodenButton), 10);
 
         // Add experience to shards
         ItemProperties.RockExperience.register(Item.shardDiamond, 50);
