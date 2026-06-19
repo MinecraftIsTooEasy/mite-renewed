@@ -94,5 +94,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.MixinConfig"
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.general.GeneralMixinConfig"
 }

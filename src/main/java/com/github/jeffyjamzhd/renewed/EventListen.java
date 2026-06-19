@@ -67,11 +67,13 @@ public class EventListen extends Handlers {
     public static void register() {
         EntityTracker.register(new RenewedTracker());
         LootTable.register(new RenewedLootTable());
-        PotionRegistry.register(new RenewedPotion.Register());
         Crafting.register(RenewedRecipes::registerRecipes);
 
         CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
         HandpanRegisterEvent.register(new RenewedHandpanRecipes());
         MusicConditionRegisterEvent.register(new RenewedMusicConditions());
+
+        // Must be called last
+        PotionRegistry.register(new RenewedPotion.Register());
     }
 }

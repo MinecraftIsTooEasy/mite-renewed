@@ -36,5 +36,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.github.jeffyjamzhd.renewed.mixins.difficulty.DifficultyMixinConfig"
 }
