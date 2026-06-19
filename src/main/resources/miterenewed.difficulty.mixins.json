@@ -19,6 +19,7 @@
     "entity.EntityPlayerMixin",
     "entity.EntitySkeletonMixin",
     "entity.FoodStatsMixin",
+    "entity.tile.TileEntityHopperMixin",
     "gui.SlotFurnaceMixin",
     "item.ItemArmorMixin",
     "item.ItemBowMixin",
