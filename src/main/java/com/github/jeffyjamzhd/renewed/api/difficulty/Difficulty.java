@@ -78,6 +78,9 @@ public class Difficulty {
     }
 
     public static Optional<Difficulty> getFromWorld(World world) {
+        if (world == null) {
+            return Optional.ofNullable(RenewedDifficulties.EXTREME);
+        }
         Difficulty difficulty = world.mr$getDifficulty();
         return Optional.ofNullable(difficulty);
     }

@@ -22,7 +22,15 @@ public class RenewedItemProperties implements Runnable {
                     continue;
 
                 int heatLevel;
-                int components = ((IDamageableItem) item).getRepairCost();
+                int components;
+
+                if (item instanceof ItemArmor armor) {
+                    components = armor.getRepairCost(false);
+                    components /= armor.isChainMail() ? 2 : 1;
+                } else {
+                    components = item.getRepairCost();
+                }
+                
                 if (item.hasMaterial(
                         Material.copper, Material.silver, Material.gold,
                         Material.iron, Material.rusted_iron)) {
