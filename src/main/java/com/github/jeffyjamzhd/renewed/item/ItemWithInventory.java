@@ -173,7 +173,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
                                           EntityPlayer player, World world, boolean holdingShift) {
         // JeffyBackpacks.logInfo("Item right clicked with stack on {}!", !world.isRemote ? "server" : "client");
 
-        if (isItemValidForInsertion(mouseStack)) {
+        if (isItemValidForInsertion(itemStack, mouseStack)) {
             // Attempt to merge with inventory
             BackpackInventory inv = createInventory(itemStack);
             ItemStack result = inv.putStackSmart(mouseStack);
@@ -196,7 +196,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
                                                            EntityPlayer player, World world, boolean holdingShift) {
         // JeffyBackpacks.logInfo("Stack right clicked with item on {}!", !world.isRemote ? "server" : "client");
 
-        if (isItemValidForInsertion(slotStack)) {
+        if (isItemValidForInsertion(mouseStack, slotStack)) {
             // Attempt to merge with inventory
             BackpackInventory inv = createInventory(mouseStack);
             ItemStack result = inv.putStackSmart(slotStack);
@@ -280,7 +280,6 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
         return 0;
     }
 
-
     //***       Class specific methods        ***//
 
     /**
@@ -289,7 +288,7 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     public int putStackInInventory(ItemStack backpack, ItemStack stack,
                                    EntityPlayer player, World world) {
 
-        if (isItemValidForInsertion(stack)) {
+        if (isItemValidForInsertion(backpack, stack)) {
             // Create inventory and put stack inside
             BackpackInventory inv = createInventory(backpack);
             ItemStack result = inv.putStackSmart(stack);
@@ -308,6 +307,40 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     }
 
     /**
+     * Called by player inventory, for merging stack into vacuum backpack
+     */
+    public int putStackInInventoryMatching(ItemStack backpack, ItemStack stack,
+                                           EntityPlayer player, World world) {
+        if (isItemValidForInsertion(backpack, stack)) {
+            BackpackInventory inv = createInventory(backpack);
+            boolean hasMatch = false;
+
+            for (int i = 0; i < inv.getSizeInventory(); i++) {
+                ItemStack stackWithin = inv.getStackInSlot(i);
+                if (ItemUtils.areItemsEqual(stack, stackWithin)) {
+                    hasMatch = true;
+                    break;
+                }
+            }
+
+            if (hasMatch) {
+                ItemStack result = inv.putStackSmart(stack);
+                backpack.stackTagCompound = inv.writeToNBT(backpack.getTagCompound());
+
+                // Play sfx and return stack size
+                if (result == null || !ItemUtils.areItemsEqual(stack, result)) {
+                    if (!world.isRemote) playInsertSFX(world, player);
+                }
+
+                // Mark for update
+                player.inventory.onInventoryChanged();
+                return result == null ? 0 : result.stackSize;
+            }
+        }
+        return stack.stackSize;
+    }
+
+    /**
      * Gets the amount of items currently in the provided stack.
      */
     public int getItemCountInStack(ItemStack stack, boolean withEnchant) {
@@ -321,8 +354,8 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
      * {@code true} if provided {@link ItemStack} is able to
      * be inserted into this item
      */
-    public boolean isItemValidForInsertion(ItemStack stack) {
-        return !(stack.getItem() instanceof ItemWithInventory);
+    public boolean isItemValidForInsertion(ItemStack backpack, ItemStack stack) {
+        return !(stack.getItem() instanceof ItemWithInventory) && backpack != null && backpack.hasTagCompound();
     }
 
     /**

@@ -22,6 +22,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mixin(InventoryPlayer.class)
 public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     @Shadow public abstract boolean addItemStackToInventory(ItemStack par1ItemStack);
@@ -34,12 +37,21 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     @Unique boolean[] mr$shouldAnimate = new boolean[9];
     @Unique ItemStack mr$soulboundStack;
 
+    @Inject(method = "addItemStackToInventory", at = @At(
+            value = "INVOKE", target = "Lnet/minecraft/ItemStack;isItemDamaged()Z"),
+            cancellable = true)
+    private void addStackToVacuumBackpack(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+        if (mr$stackFromWorld) {
+            if (putStackInBackpacks(stack, true)) cir.setReturnValue(true);
+        }
+    }
+
     @ModifyReturnValue(method = "addItemStackToInventory", at = @At(
             value = "RETURN",
             ordinal = 4))
     private boolean addSingleStackToBackpack(boolean original, @Local(argsOnly = true) ItemStack stack) {
         if (!original && mr$stackFromWorld)
-            return putStackInBackpacks(stack);
+            return putStackInBackpacks(stack, false);
         return original;
     }
 
@@ -48,7 +60,7 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
             ordinal = 6))
     private boolean addStackToBackpack(boolean original, @Local(argsOnly = true) ItemStack stack) {
         if (!original && mr$stackFromWorld)
-            return putStackInBackpacks(stack);
+            return putStackInBackpacks(stack, false);
         return original;
     }
 
@@ -104,36 +116,45 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
     }
 
     @Unique
-    private boolean putStackInBackpacks(ItemStack stack) {
+    private boolean hasVacuum(ItemStack stack) {
+        if (stack == null) return false;
+
+        boolean isBag = stack.getItem() instanceof ItemWithInventory;
+        boolean hasVacuum = RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(stack) > 0;
+        return isBag && hasVacuum;
+    }
+
+
+    @Unique
+    private boolean putStackInBackpacks(ItemStack stack, boolean checkVacuum) {
         boolean modified = false;
 
         // Check bauble first (if exists)
         ItemStack back = ItemUtils.getBaubleInBackSlot(player);
-        if (back != null) {
-            boolean isBackpack = back.getItem() instanceof ItemWithInventory;
-            boolean hasVacuum = RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(back) > 0;
+        if (back != null && back.getItem() instanceof ItemWithInventory inv && (!checkVacuum || hasVacuum(back))) {
+            int oldCount = stack.stackSize;
+            stack.stackSize = checkVacuum ?
+                    inv.putStackInInventoryMatching(back, stack, player, player.getWorld()) :
+                    inv.putStackInInventory(back, stack, player, player.getWorld());
 
-            if (isBackpack && hasVacuum) {
-                ItemWithInventory itemInv = (ItemWithInventory) back.getItem();
-                int oldCount = stack.stackSize;
-                stack.stackSize = itemInv.putStackInInventory(back, stack, player, player.getWorld());
-
-                if (oldCount != stack.stackSize) {
-                    modified = true;
-                }
-                if (stack.stackSize == 0) return modified;
+            if (oldCount != stack.stackSize) {
+                modified = true;
             }
+            if (stack.stackSize == 0) return modified;
         }
 
         // Check player's hotbar next
+        ItemStack[] hotbarBackpacks = getBackpacksInHotbar();
         for (int i = 0; i < 9; i++) {
-            ItemStack at = getStackInSlot(i);
-            if (at == null) continue;
-            if (!(at.getItem() instanceof ItemWithInventory inv)) continue;
-            if (RenewedEnchantments.ENCHANTMENT_VACUUM.getLevel(at) == 0) continue;
+            ItemStack backpack = hotbarBackpacks[i];
+            if (backpack == null) continue;
+            if (checkVacuum && !hasVacuum(backpack)) continue;
+            ItemWithInventory inv = (ItemWithInventory) backpack.getItem();
 
             int oldCount = stack.stackSize;
-            stack.stackSize = inv.putStackInInventory(at, stack, player, player.getWorld());
+            stack.stackSize = checkVacuum ?
+                    inv.putStackInInventoryMatching(backpack, stack, player, player.getWorld()) :
+                    inv.putStackInInventory(backpack, stack, player, player.getWorld());
 
             if (oldCount != stack.stackSize) {
                 modified = true;
@@ -143,6 +164,21 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
         }
 
         return modified;
+    }
+
+    @Unique
+    private ItemStack[] getBackpacksInHotbar() {
+        ItemStack[] backpacks = new ItemStack[9];
+
+        for (int i = 0; i < 9; i++) {
+            ItemStack at = getStackInSlot(i);
+            if (at == null) continue;
+            if (!(at.getItem() instanceof ItemWithInventory inv)) continue;
+
+            backpacks[i] = at;
+        }
+
+        return backpacks;
     }
 
     @Override
