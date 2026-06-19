@@ -8,6 +8,7 @@ import com.github.jeffyjamzhd.renewed.item.ItemPolearm;
 import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessBucketConversionRecipe;
 import com.github.jeffyjamzhd.renewed.item.recipe.ShapelessToolRecipe;
+import moddedmite.rustedironcore.api.event.events.CraftingRecipeRegisterEvent;
 import net.minecraft.*;
 import net.xiaoyu233.fml.reload.event.RecipeRegistryEvent;
 
@@ -22,7 +23,7 @@ public class RenewedRecipes {
     private static final Material[] metals = {Material.copper, Material.silver, Material.gold, Material.iron, Material.ancient_metal, Material.mithril, Material.adamantium};
     private static final HashMap<Tuple, Tuple> SLAB_TO_FULL_MAP = new HashMap<>();
 
-    public static void registerRecipes(RecipeRegistryEvent registry) {
+    public static void registerRecipes(CraftingRecipeRegisterEvent registry) {
         LOGGER.info("Registering recipes!");
         registerIterativeRecipes(registry);
         registerShapedRecipes(registry);
@@ -35,7 +36,7 @@ public class RenewedRecipes {
      * Iterative recipes (e.g. tool classes)
      * @param registry event
      */
-    private static void registerIterativeRecipes(RecipeRegistryEvent registry) {
+    private static void registerIterativeRecipes(CraftingRecipeRegisterEvent registry) {
         for (Item item : Item.itemsList) {
             if (item instanceof ItemPolearm) {
                 // Get tool material
@@ -77,7 +78,7 @@ public class RenewedRecipes {
      * General shapeless recipes
      * @param registry event
      */
-    private static void registerShapelessRecipes(RecipeRegistryEvent registry) {
+    private static void registerShapelessRecipes(CraftingRecipeRegisterEvent registry) {
         // 2 slab -> full block
         for (Map.Entry<Tuple, Tuple> entry : SLAB_TO_FULL_MAP.entrySet()) {
             Tuple key = entry.getKey();
@@ -134,7 +135,7 @@ public class RenewedRecipes {
      * General shaped recipes
      * @param registry event
      */
-    private static void registerShapedRecipes(RecipeRegistryEvent registry) {
+    private static void registerShapedRecipes(CraftingRecipeRegisterEvent registry) {
         for (Material material : metals) {
             Item ingot = Item.getMatchingItem(ItemIngot.class, material);
             Block crate = BlockCrate.getBlockForMaterial(material);
@@ -153,7 +154,7 @@ public class RenewedRecipes {
      * Recipes for meshes
      * @param registry event
      */
-    private static void registerMeshRecipes(RecipeRegistryEvent registry) {
+    private static void registerMeshRecipes(CraftingRecipeRegisterEvent registry) {
         // Create mesh recipes
         registry.registerShapedRecipe(new ItemStack(RenewedItems.silk_mesh), true,
                 "SS",

@@ -23,11 +23,6 @@ public class EventListen extends Handlers {
     }
 
     @Subscribe
-    public void onRecipeRegister(RecipeRegistryEvent event) {
-        RenewedRecipes.registerRecipes(event);
-    }
-
-    @Subscribe
     public void onRecipesModify(RecipeModifyEvent event) {
         //RenewedRecipes.modifyRecipes(event);
     }
@@ -73,6 +68,7 @@ public class EventListen extends Handlers {
         EntityTracker.register(new RenewedTracker());
         LootTable.register(new RenewedLootTable());
         PotionRegistry.register(new RenewedPotion.Register());
+        Crafting.register(RenewedRecipes::registerRecipes);
 
         CraftingSoundRegisterEvent.register(new RenewedCraftingSounds());
         HandpanRegisterEvent.register(new RenewedHandpanRecipes());

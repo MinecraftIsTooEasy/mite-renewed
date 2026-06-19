@@ -64,27 +64,16 @@ public class RenewedItems {
     /**
      * Vanilla overwrites
      */
-    public static final ItemRenewedFood raw_pork =
-            new ItemRenewedFood(63, 2, Material.meat);
-    public static final ItemRenewedFood cooked_pork =
-            new ItemRenewedFood(64, 2, Material.meat);
-    public static final ItemRenewedFood raw_beef =
-            new ItemRenewedFood(107, 2, Material.meat);
-    public static final ItemRenewedFood cooked_beef =
-            new ItemRenewedFood(108, 2, Material.meat);
-    public static final ItemRenewedFood raw_poultry =
-            new ItemRenewedFood(109, 3, Material.meat);
-    public static final ItemRenewedFood cooked_poultry =
-            new ItemRenewedFood(110, 3, Material.meat);
-    public static final ItemRenewedFood raw_lambchop =
-            new ItemRenewedFood(916, 2, Material.meat);
-    public static final ItemRenewedFood cooked_lambchop =
-            new ItemRenewedFood(917, 2, Material.meat);
-    public static final Item reed = new ItemSugarCane(82, "reeds")
-            .setMaxStackSize(16)
-            .setCraftingDifficultyAsComponent(100F)
-            .setUnlocalizedName("reeds")
-            .setCreativeTab(CreativeTabs.tabMisc);
+    public static boolean IS_OVERWRITING_VANILLA = false;
+    public static final ItemRenewedFood raw_pork;
+    public static final ItemRenewedFood cooked_pork;
+    public static final ItemRenewedFood raw_beef;
+    public static final ItemRenewedFood cooked_beef;
+    public static final ItemRenewedFood raw_poultry;
+    public static final ItemRenewedFood cooked_poultry;
+    public static final ItemRenewedFood raw_lambchop;
+    public static final ItemRenewedFood cooked_lambchop;
+    public static final Item reed;
 
     // Called upon register event
     public static void register(ItemRegistryEvent registry) {
@@ -136,6 +125,26 @@ public class RenewedItems {
         sinew_mesh.setLowestCraftingDifficultyToProduce(400F);
         silk_mesh.setLowestCraftingDifficultyToProduce(300F);
         biomass.setLowestCraftingDifficultyToProduce(0F);
+
+        // Begin overwriting vanilla items
+        IS_OVERWRITING_VANILLA = true;
+
+        raw_pork        = new ItemRenewedFood(63, 2, Material.meat);
+        cooked_pork     = new ItemRenewedFood(64, 2, Material.meat);
+        raw_beef        = new ItemRenewedFood(107, 2, Material.meat);
+        cooked_beef     = new ItemRenewedFood(108, 2, Material.meat);
+        raw_poultry     = new ItemRenewedFood(109, 3, Material.meat);
+        cooked_poultry  = new ItemRenewedFood(110, 3, Material.meat);
+        raw_lambchop    = new ItemRenewedFood(916, 2, Material.meat);
+        cooked_lambchop = new ItemRenewedFood(917, 2, Material.meat);
+        reed            = new ItemSugarCane(82, "reeds")
+                .setMaxStackSize(16)
+                .setCraftingDifficultyAsComponent(100F)
+                .setUnlocalizedName("reeds")
+                .setCreativeTab(CreativeTabs.tabMisc);
+
+        // End overwrite
+        IS_OVERWRITING_VANILLA = false;
 
         raw_pork
                 .setTranslationKeys("item.porkchopRaw", "item.raw_bacon")
