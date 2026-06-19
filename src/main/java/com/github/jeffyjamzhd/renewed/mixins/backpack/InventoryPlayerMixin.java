@@ -1,7 +1,5 @@
 package com.github.jeffyjamzhd.renewed.mixins.backpack;
 
-import baubles.api.BaublesApi;
-import baubles.common.container.InventoryBaubles;
 import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
@@ -12,7 +10,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.*;
-import net.xiaoyu233.fml.FishModLoader;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,9 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Mixin(InventoryPlayer.class)
 public abstract class InventoryPlayerMixin implements IInventoryPlayer {

@@ -1,13 +1,23 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.util.Compatibility;
 import moddedmite.rustedironcore.property.ItemProperties;
 import net.minecraft.*;
+
+import static moddedmite.rustedironcore.property.ItemProperties.HeatLevelRequired;
+import static moddedmite.rustedironcore.property.ItemProperties.RockExperience;
 
 public class RenewedItemProperties implements Runnable {
     @Override
     public void run() {
         MiTERenewed.LOGGER.info("Registering item properties!");
+
+        // If running ITF, don't register these as it conflicts with
+        // some of that mod's gameplay
+        if (Compatibility.ITF_LOADED) {
+            return;
+        }
 
         // Handle nugget smelting
         for (Item item : Item.itemsList) {
@@ -30,7 +40,7 @@ public class RenewedItemProperties implements Runnable {
                 } else {
                     components = item.getRepairCost();
                 }
-                
+
                 if (item.hasMaterial(
                         Material.copper, Material.silver, Material.gold,
                         Material.iron, Material.rusted_iron)) {
@@ -46,16 +56,14 @@ public class RenewedItemProperties implements Runnable {
                 }
 
 
-                ItemProperties.HeatLevelRequired.register(item, heatLevel);
+                HeatLevelRequired.register(item, heatLevel);
                 FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget, components));
             }
         }
 
-        ItemProperties.BurnTime.register(Item.getItem(Block.woodenButton), 10);
-
         // Add experience to shards
-        ItemProperties.RockExperience.register(Item.shardDiamond, 50);
-        ItemProperties.RockExperience.register(Item.shardEmerald, 25);
-        ItemProperties.RockExperience.register(Item.shardNetherQuartz, 5);
+        RockExperience.register(Item.shardDiamond, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.diamond)) / 10);
+        RockExperience.register(Item.shardEmerald, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.emerald)) / (Compatibility.ITE_LOADED ? 4 : 10));
+        RockExperience.register(Item.shardNetherQuartz, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.netherQuartz)) / 10);
     }
 }

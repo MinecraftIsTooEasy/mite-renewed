@@ -12,9 +12,6 @@ import java.util.function.Predicate;
 
 public class RenewedMixinConfig implements IMixinConfigPlugin {
     protected static final ArrayList<Predicate<String>> MIXIN_PREDICATES = new ArrayList<>();
-    protected static final boolean hasITE = FishModLoader.hasMod("mite_ite");
-    protected static final boolean hasBGS = FishModLoader.hasMod("better_game_setting");
-    protected static final boolean hasModMenu = FishModLoader.hasMod("modmenu");
 
     @Override
     public boolean shouldApplyMixin(String targetClass, String mixinClass) {

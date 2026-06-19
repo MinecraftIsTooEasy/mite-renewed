@@ -4,7 +4,8 @@ import com.bawnorton.mixinsquared.MixinSquaredBootstrap;
 import com.github.jeffyjamzhd.renewed.mixins.RenewedMixinConfig;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
-import net.xiaoyu233.fml.FishModLoader;
+
+import static com.github.jeffyjamzhd.renewed.util.Compatibility.*;
 
 public class GeneralMixinConfig extends RenewedMixinConfig {
     @Override
@@ -14,9 +15,9 @@ public class GeneralMixinConfig extends RenewedMixinConfig {
     }
 
     static {
-        MIXIN_PREDICATES.add(s -> !hasModMenu && s.contains("GuiMainMenuMMMixin"));
-        MIXIN_PREDICATES.add(s -> hasBGS && s.contains("GuiCreateWorldBGSMixin") && !BGSConfig.useModernCreateWorldGui.get());
-        MIXIN_PREDICATES.add(s -> !hasBGS && s.contains("GuiCreateWorldBGSMixin"));
-        MIXIN_PREDICATES.add(s -> hasBGS && s.contains("GuiCreateWorldMixin") && BGSConfig.useModernCreateWorldGui.get());
+        MIXIN_PREDICATES.add(s -> !MOD_MENU_LOADED && s.contains("GuiMainMenuMMMixin"));
+        MIXIN_PREDICATES.add(s -> BGS_LOADED && s.contains("GuiCreateWorldBGSMixin") && !BGSConfig.useModernCreateWorldGui.get());
+        MIXIN_PREDICATES.add(s -> !BGS_LOADED && s.contains("GuiCreateWorldBGSMixin"));
+        MIXIN_PREDICATES.add(s -> BGS_LOADED && s.contains("GuiCreateWorldMixin") && BGSConfig.useModernCreateWorldGui.get());
     }
 }

@@ -43,7 +43,7 @@ public class ItemUtils {
     }
 
     static public ItemStack getBaubleInBackSlot(EntityPlayer player) {
-        if (FishModLoader.hasMod("baubles")) {
+        if (Compatibility.BAUBLES_LOADED) {
             InventoryBaubles baubles = (InventoryBaubles) BaublesApi.getBaubles(player);
             return baubles.getStackInSlot(2);
         }
