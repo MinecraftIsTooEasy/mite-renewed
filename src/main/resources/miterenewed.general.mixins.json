@@ -73,6 +73,7 @@
   "client": [
     "compat.emi.EmiCookingRecipeMixin",
     "compat.manylib.RenderUtilsMixin",
+    "compat.offhand.GuiIngameOffhandMixin",
     "entity.ClientPlayerMixin",
     "entity.EntityLivingBaseMixin",
     "gui.GuiCreateWorldBGSMixin",

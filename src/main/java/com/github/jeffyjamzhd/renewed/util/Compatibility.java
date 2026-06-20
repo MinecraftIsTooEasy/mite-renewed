@@ -8,4 +8,5 @@ public class Compatibility {
     public static final boolean BGS_LOADED = FishModLoader.hasMod("better_game_setting");
     public static final boolean MOD_MENU_LOADED = FishModLoader.hasMod("modmenu");
     public static final boolean BAUBLES_LOADED = FishModLoader.hasMod("baubles");
+    public static final boolean OFFHAND_LOADED = FishModLoader.hasMod("offhand");
 }

@@ -19,5 +19,6 @@ public class GeneralMixinConfig extends RenewedMixinConfig {
         MIXIN_PREDICATES.add(s -> BGS_LOADED && s.contains("GuiCreateWorldBGSMixin") && !BGSConfig.useModernCreateWorldGui.get());
         MIXIN_PREDICATES.add(s -> !BGS_LOADED && s.contains("GuiCreateWorldBGSMixin"));
         MIXIN_PREDICATES.add(s -> BGS_LOADED && s.contains("GuiCreateWorldMixin") && BGSConfig.useModernCreateWorldGui.get());
+        MIXIN_PREDICATES.add(s -> !OFFHAND_LOADED && s.contains("GuiIngameOffhandMixin"));
     }
 }
