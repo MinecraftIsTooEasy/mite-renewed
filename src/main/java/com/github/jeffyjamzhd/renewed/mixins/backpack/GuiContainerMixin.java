@@ -69,7 +69,7 @@ public abstract class GuiContainerMixin extends GuiScreen {
     private void mr$addExtendedFunctionality(
             int x, int y, int clickType,
             CallbackInfo ci) {
-        // Stop if this is the end of a drag
+        // Stop if this is the end.ogg of a drag
         if (!modifiedSlots.isEmpty()) {
             ci.cancel();
             mr$handleStack();

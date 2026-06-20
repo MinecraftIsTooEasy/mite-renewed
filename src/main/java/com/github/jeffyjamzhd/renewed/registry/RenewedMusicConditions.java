@@ -10,6 +10,7 @@ public class RenewedMusicConditions implements MusicConditionRegisterListener {
     public void register(MusicConditionRegistry registry) {
         registry.register(MCGeneric.class);
         registry.register(MCTitle.class);
+        registry.register(MCCredits.class);
         registry.register(MCDimension.class);
 
         registry.register(MCTime.class);

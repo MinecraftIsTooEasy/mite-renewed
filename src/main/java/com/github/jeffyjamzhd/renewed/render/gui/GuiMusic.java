@@ -102,9 +102,9 @@ public class GuiMusic extends Gui {
                 @SuppressWarnings("unchecked")
                 List<String> formattedTitle = this.mc.fontRenderer.listFormattedStringToWidth(this.trackName, 128);
 
-
                 // Draw
                 GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 if (formattedTitle.size() > 1) {
                     double fadeFac = 1D - (Math.min(0.2D, Math.max(0, anim - 0.40D)) * 10D);
                     int fadeComp = (int) (250 * fadeFac) << 24;

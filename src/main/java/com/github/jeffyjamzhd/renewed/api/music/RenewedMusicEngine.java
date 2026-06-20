@@ -443,6 +443,8 @@ public class RenewedMusicEngine
         }
 
         this.soundSystem.stop(CHANNEL_NAME);
+        this.ticksBeforeTransition = 0;
+        this.setState(STATE_COOLDOWN);
     }
 
     public float getVolume() {

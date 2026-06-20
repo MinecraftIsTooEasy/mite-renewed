@@ -434,5 +434,63 @@
         "to" : 54
       }
     }
+  },
+  "miterenewed:nether1.ogg" : {
+    "title": "Concrete Halls",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "nether"
+      }
+    }
+  },
+  "miterenewed:nether2.ogg" : {
+    "title": "Dead Voxel",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "nether"
+      }
+    }
+  },
+  "miterenewed:nether3.ogg" : {
+    "title": "Warmth",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "nether"
+      }
+    }
+  },
+  "miterenewed:nether4.ogg" : {
+    "title": "Ballad of the Cats",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "nether"
+      }
+    }
+  },
+  "miterenewed:end.ogg" : {
+    "title": "The End",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:dimension": {
+        "dimension": "the end"
+      }
+    }
+  },
+  "miterenewed:credits.ogg" : {
+    "title": "Intro",
+    "artist": "C418",
+    "partial": true,
+    "conditions" : {
+      "miterenewed:credits": {}
+    }
   }
 }
