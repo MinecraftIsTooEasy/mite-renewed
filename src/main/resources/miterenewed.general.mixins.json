@@ -70,6 +70,7 @@
     "world.WorldSettingsMixin"
   ],
   "client": [
+    "compat.emi.EmiCookingRecipeMixin",
     "compat.manylib.RenderUtilsMixin",
     "entity.ClientPlayerMixin",
     "entity.EntityLivingBaseMixin",
