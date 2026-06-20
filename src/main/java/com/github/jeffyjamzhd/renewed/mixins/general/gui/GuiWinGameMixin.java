@@ -1,7 +1,6 @@
 package com.github.jeffyjamzhd.renewed.mixins.general.gui;
 
 import com.github.jeffyjamzhd.renewed.api.music.RenewedMusicEngine;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.GuiScreen;
