@@ -72,8 +72,11 @@ public class ItemRenderHandpan {
         for(int i = 0; i < 2; ++i) {
             int armSide = i * 2 - 1;
             GL11.glPushMatrix();
-            GL11.glTranslatef(.65F + 0.2F * armTiltAngle, -.85F - 0.05F * armTiltAngle, .65F * (float)armSide);
 
+            GL11.glRotatef(animRoll, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(animPitch * 0.5F, 1.0F, 0.0F, 0.0F);
+
+            GL11.glTranslatef(.65F + 0.2F * armTiltAngle, -.85F - 0.05F * armTiltAngle, .65F * (float)armSide);
             GL11.glRotatef(-50.0F + 10F * armTiltAngle, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef((float) (-25 * armSide), 1.0F, 0.0F, 0.0F);
             GL11.glRotatef((float)(45 * armSide), 0.0F, 1.0F, 0.0F);

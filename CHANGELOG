@@ -1,54 +1,65 @@
 # 0.2.8 Changelog
 + Tiered crate blocks, which store a mass amount of one item/block
-+ Bags of holding, which grant the player a variable amount of additional inventory slots
++ Bags of holding, which grant the player a variable amount of additional inventory slots. They can be found as dungeon loot
 + New enchants: Feather Weight, Holding, Vacuum and Soulbound
 
-[General]
+## General
 + New integration with WAILA display
 + New integration with ManyLib config library
 + New integration with Baubles
-+ Four new music tracks for the overworld
-+ Two new music tracks for the underworld
-+ Updated invisible stalkers
++ Updated invisible stalker visuals; they are now completely invisible until you get close to them
++ Updated how smelting tools and armor works, result now scales based on ingredients used
 + Improved the way handpans and polearms are animated in first person
 + Improved how polearm entities are rendered
++ Improved mod compatibility overall
++ 11 new music tracks
 + Removed querns, their design has also been superseded by the recent tool bench changes
-+ Removed the ability to toggle debug features without having cheats enabled. This includes hitboxes and durability tooltips
++ Removed the ability to toggle debug features without having cheats enabled. This covers hitboxes and durability tooltips
 + Fixed polearm entities desyncing with the client when killing a mob
 + Fixed EMI display with Renewed's tool bench scaling
 + Fixed "ghost shanks" and stat desyncs with difficulty changes
 + Fixed enum options not saving / being applied properly
 + Fixed YAML config not applying properly in dedicated servers
 
-[Difficulty]
+## Difficulty
 + Difficulty can now be changed from in-game, and is also available for LAN server hosts
 + Difficulty can now be locked during world creation, preventing changes after a world is made
-+ Added 3 new parameters: Regen speed, exhaustion factor and armor protection factor
-+ In Legendary, players will now regen twice as fast. There was too much downtime required between mob encounters in order to prepare for fights, so this should let players stay in the action more (i.e when caving)
-+ In Legendary, both players and mobs now have 150% armor protection (instead of 100%.) Mobs are beefier and armored mobs are even more of a threat, but likewise you are also beefier too :)
++ Regeneration rate parameter: determines how fast you regenerate health
++ Exhaustion rate parameter: determines how fast you lose hunger
++ Armor protection parameter: scales how much armor protects player/mobs
++ Experience parameters: scale how much experience is given from various sources
++ Level bonus parameters: scales the bonuses given for each level, e.g. crafting speed and harvest speed
++ (Legendary) Players regen twice as fast. This is to remove downtime in combat scenarios (e.g. caving)
++ (Legendary) Players and mobs have 150% armor protection. Armored mobs are much harder to take down, but so are you
++ (Legendary) Mobs now drop twice the amount of experience they normally drop. This is to encourage fighting and make bouncing back from death a bit easier
 + Made tooltips for armor and tools reflect difficulty stat scaling
++ Polished up the custom difficulty menu some
 
-[Crafting]
+## Crafting
 + Gem shards now give a tenth of their full gem equivalent's XP when used
-+ Bowls are now crafted using a knife and wood planks
++ Bowls are now crafted using a knife and wood plank
 + Slabs can now be crafted back into their full block equivalent
 + Bows can be crafted into two sticks
 + Bows can be crafted into string with a knife
 + Alternative biomass recipe made with 4 leaves
 
-[Config]
-+ Music frequency
-+ Music display
-+ HUD padding
-+ Loot beams
+## Config
++ Config is now handled via ManyLib
++ Added a list toggle for music frequency, choose between four modes of frequency
++ Added a toggle for the music display
++ Added a value for HUD padding
++ Added toggle for the new loot beams
++ Added toggle for mob death "poof" sound
 
-[Technical]
-+ JeffyLib added as part of Renewed's backend
+## Technical
++ JeffyLib is now integrated as a dependency for Renewed
 + Server packet/callback for when a player starts to mine a block
-+ Packets for handling backpacks
++ Packets for handling backpacks (carryover from Jeffy Backpacks)
 + Bulk item entity for large stacks (>64) of items
 + Rewrote internal tool recipe handler for better mod support
 + New tool recipe parser for EMI
+
+Special thank you to Xy_Luce/Xy_Lose providing an updated Chinese translation!
 
 # 0.2.7.2 Changelog
 + Updated some Renewed block and item art to match programmer art better
