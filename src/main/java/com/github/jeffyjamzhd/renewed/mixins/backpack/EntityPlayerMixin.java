@@ -5,6 +5,7 @@ import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.registry.RenewedPotion;
 import com.github.jeffyjamzhd.renewed.util.ItemUtils;
+import com.jeffyjamzhd.jeffylib.api.impl.IItem;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -89,7 +90,15 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IEnt
             if (item == null) continue;
             if (RenewedEnchantments.ENCHANTMENT_SOUL_BOUND.getLevel(item) == 0) continue;
 
-            this.inventory.setInventorySlotContents(i, item.copy());
+            ItemStack clone = item.copy();
+            ItemDamageResult result = clone.tryDamageItem(DamageSource.pepsin, Math.round(24 - player.rand.nextFloat() * 6), player);
+
+            if (result != null && result.itemWasDestroyed()) {
+                IItem ext = (IItem) clone.getItem();
+                ext.jl$onItemDestroyed(item, player.getWorld(), player.posX, player.posY, player.posZ);
+            } else {
+                this.inventory.setInventorySlotContents(i, clone);
+            }
         }
     }
 

@@ -126,6 +126,11 @@ enchantment.holding=Holding
 enchantment.featherWeight=Feather Weight
 enchantment.soulbound=Soulbound
 
+enchanted_book.info.enchantment.holding=Holding\nRarity: Common\nEnchantment Difficulty: 10\nMax Level: III\nIncreases the carrying capacity of the enchanted item.\nCan be used on Bag of Holding
+enchanted_book.info.enchantment.featherWeight=Feather Weight\nRarity: Uncommon\nEnchantment Difficulty: 10\nMax Level: III\nReduces the carry weight of items within the enchanted item.\nCan be used on Bag of Holding
+enchanted_book.info.enchantment.soulbound=Soulbound\nRarity: Rare\nEnchantment Difficulty: 10\nMax Level: I\nWhen a player dies with a Soulbound item, it will be with them when they respawn.\nCan be used on Bag of Holding
+enchanted_book.info.enchantment.vacuum=Vacuum\nRarity: Rare\nEnchantment Difficulty: 10\nMax Level: I\nItems on the ground will automatically go into the bag if there is a matching item inside.\nCan be used on Bag of Holding
+
 item.sharp_bone.name=Sharp Bone
 item.quern.name=Quern
 item.bone_spear.name=Bone Spear

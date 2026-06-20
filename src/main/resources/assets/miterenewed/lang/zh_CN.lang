@@ -123,13 +123,14 @@ difficulty.parameter.ChickenBreedingItem.name.1=虫子
 difficulty.parameter.ChickenBreedingItem.desc.0=鸡需使用种子繁殖
 difficulty.parameter.ChickenBreedingItem.desc.1=鸡需使用蠕虫繁殖
 
-# 当快捷栏与背包装满时会自动吸取物品
+enchanted_book.info.enchantment.holding=扩容\n稀有度：常见\n附魔难度：10\n最高等级：III\n增加被附魔物品的携带容量。\n可用于无底袋
+enchanted_book.info.enchantment.featherWeight=轻盈\n稀有度：罕见\n附魔难度：10\n最高等级：III\n降低被附魔物品内装物品的负重。\n可用于无底袋
+enchanted_book.info.enchantment.soulbound=灵魂绑定\n稀有度：稀有\n附魔难度：10\n最高等级：I\n如果玩家携带灵魂绑定物品死亡，重生时该物品将保留在玩家身上。\n可用于无底袋
+enchanted_book.info.enchantment.vacuum=吸附\n稀有度：稀有\n附魔难度：10\n最高等级：I\n如果袋子内已有相同的物品，地上的同类物品将自动被吸入袋中。\n可用于无底袋
+
 enchantment.vacuum=吸取
-# 容量提升，不能与灵魂绑定共存
 enchantment.holding=持有
-# 每级减少 3 层重量惩罚
 enchantment.featherWeight=羽量
-# 当穿戴者死亡时，背包会严重损坏，重生时仍留在穿戴者的物品栏里
 enchantment.soulbound=灵魂绑定
 
 item.sharp_bone.name=锋利骨刃
