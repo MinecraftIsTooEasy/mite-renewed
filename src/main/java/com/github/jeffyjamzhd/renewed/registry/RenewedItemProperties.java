@@ -1,6 +1,7 @@
 package com.github.jeffyjamzhd.renewed.registry;
 
 import com.github.jeffyjamzhd.renewed.MiTERenewed;
+import com.github.jeffyjamzhd.renewed.item.ItemRenewedBucket;
 import com.github.jeffyjamzhd.renewed.util.Compatibility;
 import moddedmite.rustedironcore.property.ItemProperties;
 import net.minecraft.*;
@@ -21,17 +22,18 @@ public class RenewedItemProperties implements Runnable {
 
         // Handle nugget smelting
         for (Item item : Item.itemsList) {
-            if (item instanceof IDamageableItem && (item.isTool() || item.isArmor())) {
-                Material material = item.getMaterialForRepairs();
-                Item nugget = item.getRepairItem();
+            if (item == null) continue;
 
-                if (material == null || nugget == null)
-                    continue;
+            Material material = item.getMaterialForRepairs();
+            Item repairItem = item.getRepairItem();
 
-                if (!material.isMetal())
-                    continue;
+            if (material == null || repairItem == null)
+                continue;
 
-                int heatLevel;
+            if (!material.isMetal())
+                continue;
+
+            if (item instanceof IDamageableItem) {
                 int components;
 
                 if (item instanceof ItemArmor armor) {
@@ -41,23 +43,11 @@ public class RenewedItemProperties implements Runnable {
                     components = item.getRepairCost();
                 }
 
-                if (item.hasMaterial(
-                        Material.copper, Material.silver, Material.gold,
-                        Material.iron, Material.rusted_iron)) {
-                    heatLevel = 2;
+                addItemRecycling(item, repairItem, components);
+            }
 
-                    if (item.hasMaterial(Material.rusted_iron)) {
-                        components /= 2;
-                    }
-                } else if (item.hasMaterial(Material.ancient_metal, Material.mithril)) {
-                    heatLevel = 3;
-                } else {
-                    heatLevel = 4;
-                }
-
-
-                HeatLevelRequired.register(item, heatLevel);
-                FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(nugget, components));
+            if (item instanceof ItemHorseArmor) {
+                addItemRecycling(item, repairItem, 10);
             }
         }
 
@@ -65,5 +55,26 @@ public class RenewedItemProperties implements Runnable {
         RockExperience.register(Item.shardDiamond, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.diamond)) / 10);
         RockExperience.register(Item.shardEmerald, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.emerald)) / (Compatibility.ITE_LOADED ? 4 : 10));
         RockExperience.register(Item.shardNetherQuartz, ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.netherQuartz)) / 10);
+    }
+
+    private void addItemRecycling(Item item, Item to, int amount) {
+        int heatLevel;
+
+        if (item.hasMaterial(
+                Material.copper, Material.silver, Material.gold,
+                Material.iron, Material.rusted_iron)) {
+            heatLevel = 2;
+
+            if (item.hasMaterial(Material.rusted_iron)) {
+                amount /= 2;
+            }
+        } else if (item.hasMaterial(Material.ancient_metal, Material.mithril)) {
+            heatLevel = 3;
+        } else {
+            heatLevel = 4;
+        }
+
+        HeatLevelRequired.register(item, heatLevel);
+        FurnaceRecipes.smelting().addSmelting(item.itemID, new ItemStack(to, amount));
     }
 }
