@@ -151,6 +151,8 @@ public class RenewedMusicEngine
             this.transitionTimer -= 1;
         }
 
+        this.simulateIntendedPitch((WorldClient) world, true);
+
         // Don't bother if music is still playing
         if (this.soundSystem.playing(CHANNEL_NAME) || this.soundSystem.playing("streaming")) {
             return;
@@ -173,9 +175,9 @@ public class RenewedMusicEngine
             this.setDelay();
             this.soundSystem.backgroundMusic(CHANNEL_NAME, entry.getSoundUrl(), entry.getSoundName(), false);
             this.soundSystem.setVolume(CHANNEL_NAME, this.getVolume());
+            this.simulateIntendedPitch(world != null ? world.getAsWorldClient() : null, false);
             this.soundSystem.play(CHANNEL_NAME);
             this.setState(STATE_ACTIVE);
-            this.simulateIntendedPitch(world != null ? world.getAsWorldClient() : null, false);
 
             MiTERenewed.LOGGER.info("Tried to play {}", entry.getSoundName());
 
