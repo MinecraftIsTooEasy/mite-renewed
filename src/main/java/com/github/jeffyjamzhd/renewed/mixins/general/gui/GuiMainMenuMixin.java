@@ -77,11 +77,10 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void kickstartMusic(CallbackInfo ci) {
-        mc.sndManager.mr$setTicksToPlay(20);
     }
 
     @Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 3))
-    <E> boolean doNotAddForum(List instance, E e) {
+    <E> boolean doNotAddForum(List<?> instance, E e) {
         return false;
     }
 
