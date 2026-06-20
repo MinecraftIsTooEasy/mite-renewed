@@ -4,6 +4,7 @@ import com.github.jeffyjamzhd.renewed.api.IInventoryPlayer;
 import com.github.jeffyjamzhd.renewed.item.ItemWithInventory;
 import com.github.jeffyjamzhd.renewed.registry.RenewedEnchantments;
 import com.github.jeffyjamzhd.renewed.util.ItemUtils;
+import com.jeffyjamzhd.jeffylib.api.impl.IItem;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -68,6 +69,15 @@ public abstract class InventoryPlayerMixin implements IInventoryPlayer {
                               @Local ItemStack stack) {
         if (hasSoulbound(stack)) {
             this.mr$soulboundStack = stack;
+        }
+    }
+
+    @Inject(method = "takeDamage(Lnet/minecraft/ItemStack;Lnet/minecraft/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemDamageResult;itemWasDestroyed()Z"))
+    private void onDestroyedHook(ItemStack stack, DamageSource source, float amount,
+                                                  CallbackInfoReturnable<Boolean> cir,
+                                                  @Local ItemDamageResult idr) {
+        if (stack.getItem() instanceof IItem item && idr.itemWasDestroyed()) {
+            item.jl$onItemDestroyed(stack, player.getWorld(), player.posX, player.posY, player.posZ);
         }
     }
 

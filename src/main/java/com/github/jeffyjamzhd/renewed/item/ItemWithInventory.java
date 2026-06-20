@@ -73,6 +73,11 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
     }
 
     @Override
+    public int getScaledDamage(float damage) {
+        return Math.round(damage * 7F);
+    }
+
+    @Override
     public void addInformationBeforeEnchantments(ItemStack stack, EntityPlayer player, List stringList, boolean shift, Slot slot) {
         BackpackInventory inv = createInventory(stack);
         int slotCount = this.getInventorySize(stack) - inv.getSizeInventory();
@@ -93,6 +98,21 @@ public class ItemWithInventory extends Item implements IItem, IDamageableItem, I
         }
 
         super.addInformation(stack, player, stringList, shift, slot);
+    }
+
+    @Override
+    public boolean isHarmedByPepsin() {
+        return true;
+    }
+
+    @Override
+    public boolean isHarmedByAcid() {
+        return true;
+    }
+
+    @Override
+    public boolean isHarmedByFire() {
+        return true;
     }
 
     //***       IItemExtendedInteraction        ***//
