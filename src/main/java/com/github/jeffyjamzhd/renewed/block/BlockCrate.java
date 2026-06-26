@@ -30,8 +30,9 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
         }
 
         TileEntityCrate te = (TileEntityCrate) world.getBlockTileEntity(x, y, z);
+        ItemStack held = player.getHeldItemStack();
         ItemStack contained = te.getStackInSlot(0);
-        boolean equal = ItemUtils.areItemsEqual(contained, player.getHeldItemStack());
+        boolean equal = ItemUtils.areItemsEqual(contained, held);
 
         // Block insertion if full
         if (te.isFull()) {
@@ -41,10 +42,9 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
         if ((player.getHeldItemStack() != null && te.isEmpty()) || equal) {
             // Insert held stack
             if (player.onServer()) {
-                ItemStack stack = player.getHeldItemStack();
-                ItemStack result = te.insertStack(stack);
+                ItemStack result = te.insertStack(held);
 
-                if (!stack.equals(result)) {
+                if (!ItemUtils.areItemsEqual(held, result)) {
                     player.setHeldItemStack(result);
                     playInsertSfx(world, x, y, z);
                     return true;
