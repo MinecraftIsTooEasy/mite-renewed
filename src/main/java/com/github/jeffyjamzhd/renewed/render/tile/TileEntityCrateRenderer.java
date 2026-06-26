@@ -12,8 +12,6 @@ public class TileEntityCrateRenderer extends TileEntitySpecialRenderer {
             if (stack == null) {
                 return;
             }
-            Tessellator var8 = Tessellator.instance;
-            float var16 = 0.0625F;
 
             this.renderItemIntoGUI(fontRenderer, textureManager, stack, x, y);
             if (stack.hasEffect()) {

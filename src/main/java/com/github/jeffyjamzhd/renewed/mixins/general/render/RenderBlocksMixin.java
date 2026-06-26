@@ -83,36 +83,61 @@ public abstract class RenderBlocksMixin {
                 return;
             }
 
-            // Crate inside
-            this.setRenderBounds(1F / 16F, 1F / 16F, 1F / 16F, 15F / 16F, 15F / 16F, 15F / 16F);
-            this.renderStandardBlock(crate, x, y, z);
-
             Tessellator tessellator = Tessellator.instance;
+
+            // 1. Calculate lighting and color ONCE for the whole block space
             int brightness = crate.getMixedBrightnessForBlock(this.blockAccess, x, y, z);
             int color = crate.colorMultiplier(this.blockAccess, x, y, z);
             float r = (float)(color >> 16 & 255) / 255.0F;
             float g = (float)(color >> 8 & 255) / 255.0F;
             float b = (float)(color & 255) / 255.0F;
-            Icon icon = crate.crateFrame;
 
             tessellator.setBrightness(brightness);
-            tessellator.setColorOpaque_F(r, g, b);
+            Icon frameIcon = crate.crateFrame;
 
-            // Crate frame inner faces
+            // Crate inside
+            this.setRenderBounds(1F / 16F, 1F / 16F, 1F / 16F, 15F / 16F, 15F / 16F, 15F / 16F);
+
+            tessellator.setColorOpaque_F(r * 1.0F, g * 1.0F, b * 1.0F);
+            this.renderFaceYPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 1));
+
+            tessellator.setColorOpaque_F(r * 0.5F, g * 0.5F, b * 0.5F);
+            this.renderFaceYNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 0));
+
+            tessellator.setColorOpaque_F(r * 0.8F, g * 0.8F, b * 0.8F);
+            this.renderFaceZNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 2));
+            this.renderFaceZPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 3));
+
+            tessellator.setColorOpaque_F(r * 0.6F, g * 0.6F, b * 0.6F);
+            this.renderFaceXNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 4));
+            this.renderFaceXPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 5));
+
+            // Inner crate frame
+            // Top
+            tessellator.setColorOpaque_F(r * 1.0F, g * 1.0F, b * 1.0F);
             this.setRenderBounds(0.0D, .5F / 16F, 0.0D, 1.0D, .5F / 16F, 1.0D);
-            this.renderFaceYPos(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 15.5F / 16F, 0.0D, 1.0D, 15.5F / 16F, 1.0D);
-            this.renderFaceYNeg(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D, .5F / 16F);
-            this.renderFaceZPos(crate, x, y, z, icon);
-            this.setRenderBounds(0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D, 15.5F / 16F);
-            this.renderFaceZNeg(crate, x, y, z, icon);
-            this.setRenderBounds(.5F / 16F, 0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D);
-            this.renderFaceXPos(crate, x, y, z, icon);
-            this.setRenderBounds(15.5F / 16F, 0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D);
-            this.renderFaceXNeg(crate, x, y, z, icon);
+            this.renderFaceYPos(crate, x, y, z, frameIcon);
 
-            // Crate frame outer faces
+            // Bottom
+            tessellator.setColorOpaque_F(r * 0.5F, g * 0.5F, b * 0.5F);
+            this.setRenderBounds(0.0D, 15.5F / 16F, 0.0D, 1.0D, 15.5F / 16F, 1.0D);
+            this.renderFaceYNeg(crate, x, y, z, frameIcon);
+
+            // Z Pos/Neg
+            tessellator.setColorOpaque_F(r * 0.8F, g * 0.8F, b * 0.8F);
+            this.setRenderBounds(0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D, .5F / 16F);
+            this.renderFaceZPos(crate, x, y, z, frameIcon);
+            this.setRenderBounds(0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D, 15.5F / 16F);
+            this.renderFaceZNeg(crate, x, y, z, frameIcon);
+
+            // X Pos/Neg
+            tessellator.setColorOpaque_F(r * 0.6F, g * 0.6F, b * 0.6F);
+            this.setRenderBounds(.5F / 16F, 0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D);
+            this.renderFaceXPos(crate, x, y, z, frameIcon);
+            this.setRenderBounds(15.5F / 16F, 0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D);
+            this.renderFaceXNeg(crate, x, y, z, frameIcon);
+
+            // Outer frame
             this.setOverrideBlockTexture(crate.crateFrame);
             this.setRenderBoundsForStandardFormBlock();
             this.renderStandardBlock(crate, x, y, z);
