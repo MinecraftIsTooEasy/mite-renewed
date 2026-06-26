@@ -61,6 +61,7 @@
     "recipes.FurnaceRecipesMixin",
     "recipes.RecipesMITEMixin",
     "recipes.RecipesWeaponsMixin",
+    "recipes.ShapelessRecipesMixin",
     "render.RenderBlocksMixin",
     "sound.SoundManagerMixin",
     "world.WorldClientMixin",

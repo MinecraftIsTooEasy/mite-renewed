@@ -67,7 +67,7 @@ public abstract class RenderBlocksMixin {
         if (block.mr$useSpecialCrossedRenderer()) {
             Icon icon = getBlockIcon(block, blockAccess, x, y, z, 0);
             int metadata = blockAccess.getBlockMetadata(x, y, z);
-            mr$drawCrossedSquares(block, metadata, icon, dX, dY, dZ, 1.0F);
+            mr$drawCrossedSquares(block, metadata, icon, dX, dY, dZ, 1F);
             cir.setReturnValue(true);
         }
     }
@@ -88,9 +88,9 @@ public abstract class RenderBlocksMixin {
             // 1. Calculate lighting and color ONCE for the whole block space
             int brightness = crate.getMixedBrightnessForBlock(this.blockAccess, x, y, z);
             int color = crate.colorMultiplier(this.blockAccess, x, y, z);
-            float r = (float)(color >> 16 & 255) / 255.0F;
-            float g = (float)(color >> 8 & 255) / 255.0F;
-            float b = (float)(color & 255) / 255.0F;
+            float r = (float)(color >> 16 & 255) / 255F;
+            float g = (float)(color >> 8 & 255) / 255F;
+            float b = (float)(color & 255) / 255F;
 
             tessellator.setBrightness(brightness);
             Icon frameIcon = crate.crateFrame;
@@ -98,43 +98,43 @@ public abstract class RenderBlocksMixin {
             // Crate inside
             this.setRenderBounds(1F / 16F, 1F / 16F, 1F / 16F, 15F / 16F, 15F / 16F, 15F / 16F);
 
-            tessellator.setColorOpaque_F(r * 1.0F, g * 1.0F, b * 1.0F);
+            tessellator.setColorOpaque_F(r, g, b);
             this.renderFaceYPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 1));
 
-            tessellator.setColorOpaque_F(r * 0.5F, g * 0.5F, b * 0.5F);
+            tessellator.setColorOpaque_F(r * .5F, g * .5F, b * .5F);
             this.renderFaceYNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 0));
 
-            tessellator.setColorOpaque_F(r * 0.8F, g * 0.8F, b * 0.8F);
+            tessellator.setColorOpaque_F(r * .8F, g * .8F, b * .8F);
             this.renderFaceZNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 2));
             this.renderFaceZPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 3));
 
-            tessellator.setColorOpaque_F(r * 0.6F, g * 0.6F, b * 0.6F);
+            tessellator.setColorOpaque_F(r * .6F, g * .6F, b * 0.6F);
             this.renderFaceXNeg(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 4));
             this.renderFaceXPos(crate, x, y, z, crate.getBlockTexture(this.blockAccess, x, y, z, 5));
 
             // Inner crate frame
             // Top
-            tessellator.setColorOpaque_F(r * 1.0F, g * 1.0F, b * 1.0F);
-            this.setRenderBounds(0.0D, .5F / 16F, 0.0D, 1.0D, .5F / 16F, 1.0D);
+            tessellator.setColorOpaque_F(r, g, b);
+            this.setRenderBounds(0D, .5F / 16F, 0D, 1D, .5F / 16F, 1D);
             this.renderFaceYPos(crate, x, y, z, frameIcon);
 
             // Bottom
-            tessellator.setColorOpaque_F(r * 0.5F, g * 0.5F, b * 0.5F);
-            this.setRenderBounds(0.0D, 15.5F / 16F, 0.0D, 1.0D, 15.5F / 16F, 1.0D);
+            tessellator.setColorOpaque_F(r * .5F, g * .5F, b * .5F);
+            this.setRenderBounds(0D, 15.5F / 16F, 0D, 1D, 15.5F / 16F, 1D);
             this.renderFaceYNeg(crate, x, y, z, frameIcon);
 
             // Z Pos/Neg
             tessellator.setColorOpaque_F(r * 0.8F, g * 0.8F, b * 0.8F);
-            this.setRenderBounds(0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D, .5F / 16F);
+            this.setRenderBounds(0D, 0D, .5F / 16F, 1D, 1D, .5F / 16F);
             this.renderFaceZPos(crate, x, y, z, frameIcon);
-            this.setRenderBounds(0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D, 15.5F / 16F);
+            this.setRenderBounds(0D, 0D, 15.5F / 16F, 1D, 1D, 15.5F / 16F);
             this.renderFaceZNeg(crate, x, y, z, frameIcon);
 
             // X Pos/Neg
             tessellator.setColorOpaque_F(r * 0.6F, g * 0.6F, b * 0.6F);
-            this.setRenderBounds(.5F / 16F, 0.0D, 0.0D, .5F / 16F, 1.0D, 1.0D);
+            this.setRenderBounds(.5F / 16F, 0D, 0D, .5F / 16F, 1D, 1D);
             this.renderFaceXPos(crate, x, y, z, frameIcon);
-            this.setRenderBounds(15.5F / 16F, 0.0D, 0.0D, 15.5F / 16F, 1.0D, 1.0D);
+            this.setRenderBounds(15.5F / 16F, 0D, 0D, 15.5F / 16F, 1D, 1D);
             this.renderFaceXNeg(crate, x, y, z, frameIcon);
 
             // Outer frame
@@ -154,7 +154,7 @@ public abstract class RenderBlocksMixin {
             crate.setBlockBoundsForItemRender(meta);
             this.setRenderBounds(.5F / 16F, .5F / 16F, .5F / 16F, 15.5F / 16F, 15.5F / 16F, 15.5F / 16F);
 
-            GL11.glRotatef(90F, 0F, 1.0F, 0F);
+            GL11.glRotatef(90F, 0F, 1F, 0F);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             
             for (int pass = 0; pass < 2; pass++) {
@@ -164,29 +164,29 @@ public abstract class RenderBlocksMixin {
                 }
 
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(0F, -1.0F, 0F);
+                tessellator.setNormal(0F, -1F, 0F);
                 this.renderFaceYNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 0, meta));
                 tessellator.draw();
 
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(0F, 1.0F, 0F);
+                tessellator.setNormal(0F, 1F, 0F);
                 this.renderFaceYPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 1, meta));
                 tessellator.draw();
 
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(0F, 0F, -1.0F);
+                tessellator.setNormal(0F, 0F, -1F);
                 this.renderFaceZNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 2, meta));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(0F, 0F, 1.0F);
+                tessellator.setNormal(0F, 0F, 1F);
                 this.renderFaceZPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 3, meta));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(-1.0F, 0F, 0F);
+                tessellator.setNormal(-1F, 0F, 0F);
                 this.renderFaceXNeg(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 4, meta));
                 tessellator.draw();
                 tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0F, 0F);
+                tessellator.setNormal(1F, 0F, 0F);
                 this.renderFaceXPos(block, 0F, 0F, 0F, this.getBlockIconFromSideAndMetadata(block, 5, meta));
                 tessellator.draw();
             }
@@ -219,20 +219,20 @@ public abstract class RenderBlocksMixin {
 
         if (RenderingScheme.current == 0) {
             var10.addVertexWithUV(posX, y + scalar, var26, minU, minV);
-            var10.addVertexWithUV(posX, y + 0.0, var26, minU, maxV);
-            var10.addVertexWithUV(var24, y + 0.0, var28, maxU, maxV);
+            var10.addVertexWithUV(posX, y + 0, var26, minU, maxV);
+            var10.addVertexWithUV(var24, y + 0, var28, maxU, maxV);
             var10.addVertexWithUV(var24, y + scalar, var28, maxU, minV);
             var10.addVertexWithUV(var24, y + scalar, var28, minU, minV);
-            var10.addVertexWithUV(var24, y + 0.0, var28, minU, maxV);
-            var10.addVertexWithUV(posX, y + 0.0, var26, maxU, maxV);
+            var10.addVertexWithUV(var24, y + 0, var28, minU, maxV);
+            var10.addVertexWithUV(posX, y + 0, var26, maxU, maxV);
             var10.addVertexWithUV(posX, y + scalar, var26, maxU, minV);
             var10.addVertexWithUV(posX, y + scalar, var28, minU, minV);
-            var10.addVertexWithUV(posX, y + 0.0, var28, minU, maxV);
-            var10.addVertexWithUV(var24, y + 0.0, var26, maxU, maxV);
+            var10.addVertexWithUV(posX, y + 0, var28, minU, maxV);
+            var10.addVertexWithUV(var24, y + 0, var26, maxU, maxV);
             var10.addVertexWithUV(var24, y + scalar, var26, maxU, minV);
             var10.addVertexWithUV(var24, y + scalar, var26, minU, minV);
-            var10.addVertexWithUV(var24, y + 0.0, var26, minU, maxV);
-            var10.addVertexWithUV(posX, y + 0.0, var28, maxU, maxV);
+            var10.addVertexWithUV(var24, y + 0, var26, minU, maxV);
+            var10.addVertexWithUV(posX, y + 0, var28, maxU, maxV);
             var10.addVertexWithUV(posX, y + scalar, var28, maxU, minV);
         } else {
             this.x[0] = posX;
