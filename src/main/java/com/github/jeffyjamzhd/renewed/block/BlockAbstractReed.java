@@ -1,5 +1,7 @@
 package com.github.jeffyjamzhd.renewed.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.*;
 
 public class BlockAbstractReed extends Block {
@@ -110,5 +112,60 @@ public class BlockAbstractReed extends Block {
 
     public Item itemToDrop(BlockBreakInfo info) {
         return Item.reed;
+    }
+
+    // ---- CLIENT METHODS -----
+
+
+    @Override
+    public boolean mr$useBlockRenderAPI() {
+        return true;
+    }
+
+    @Override
+    public boolean mr$renderBlock(RenderBlocks renderer, IBlockAccess accessor, int x, int y, int z) {
+        renderReed(renderer, accessor, x, y, z, true);
+        return true;
+    }
+
+    @Override
+    public void mr$renderBlockBreaking(RenderBlocks renderer, IBlockAccess accessor, int x, int y, int z) {
+        renderReed(renderer, accessor, x, y, z, false);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private void renderReed(RenderBlocks renderer, IBlockAccess accessor, int x, int y, int z, boolean renderInner) {
+        Tessellator tessellator = Tessellator.instance;
+
+        int brightness = this.getMixedBrightnessForBlock(accessor, x, y, z);
+        int color = this.colorMultiplier(accessor, x, y, z);
+        float r = (float)(color >> 16 & 255) / 255F;
+        float g = (float)(color >> 8 & 255) / 255F;
+        float b = (float)(color & 255) / 255F;
+        tessellator.setBrightness(brightness);
+
+        tessellator.setColorOpaque_F(r * .6F, g * .6F, b * 0.6F);
+        renderer.setRenderBounds(2F / 16F, 0F, 0F, 14F / 16F, 1F, 1F);
+        renderer.renderFaceXNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 4)); // West facing out
+        renderer.renderFaceXPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 5)); // East facing out
+
+        if (renderInner) {
+            renderer.setRenderBounds(0F, 0F, 0F, 2F / 16F, 1F, 1F);
+            renderer.renderFaceXPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 4));
+            renderer.setRenderBounds(14F / 16F, 0F, 0F, 1F, 1F, 1F);
+            renderer.renderFaceXNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 5));
+        }
+
+        tessellator.setColorOpaque_F(r * .8F, g * .8F, b * .8F);
+        renderer.setRenderBounds(0F, 0F, 2F / 16F, 1F, 1F, 14F / 16F);
+        renderer.renderFaceZNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 2)); // North facing out
+        renderer.renderFaceZPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 3)); // South facing out
+
+        if (renderInner) {
+            renderer.setRenderBounds(0F, 0F, 0F, 1F, 1F, 2F / 16F);
+            renderer.renderFaceZPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 2));
+            renderer.setRenderBounds(0F, 0F, 14F / 16F, 1F, 1F, 1F);
+            renderer.renderFaceZNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 3));
+        }
     }
 }
