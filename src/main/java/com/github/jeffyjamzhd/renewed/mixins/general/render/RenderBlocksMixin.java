@@ -16,27 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(RenderBlocks.class)
 public abstract class RenderBlocksMixin {
     @Shadow public abstract Icon getBlockIcon(Block par1Block, IBlockAccess par2IBlockAccess, int par3, int par4, int par5, int par6);
-    @Shadow public abstract boolean renderStandardBlock(Block par1Block, int par2, int par3, int par4);
-    @Shadow public abstract void setOverrideBlockTexture(Icon par1Icon);
     @Shadow public abstract void clearOverrideBlockTexture();
 
     @Shadow public IBlockAccess blockAccess;
-    @Shadow private double[] x;
-    @Shadow private double[] y;
-    @Shadow private double[] z;
-    @Shadow private double[] u;
-    @Shadow private double[] v;
     @Shadow private Icon overrideBlockTexture;
-
-    @Shadow public abstract void setRenderBoundsForStandardFormBlock();
-    @Shadow public abstract void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract void renderFaceYPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract void renderFaceZPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract void renderFaceXPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon);
-    @Shadow public abstract Icon getBlockIconFromSideAndMetadata(Block par1Block, int par2, int par3);
-    @Shadow public abstract void setRenderBounds(double par1, double par3, double par5, double par7, double par9, double par11);
 
     @Inject(method = "renderCrossedSquares", at = @At(
             value = "INVOKE",

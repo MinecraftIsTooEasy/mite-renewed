@@ -3,7 +3,6 @@ package com.github.jeffyjamzhd.renewed.util;
 import net.minecraft.Block;
 import net.minecraft.RenderBlocks;
 import net.minecraft.Tessellator;
-import org.lwjgl.opengl.GL11;
 
 public class RenderUtils {
     public static void renderStandardBlockAsItemWithDefaultBounds(RenderBlocks renderer, Block block, int metadata) {
