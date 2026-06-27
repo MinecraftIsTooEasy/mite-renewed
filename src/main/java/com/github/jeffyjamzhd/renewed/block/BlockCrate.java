@@ -6,9 +6,11 @@ import com.github.jeffyjamzhd.renewed.entity.EntityItemBulk;
 import com.github.jeffyjamzhd.renewed.registry.RenewedBlocks;
 import com.github.jeffyjamzhd.renewed.registry.RenewedSounds;
 import com.github.jeffyjamzhd.renewed.util.ItemUtils;
+import com.github.jeffyjamzhd.renewed.util.RenderUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.*;
+import org.lwjgl.opengl.GL11;
 
 public class BlockCrate extends BlockDirectionalWithTileEntity {
     public BlockCrate(int id, Material material) {
@@ -255,7 +257,7 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
     // Client methods
 
     private Icon crateFront;
-    public Icon crateFrame;
+    private Icon crateFrame;
 
     @Override
     @Environment(EnvType.CLIENT)
@@ -273,6 +275,96 @@ public class BlockCrate extends BlockDirectionalWithTileEntity {
             return this.crateFront;
         }
         return this.blockIcon;
+    }
+
+    @Override
+    public boolean mr$useBlockRenderAPI() {
+        return true;
+    }
+
+    @Override
+    public boolean mr$renderBlock(RenderBlocks renderer, IBlockAccess accessor, int x, int y, int z) {
+        Tessellator tessellator = Tessellator.instance;
+
+        // 1. Calculate lighting and color ONCE for the whole block space
+        int brightness = this.getMixedBrightnessForBlock(accessor, x, y, z);
+        int color = this.colorMultiplier(accessor, x, y, z);
+        float r = (float)(color >> 16 & 255) / 255F;
+        float g = (float)(color >> 8 & 255) / 255F;
+        float b = (float)(color & 255) / 255F;
+
+        tessellator.setBrightness(brightness);
+        Icon frameIcon = this.crateFrame;
+
+        // Crate inside
+        renderer.setRenderBounds(1F / 16F, 1F / 16F, 1F / 16F, 15F / 16F, 15F / 16F, 15F / 16F);
+
+        tessellator.setColorOpaque_F(r, g, b);
+        renderer.renderFaceYPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 1));
+
+        tessellator.setColorOpaque_F(r * .5F, g * .5F, b * .5F);
+        renderer.renderFaceYNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 0));
+
+        tessellator.setColorOpaque_F(r * .8F, g * .8F, b * .8F);
+        renderer.renderFaceZNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 2));
+        renderer.renderFaceZPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 3));
+
+        tessellator.setColorOpaque_F(r * .6F, g * .6F, b * 0.6F);
+        renderer.renderFaceXNeg(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 4));
+        renderer.renderFaceXPos(this, x, y, z, this.getBlockTexture(accessor, x, y, z, 5));
+
+        // Inner crate frame
+        // Top
+        tessellator.setColorOpaque_F(r, g, b);
+        renderer.setRenderBounds(0D, .5F / 16F, 0D, 1D, .5F / 16F, 1D);
+        renderer.renderFaceYPos(this, x, y, z, frameIcon);
+
+        // Bottom
+        tessellator.setColorOpaque_F(r * .5F, g * .5F, b * .5F);
+        renderer.setRenderBounds(0D, 15.5F / 16F, 0D, 1D, 15.5F / 16F, 1D);
+        renderer.renderFaceYNeg(this, x, y, z, frameIcon);
+
+        // Z Pos/Neg
+        tessellator.setColorOpaque_F(r * 0.8F, g * 0.8F, b * 0.8F);
+        renderer.setRenderBounds(0D, 0D, .5F / 16F, 1D, 1D, .5F / 16F);
+        renderer.renderFaceZPos(this, x, y, z, frameIcon);
+        renderer.setRenderBounds(0D, 0D, 15.5F / 16F, 1D, 1D, 15.5F / 16F);
+        renderer.renderFaceZNeg(this, x, y, z, frameIcon);
+
+        // X Pos/Neg
+        tessellator.setColorOpaque_F(r * 0.6F, g * 0.6F, b * 0.6F);
+        renderer.setRenderBounds(.5F / 16F, 0D, 0D, .5F / 16F, 1D, 1D);
+        renderer.renderFaceXPos(this, x, y, z, frameIcon);
+        renderer.setRenderBounds(15.5F / 16F, 0D, 0D, 15.5F / 16F, 1D, 1D);
+        renderer.renderFaceXNeg(this, x, y, z, frameIcon);
+
+        // Outer frame
+        renderer.setOverrideBlockTexture(this.crateFrame);
+        renderer.setRenderBoundsForStandardFormBlock();
+        renderer.renderStandardBlock(this, x, y, z);
+        renderer.clearOverrideBlockTexture();
+
+        return true;
+    }
+
+    @Override
+    public void mr$renderBlockBreaking(RenderBlocks renderer, IBlockAccess accessor, int x, int y, int z) {
+        renderer.setRenderBoundsForStandardFormBlock();
+        renderer.renderStandardBlock(this, x, y, z);
+    }
+
+    @Override
+    public void mr$renderBlockAsItem(RenderBlocks renderer, int metadata, float color) {
+        renderer.setRenderBounds(.5F / 16F, .5F / 16F, .5F / 16F, 15.5F / 16F, 15.5F / 16F, 15.5F / 16F);
+
+        for (int pass = 0; pass < 2; pass++) {
+            if (pass == 1) {
+                renderer.setRenderBoundsForStandardFormBlock();
+                renderer.setOverrideBlockTexture(this.crateFrame);
+            }
+
+            RenderUtils.renderStandardBlockAsItem(renderer, this, metadata);
+        }
     }
 
     @Override

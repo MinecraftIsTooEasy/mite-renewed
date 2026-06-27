@@ -2,7 +2,7 @@
 
 + Updated mod metadata
 + Added a config toggle for crafting sounds
-+ Added a secret feature
++ Added a secret visual feature
 + Fixed a crash caused by using crates with an empty hand
 + Fixed crate AO rendering causing crates to appear very dark
 + Fixed vessel recipes not carrying over damage. Should work for modded vessels too
