@@ -1,3 +1,15 @@
+# 0.2.8.1 Changelog
+
++ Updated mod metadata
++ Added a config toggle for crafting sounds
++ Added a secret feature
++ Fixed a crash caused by using crates with an empty hand
++ Fixed crate AO rendering causing crates to appear very dark
++ Fixed vessel recipes not carrying over damage. Should work for modded vessels too
++ Fixed error output from recycling system
++ Fixed anvil recycling recipe
++ Removed fishing rods from being able to be recycled
+
 # 0.2.8 Changelog
 + Tiered crate blocks, which store a mass amount of one item/block
 + Bags of holding, which grant the player a variable amount of additional inventory slots. They can be found as dungeon loot

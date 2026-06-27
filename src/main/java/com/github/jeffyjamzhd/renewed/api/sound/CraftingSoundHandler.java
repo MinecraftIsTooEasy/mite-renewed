@@ -1,5 +1,6 @@
 package com.github.jeffyjamzhd.renewed.api.sound;
 
+import com.github.jeffyjamzhd.renewed.RenewedConfig;
 import net.minecraft.*;
 
 import static com.github.jeffyjamzhd.renewed.api.registry.CraftingSoundRegistry.ITEM_SOUNDS;
@@ -7,6 +8,11 @@ import static com.github.jeffyjamzhd.renewed.api.registry.CraftingSoundRegistry.
 
 public class CraftingSoundHandler {
     public static void onCraft(ItemStack output, IRecipe recipe, World world, EntityPlayer player) {
+        // Do not do anything if craft sounds disabled
+        if (!RenewedConfig.CRAFTING_SOUNDS.getBooleanValue()) {
+            return;
+        }
+
         Item item = output.getItem();
         // Check most specific first (itemid)
         if (ITEM_SOUNDS.containsKey(item.itemID)) {

@@ -43,8 +43,8 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
     implementation "com.github.MinecraftIsTooEasy:Gson:2.10.1"
 
-    fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
-    implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+    fml files("libs\\FishModLoader-v3.4.3.jar")//"com.github.MinecraftIsTooEasy:FishModLoader:3.4.3"
+    implementation files("libs\\FishModLoader-v3.4.3.jar")//"com.github.MinecraftIsTooEasy:FishModLoader:3.4.3"
 
     shadow(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
     shadow(implementation "org.yaml:snakeyaml:2.6")

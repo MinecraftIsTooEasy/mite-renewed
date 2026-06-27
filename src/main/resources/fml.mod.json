@@ -6,7 +6,8 @@
 		"fishmodloader": ">=3.4.2",
 		"rusted_iron_core": ">=1.4.0",
 		"many-lib": ">=2.3.1",
-		"better_game_setting": ">=1.4.0.1"
+		"better_game_setting": ">=1.4.0.1",
+		"jeffy-lib": ">=1.0.0"
 	},
 	"suggests": {
 		"emi": ">=1.1.23",

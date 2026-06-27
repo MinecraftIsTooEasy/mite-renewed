@@ -24,6 +24,19 @@ public class RenewedItemProperties implements Runnable {
         for (Item item : Item.itemsList) {
             if (item == null) continue;
 
+            if (item instanceof ItemAnvilBlock anvil) {
+                Item repairItem = anvil.getRepairItem();
+                int count = anvil.getNumComponentsForDurability() * 2;
+                addItemRecycling(item, repairItem, count);
+            }
+
+            if (item instanceof ItemHorseArmor horseArmor) {
+                Item repairItem = horseArmor.getRepairItem();
+                addItemRecycling(item, repairItem, 10);
+            }
+
+            if (!item.hasRepairCost()) continue;
+
             Material material = item.getMaterialForRepairs();
             Item repairItem = item.getRepairItem();
 
@@ -34,6 +47,8 @@ public class RenewedItemProperties implements Runnable {
                 continue;
 
             if (item instanceof IDamageableItem) {
+                if (item instanceof ItemFishingRod) continue;
+
                 int components;
 
                 if (item instanceof ItemArmor armor) {
@@ -44,10 +59,6 @@ public class RenewedItemProperties implements Runnable {
                 }
 
                 addItemRecycling(item, repairItem, components);
-            }
-
-            if (item instanceof ItemHorseArmor) {
-                addItemRecycling(item, repairItem, 10);
             }
         }
 
