@@ -71,10 +71,4 @@ public class BlockSugarCane extends BlockAbstractReed {
     public Icon getBlockTexture(IBlockAccess access, int x, int y, int z, int side) {
         return isRootCane(access, x, y, z) ? rootIcon : blockIcon;
     }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public boolean mr$useSpecialCrossedRenderer() {
-        return true;
-    }
 }

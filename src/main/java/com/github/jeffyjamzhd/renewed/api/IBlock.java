@@ -25,15 +25,6 @@ public interface IBlock {
     default boolean mr$onBlockClicked(World world, EnumFace face, int x, int y, int z, EntityPlayer player) { return false; }
 
     /**
-     * {@code true} if this block should use more granular rendering
-     * (additional icon checks)
-     */
-    @Environment(EnvType.CLIENT)
-    default boolean mr$useSpecialCrossedRenderer() {
-        return false;
-    }
-
-    /**
      * If true, uses the new render block methods instead of the original hardcoded list
      */
     @Environment(EnvType.CLIENT)

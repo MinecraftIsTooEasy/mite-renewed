@@ -15,29 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderBlocks.class)
 public abstract class RenderBlocksMixin {
-    @Shadow public abstract Icon getBlockIcon(Block par1Block, IBlockAccess par2IBlockAccess, int par3, int par4, int par5, int par6);
     @Shadow public abstract void clearOverrideBlockTexture();
-
     @Shadow public IBlockAccess blockAccess;
     @Shadow private Icon overrideBlockTexture;
-
-    @Inject(method = "renderCrossedSquares", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/RenderBlocks;drawCrossedSquares(Lnet/minecraft/Block;IDDDF)V"),
-            cancellable = true)
-    private void renderCrossedSquaresAlternate(
-            Block block, int x, int y, int z,
-            CallbackInfoReturnable<Boolean> cir,
-            @Local(ordinal = 0) double dX,
-            @Local(ordinal = 1) double dY,
-            @Local(ordinal = 2) double dZ) {
-        if (block.mr$useSpecialCrossedRenderer()) {
-            Icon icon = getBlockIcon(block, blockAccess, x, y, z, 0);
-            int metadata = blockAccess.getBlockMetadata(x, y, z);
-            mr$drawCrossedSquares(block, metadata, icon, dX, dY, dZ, 1F);
-            cir.setReturnValue(true);
-        }
-    }
 
     @Inject(method = "renderBlockByRenderType", at = @At(value = "HEAD"), cancellable = true)
     private void renderCrateBlock(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
@@ -70,46 +50,6 @@ public abstract class RenderBlocksMixin {
             GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             this.clearOverrideBlockTexture();
             ci.cancel();
-        }
-    }
-
-    /**
-     * Alternative method to RenderBlocks#drawCrossedSquares, allows
-     * for an icon to be passed in
-     */
-    @Unique
-    private void mr$drawCrossedSquares(Block block, int metadata, Icon icon,
-                                       double x, double y, double z, double scalar) {
-        Tessellator var10 = Tessellator.instance;
-        icon = this.overrideBlockTexture == null ? icon : this.overrideBlockTexture;
-
-        double minU = icon.getMinU();
-        double minV = icon.getMinV();
-        double maxU = icon.getMaxU();
-        double maxV = icon.getMaxV();
-        double var20 = 0.45 * scalar;
-        double posX = x + 0.5 - var20;
-        double var24 = x + 0.5 + var20;
-        double var26 = z + 0.5 - var20;
-        double var28 = z + 0.5 + var20;
-
-        if (RenderingScheme.current == 0) {
-            var10.addVertexWithUV(posX, y + scalar, var26, minU, minV);
-            var10.addVertexWithUV(posX, y + 0, var26, minU, maxV);
-            var10.addVertexWithUV(var24, y + 0, var28, maxU, maxV);
-            var10.addVertexWithUV(var24, y + scalar, var28, maxU, minV);
-            var10.addVertexWithUV(var24, y + scalar, var28, minU, minV);
-            var10.addVertexWithUV(var24, y + 0, var28, minU, maxV);
-            var10.addVertexWithUV(posX, y + 0, var26, maxU, maxV);
-            var10.addVertexWithUV(posX, y + scalar, var26, maxU, minV);
-            var10.addVertexWithUV(posX, y + scalar, var28, minU, minV);
-            var10.addVertexWithUV(posX, y + 0, var28, minU, maxV);
-            var10.addVertexWithUV(var24, y + 0, var26, maxU, maxV);
-            var10.addVertexWithUV(var24, y + scalar, var26, maxU, minV);
-            var10.addVertexWithUV(var24, y + scalar, var26, minU, minV);
-            var10.addVertexWithUV(var24, y + 0, var26, minU, maxV);
-            var10.addVertexWithUV(posX, y + 0, var28, maxU, maxV);
-            var10.addVertexWithUV(posX, y + scalar, var28, maxU, minV);
         }
     }
 }
